@@ -158,10 +158,10 @@ public class LibcbwBoard implements AutoCloseable {
 	 */
 	public static class USB_1608FS extends LibcbwBoard {
 		private static final String BOARD_NAME = "USB-1608FS";
-		private HGLOBAL bkgnd_buffer = null;
-		private int bkgnd_buffer_size = 0;
-		private int bkgnd_buffer_pos = -1;
-		private int bkgnd_channel_count;
+		private HGLOBAL _bkgnd_buffer = null;
+		private int _bkgnd_buffer_size = 0;
+		private int _bkgnd_buffer_pos = -1;
+		private int _bkgnd_channel_count = 0;
 
 		/**
 		 * Initialize board already set up with InstaCal
@@ -280,19 +280,19 @@ public class LibcbwBoard implements AutoCloseable {
 		 * @throws LibcbwException if an error occurs.
 		 */
 		public void analogueInStartAsync(int lowchan, int numChannels, int range, int samplesPerChannel, int freq, int options) throws LibcbwException {
-			if(bkgnd_buffer != null) throw LibcbwException.fromErrorCode(ErrorCode.ALREADYACTIVE);
+			if(_bkgnd_buffer != null) throw LibcbwException.fromErrorCode(ErrorCode.ALREADYACTIVE);
 			
 			NativeLong lcount = new NativeLong(samplesPerChannel * numChannels);
-			bkgnd_buffer = LibcbwJNA.cbWinBufAlloc(lcount);
-			bkgnd_buffer_pos = -1;
-			bkgnd_buffer_size = samplesPerChannel * numChannels;
-			bkgnd_channel_count = numChannels;
+			_bkgnd_buffer = LibcbwJNA.cbWinBufAlloc(lcount);
+			_bkgnd_buffer_pos = 0;
+			_bkgnd_buffer_size = samplesPerChannel * numChannels;
+			_bkgnd_channel_count = numChannels;
 			NativeLongByReference rateref = new NativeLongByReference(new NativeLong(freq * numChannels));
 			
-			int err = LibcbwJNA.cbAInScan(_boardnum, lowchan, lowchan + numChannels - 1, lcount, rateref, range, bkgnd_buffer, options | CBWOptions.BACKGROUND);
+			int err = LibcbwJNA.cbAInScan(_boardnum, lowchan, lowchan + numChannels - 1, lcount, rateref, range, _bkgnd_buffer, options | CBWOptions.BACKGROUND);
 			if(err != ErrorCode.NOERRORS) {
-				LibcbwJNA.cbWinBufFree(bkgnd_buffer);
-				bkgnd_buffer = null;
+				LibcbwJNA.cbWinBufFree(_bkgnd_buffer);
+				_bkgnd_buffer = null;
 				throw LibcbwException.fromErrorCode(err);
 			}
 		}
@@ -305,7 +305,7 @@ public class LibcbwBoard implements AutoCloseable {
 		 *         <code>null</code> if no asynchronous scan is active.
 		 */
 		public int[][] analogueInStopAsync() throws LibcbwException {
-			if(bkgnd_buffer == null) return null;
+			if(_bkgnd_buffer == null) return null;
 			
 			LibcbwJNA.cbStopIOBackground(_boardnum, IOFunctions.AIFUNCTION);
 			
@@ -322,33 +322,33 @@ public class LibcbwBoard implements AutoCloseable {
 			
 			short[] buffer, buffer2 = null;
 			
-			if(cur_idx == bkgnd_buffer_pos) {
-				LibcbwJNA.cbWinBufFree(bkgnd_buffer);
-				bkgnd_buffer = null;
-				return new int[0][0];
-			} if(cur_idx < bkgnd_buffer_pos) {
-				buffer = bkgnd_buffer.getPointer().getShortArray(bkgnd_buffer_pos, bkgnd_buffer_size - bkgnd_buffer_pos);
-				buffer2 = bkgnd_buffer.getPointer().getShortArray(0, cur_idx + 1);
+			if(cur_idx == _bkgnd_buffer_pos - 1) {
+				LibcbwJNA.cbWinBufFree(_bkgnd_buffer);
+				_bkgnd_buffer = null;
+				return new int[_bkgnd_channel_count][0];
+			} else if(cur_idx < _bkgnd_buffer_pos) {
+				buffer = _bkgnd_buffer.getPointer().getShortArray(_bkgnd_buffer_pos, _bkgnd_buffer_size - _bkgnd_buffer_pos);
+				buffer2 = _bkgnd_buffer.getPointer().getShortArray(0, cur_idx + 1);
 			} else {
-				buffer = bkgnd_buffer.getPointer().getShortArray(bkgnd_buffer_pos, cur_idx + 1 - bkgnd_buffer_pos);
+				buffer = _bkgnd_buffer.getPointer().getShortArray(_bkgnd_buffer_pos, cur_idx + 1 - _bkgnd_buffer_pos);
 				buffer2 = new short[0];
 			}
 			
-			int[][] ret = new int[bkgnd_channel_count][(buffer.length + buffer2.length) / bkgnd_channel_count];
+			int[][] ret = new int[_bkgnd_channel_count][(buffer.length + buffer2.length) / _bkgnd_channel_count];
 
-			for(int sample = 0; (sample*bkgnd_channel_count) < buffer.length; sample++) {
-				for(int chan = 0; chan < bkgnd_channel_count; chan++) {
-					ret[chan][sample] = buffer[sample * bkgnd_channel_count + chan];
+			for(int sample = 0; (sample*_bkgnd_channel_count) < buffer.length; sample++) {
+				for(int chan = 0; chan < _bkgnd_channel_count; chan++) {
+					ret[chan][sample] = buffer[sample * _bkgnd_channel_count + chan] & 0xFFFF;
 				}
 			}
-			for(int sample = 0; (sample*bkgnd_channel_count) < buffer.length; sample++) {
-				for(int chan = 0; chan < bkgnd_channel_count; chan++) {
-					ret[chan][sample+(buffer.length/bkgnd_channel_count)] = buffer2[sample * bkgnd_channel_count + chan];
+			for(int sample = 0; (sample*_bkgnd_channel_count) < buffer2.length; sample++) {
+				for(int chan = 0; chan < _bkgnd_channel_count; chan++) {
+					ret[chan][sample+(buffer.length/_bkgnd_channel_count)] = buffer2[sample * _bkgnd_channel_count + chan] & 0xFFFF;
 				}
 			}
 
-			LibcbwJNA.cbWinBufFree(bkgnd_buffer);
-			bkgnd_buffer = null;
+			LibcbwJNA.cbWinBufFree(_bkgnd_buffer);
+			_bkgnd_buffer = null;
 			return ret;
 		}
 		
@@ -563,9 +563,9 @@ public class LibcbwBoard implements AutoCloseable {
 			try {
 			    super.close();
 			} finally {
-				if(bkgnd_buffer != null) {
-					LibcbwJNA.cbWinBufFree(bkgnd_buffer);
-					bkgnd_buffer = null;
+				if(_bkgnd_buffer != null) {
+					LibcbwJNA.cbWinBufFree(_bkgnd_buffer);
+					_bkgnd_buffer = null;
 				}
 			}
 		}
