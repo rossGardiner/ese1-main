@@ -34,8 +34,8 @@ public class DaqDeviceDescriptor extends Structure {
 	 * @author Duncan Lowther (2402789L)
 	 */
 	@FunctionalInterface
-	public static interface BoardConstructor {
-		public LibcbwBoard apply(int boardnum) throws LibcbwException;
+	public static interface BoardConstructor<T extends LibcbwBoard> {
+		public T apply(int boardnum) throws LibcbwException;
 	}
 	
 	@Override
@@ -52,10 +52,11 @@ public class DaqDeviceDescriptor extends Structure {
 	 * @return the new {@link LibcbwBoard} object.
 	 * @throws LibcbwException if an error occurs.
 	 */
-	public LibcbwBoard createDaqDevice(BoardConstructor constructor) throws LibcbwException {
-		int bnum = LibcbwJNA.cbGetBoardNumber((ByValue) this);
+	public <T extends LibcbwBoard> T createDaqDevice(BoardConstructor<T> constructor) throws LibcbwException {
+		ByValue dis = (this instanceof ByValue) ? (ByValue) this : Structure.newInstance(ByValue.class, this.getPointer());
+		int bnum = LibcbwJNA.cbGetBoardNumber(dis);
 		if(bnum > -1) return constructor.apply(bnum);
-		int err = LibcbwJNA.cbCreateDaqDevice(_next_id, (ByValue) this);
+		int err = LibcbwJNA.cbCreateDaqDevice(_next_id, dis);
 		if(err != LibcbwJNA.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
 		return constructor.apply(_next_id++);
 	}
@@ -70,10 +71,10 @@ public class DaqDeviceDescriptor extends Structure {
 	 * @throws LibcbwException if an error occurs.
 	 */
 	public static DaqDeviceDescriptor[] getDaqDeviceInventory(int ifaceType, int maxDev) throws LibcbwException {
-		DaqDeviceDescriptor[] buf = new DaqDeviceDescriptor[maxDev];
 		IntByReference nDev = new IntByReference(maxDev);
+		DaqDeviceDescriptor[] buf = (DaqDeviceDescriptor[]) (new DaqDeviceDescriptor()).toArray(maxDev);
 		
-		int err = LibcbwJNA.cbGetDaqDeviceInventory(ifaceType, buf, nDev);
+		int err = LibcbwJNA.cbGetDaqDeviceInventory(ifaceType, buf[0], nDev);
 		if(err != LibcbwJNA.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
 		
 		DaqDeviceDescriptor[] ret = new DaqDeviceDescriptor[nDev.getValue()];
@@ -97,5 +98,9 @@ public class DaqDeviceDescriptor extends Structure {
 		if(err != LibcbwJNA.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
 		
 		return ret;
+	}
+	@Override
+	public String toString() {
+		return "[" + String.join(",", new String(ProductName).trim(), new String(DevString).trim(), new String(UniqueID)).trim() + "]"; 
 	}
 }

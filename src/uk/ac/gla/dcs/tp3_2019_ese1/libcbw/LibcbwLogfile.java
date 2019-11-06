@@ -4,6 +4,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
 import com.sun.jna.ptr.IntByReference;
@@ -84,7 +85,7 @@ public class LibcbwLogfile {
 		ByteBuffer buf = ByteBuffer.allocateDirect(256);
 		int err = LibcbwJNA.cbLogGetFileName(fileNumber, path, buf);
 		if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
-		return new String(buf.array());
+		return new String(StandardCharsets.UTF_8.decode(buf).toString());
 	}
 
 	public int[][] getAIInfo() throws LibcbwException {

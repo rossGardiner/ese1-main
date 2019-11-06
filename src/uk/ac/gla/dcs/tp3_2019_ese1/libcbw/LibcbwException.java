@@ -1,6 +1,7 @@
 package uk.ac.gla.dcs.tp3_2019_ese1.libcbw;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * An exception stemming from a libcbw error code.
@@ -26,6 +27,6 @@ public class LibcbwException extends Exception {
 		int err2 = LibcbwJNA.cbGetErrMsg(errCode, msgBuf);
 		if(err2 != LibcbwJNA.ErrorCode.NOERRORS) return fromErrorCode(err2);
 		
-		return new LibcbwException(new String(msgBuf.array()));
+		return new LibcbwException(StandardCharsets.UTF_8.decode(msgBuf).toString());
 	}
 }

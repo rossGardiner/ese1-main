@@ -1,6 +1,7 @@
 package uk.ac.gla.dcs.tp3_2019_ese1.libcbw;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
@@ -52,7 +53,7 @@ public class LibcbwBoard implements AutoCloseable {
 		
 		err = LibcbwJNA.cbGetBoardName(_boardnum, buf);
 		if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
-		_boardname = new String(buf.array());
+		_boardname = new String(StandardCharsets.UTF_8.decode(buf).toString());
 	}
 
 	/**
@@ -90,7 +91,7 @@ public class LibcbwBoard implements AutoCloseable {
 		ByteBuffer buffer = ByteBuffer.allocateDirect(maxLen);
 		int err = LibcbwJNA.cbGetConfigString(ConfigInfo.BOARDINFO, _boardnum, devNum, item, buffer, new IntByReference(maxLen));
 		if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
-		return new String(buffer.array());
+		return new String(StandardCharsets.UTF_8.decode(buffer).toString());
 	}
 	
 	/**
@@ -170,7 +171,10 @@ public class LibcbwBoard implements AutoCloseable {
 		 */
 		public USB_1608FS(int boardnum) throws LibcbwException {
 			super(boardnum);
-			if(!BOARD_NAME.equals(_boardname)) throw LibcbwException.fromErrorCode(ErrorCode.BADBOARDTYPE);	
+			if(!BOARD_NAME.equals(_boardname.trim())) {
+				System.err.println(_boardname);
+				throw LibcbwException.fromErrorCode(ErrorCode.BADBOARDTYPE);	
+			}
 		}
 		
 		/**

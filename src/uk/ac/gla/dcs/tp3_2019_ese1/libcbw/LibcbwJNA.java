@@ -26,7 +26,7 @@ import com.sun.jna.platform.win32.WinNT;
  * @author Duncan Lowther (2402789L)
  */
 public class LibcbwJNA implements StdCallLibrary {
-	public static final String JNA_LIBRARY_NAME = "cbw";
+	public static final String JNA_LIBRARY_NAME = "cbw" + System.getProperty("sun.arch.data.model");
 	public static final NativeLibrary JNA_NATIVE_LIB = NativeLibrary.getInstance(LibcbwJNA.JNA_LIBRARY_NAME);
 	public static final float CURRENTREVNUM = 6.7F;
 
@@ -44,9 +44,12 @@ public class LibcbwJNA implements StdCallLibrary {
 		public static final int STOPFATAL = 1;
 		public static final int STOPALL = 2;
 	}
+	
+	private static final boolean USE_INSTACAL = true;
 
 	static {
 		Native.register(LibcbwJNA.JNA_LIBRARY_NAME);
+		if(!USE_INSTACAL) cbIgnoreInstaCal();
 		int err = cbDeclareRevision(new FloatByReference(CURRENTREVNUM));
 		if (err != ErrorCode.NOERRORS)
 			throw new ExceptionInInitializerError(LibcbwException.fromErrorCode(err));
@@ -56,7 +59,7 @@ public class LibcbwJNA implements StdCallLibrary {
 			throw new ExceptionInInitializerError(LibcbwException.fromErrorCode(err));
 	}
 
-	public class HGLOBAL extends WinNT.HANDLE {
+	public static class HGLOBAL extends WinNT.HANDLE {
 		public HGLOBAL() {
 			super();
 		}
@@ -2499,12 +2502,12 @@ public class LibcbwJNA implements StdCallLibrary {
 	/**
 	 * Original signature : <code>int cbDInArray(int, int, int, ULONG*)</code>
 	 */
-	static native int cbDInArray(int BoardNum, int LowPort, int HighPort, NativeLong[] DataArray);
+	static native int cbDInArray(int BoardNum, int LowPort, int HighPort, int[] DataArray);
 
 	/**
 	 * Original signature : <code>int cbDOutArray(int, int, int, ULONG*)</code>
 	 */
-	static native int cbDOutArray(int BoardNum, int LowPort, int HighPort, NativeLong[] DataArray);
+	static native int cbDOutArray(int BoardNum, int LowPort, int HighPort, int[] DataArray);
 
 	/**
 	 * Original signature : <code>int cbDClearAlarm(int, int, UINT)</code>
@@ -2586,7 +2589,7 @@ public class LibcbwJNA implements StdCallLibrary {
 	/**
 	 * Original signature : <code>int cbMemSetDTMode(int, int)</code>
 	 */
-	static native int cbMemSetDTMode(int BoardNum, int Mode);
+	// XXX can't be found in dll??? static native int cbMemSetDTMode(int BoardNum, int Mode);
 
 	/**
 	 * Original signature : <code>int cbMemReset(int)</code>
@@ -2620,7 +2623,7 @@ public class LibcbwJNA implements StdCallLibrary {
 	 * Original signature :
 	 * <code>int cbWinBufToArray32(HGLOBAL, ULONG*, long, long)</code>
 	 */
-	static native int cbWinBufToArray32(HGLOBAL MemHandle, NativeLong[] DataArray, NativeLong FirstPoint,
+	static native int cbWinBufToArray32(HGLOBAL MemHandle, IntBuffer DataArray, NativeLong FirstPoint,
 			NativeLong Count);
 
 	/**
@@ -2654,7 +2657,7 @@ public class LibcbwJNA implements StdCallLibrary {
 	 * Original signature :
 	 * <code>int cbWinArrayToBuf32(ULONG*, HGLOBAL, long, long)</code>
 	 */
-	static native int cbWinArrayToBuf32(NativeLong[] DataArray, HGLOBAL MemHandle, NativeLong FirstPoint,
+	static native int cbWinArrayToBuf32(IntBuffer DataArray, HGLOBAL MemHandle, NativeLong FirstPoint,
 			NativeLong Count);
 
 	/**
@@ -2971,7 +2974,7 @@ public class LibcbwJNA implements StdCallLibrary {
 	 * Original signature :
 	 * <code>int cbGetDaqDeviceInventory(DaqDeviceInterface, DaqDeviceDescriptor*, INT*)</code>
 	 */
-	static native int cbGetDaqDeviceInventory(int InterfaceType, DaqDeviceDescriptor[] Inventory,
+	static native int cbGetDaqDeviceInventory(int InterfaceType, DaqDeviceDescriptor Inventory,
 			IntByReference NumberOfDevices);
 
 	/**
