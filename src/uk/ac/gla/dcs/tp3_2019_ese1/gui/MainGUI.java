@@ -847,43 +847,44 @@ public class MainGUI {
 		dataViewPanel.add(panel_7, gbc_panel_7);
 		GridBagLayout gbl_panel_7 = new GridBagLayout();
 		gbl_panel_7.columnWidths = new int[]{75, 64, 0};
-		gbl_panel_7.rowHeights = new int[]{0, 230, 0};
+		gbl_panel_7.rowHeights = new int[]{0, 230, 0, 0};
 		gbl_panel_7.columnWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
-		gbl_panel_7.rowWeights = new double[]{0.0, 1.0, Double.MIN_VALUE};
+		gbl_panel_7.rowWeights = new double[]{0.0, 1.0, 0.0, Double.MIN_VALUE};
 		panel_7.setLayout(gbl_panel_7);
+		
+		JLabel lblFmax_2 = new JLabel("Fmax");
+		GridBagConstraints gbc_lblFmax_2 = new GridBagConstraints();
+		gbc_lblFmax_2.anchor = GridBagConstraints.EAST;
+		gbc_lblFmax_2.insets = new Insets(0, 0, 5, 5);
+		gbc_lblFmax_2.gridx = 0;
+		gbc_lblFmax_2.gridy = 0;
+		panel_7.add(lblFmax_2, gbc_lblFmax_2);
+		
+		textField_7 = new JTextField();
+		GridBagConstraints gbc_textField_7 = new GridBagConstraints();
+		gbc_textField_7.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_7.fill = GridBagConstraints.HORIZONTAL;
+		gbc_textField_7.gridx = 1;
+		gbc_textField_7.gridy = 0;
+		panel_7.add(textField_7, gbc_textField_7);
+		textField_7.setColumns(10);
 		
 		JLabel lblForceReduction_2 = new JLabel("Force reduction");
 		GridBagConstraints gbc_lblForceReduction_2 = new GridBagConstraints();
 		gbc_lblForceReduction_2.anchor = GridBagConstraints.EAST;
 		gbc_lblForceReduction_2.insets = new Insets(0, 0, 5, 5);
 		gbc_lblForceReduction_2.gridx = 0;
-		gbc_lblForceReduction_2.gridy = 0;
+		gbc_lblForceReduction_2.gridy = 1;
 		panel_7.add(lblForceReduction_2, gbc_lblForceReduction_2);
 		
 		textField_9 = new JTextField();
 		GridBagConstraints gbc_textField_9 = new GridBagConstraints();
-		gbc_textField_9.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_9.insets = new Insets(0, 0, 5, 0);
+		gbc_textField_9.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField_9.gridx = 1;
-		gbc_textField_9.gridy = 0;
+		gbc_textField_9.gridy = 1;
 		panel_7.add(textField_9, gbc_textField_9);
 		textField_9.setColumns(10);
-		
-		JLabel lblFmax_2 = new JLabel("Fmax");
-		GridBagConstraints gbc_lblFmax_2 = new GridBagConstraints();
-		gbc_lblFmax_2.anchor = GridBagConstraints.EAST;
-		gbc_lblFmax_2.insets = new Insets(0, 0, 0, 5);
-		gbc_lblFmax_2.gridx = 0;
-		gbc_lblFmax_2.gridy = 1;
-		panel_7.add(lblFmax_2, gbc_lblFmax_2);
-		
-		textField_7 = new JTextField();
-		GridBagConstraints gbc_textField_7 = new GridBagConstraints();
-		gbc_textField_7.fill = GridBagConstraints.HORIZONTAL;
-		gbc_textField_7.gridx = 1;
-		gbc_textField_7.gridy = 1;
-		panel_7.add(textField_7, gbc_textField_7);
-		textField_7.setColumns(10);
 		
 		JTextPane txtpnAcclerationVsTime = new JTextPane();
 		txtpnAcclerationVsTime.setText("Accleration vs time graph for test 3");
