@@ -31,7 +31,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final float CURRENTREVNUM = 6.7F;
 
     /** types of error reporting */
-    public static interface ErrorReporting {
+    public static final class ErrorReporting {
+        private ErrorReporting() {
+        }
+
         public static final int DONTPRINT = 0;
         public static final int PRINTWARNINGS = 1;
         public static final int PRINTFATAL = 2;
@@ -39,7 +42,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** types of error handling */
-    public static interface ErrorHandling {
+    public static final class ErrorHandling {
+        private ErrorHandling() {
+        }
+
         public static final int DONTSTOP = 0;
         public static final int STOPFATAL = 1;
         public static final int STOPALL = 2;
@@ -68,7 +74,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** System error code */
-    public static interface ErrorCode {
+    public static final class ErrorCode {
+        private ErrorCode() {
+        }
+
         /** No error occurred */
         public static final int NOERRORS = 0;
         /** Invalid board number specified */
@@ -532,7 +541,10 @@ public class LibcbwJNA implements StdCallLibrary {
         public static final int CMREXCEEDED = 1035;
     }
 
-    public static interface IOFunctions {
+    public static final class IOFunctions {
+        private IOFunctions() {
+        }
+
         /** Analog Input Function */
         public static final int AIFUNCTION = 1;
         /** Analog Output Function */
@@ -550,7 +562,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Calibration coefficient types */
-    public static interface CalibrationCoeff {
+    public static final class CalibrationCoeff {
+        private CalibrationCoeff() {
+        }
+
         public static final int COARSE_GAIN = 0x01;
         public static final int COARSE_OFFSET = 0x02;
         public static final int FINE_GAIN = 0x04;
@@ -580,7 +595,10 @@ public class LibcbwJNA implements StdCallLibrary {
      * below.
      * 
      ********************************************************************/
-    public static interface InternalErrorCode {
+    public static final class InternalErrorCode {
+        private InternalErrorCode() {
+        }
+
         /* Internal errors returned by 16 bit library */
         /** 200-299 Internal library error */
         public static final int INTERNALERR = 200;
@@ -738,7 +756,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int RUNNING = 1;
 
     /** Option Flags */
-    public static interface CBWOptions {
+    public static final class CBWOptions {
+        private CBWOptions() {
+        }
+
         /** Run in foreground, don't return till done */
         public static final int FOREGROUND = 0x0000;
         /** Run in background, return immediately */
@@ -852,7 +873,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int NOTUSED = -1;
 
     /** channel types */
-    public static interface ChannelType {
+    public static final class ChannelType {
+        private ChannelType() {
+        }
+
         /** Analog channel */
         public static final int ANALOG = 0;
         /** 8-bit digital port */
@@ -894,7 +918,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int SETPOINT_ENABLE = 0x100;
 
     /** setpoint flags */
-    public static interface SetpointFlags {
+    public static final class SetpointFlags {
+        private SetpointFlags() {
+        }
+
         /** Channel = LimitA value */
         public static final int SF_EQUAL_LIMITA = 0x00;
         /** Channel &lt; LimitA value */
@@ -903,7 +930,10 @@ public class LibcbwJNA implements StdCallLibrary {
         public static final int SF_INSIDE_LIMITS = 0x02;
         /** Channel &gt; LimitB */
         public static final int SF_GREATERTHAN_LIMITB = 0x03;
-        /** Channel Outside LimitA and LimitB (LimitA &lt; Channel or Channel &gt; LimitB) */
+        /**
+         * Channel Outside LimitA and LimitB (LimitA &lt; Channel or Channel &gt;
+         * LimitB)
+         */
         public static final int SF_OUTSIDE_LIMITS = 0x04;
         /** Use As Hysteresis */
         public static final int SF_HYSTERESIS = 0x05;
@@ -917,7 +947,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Setpoint output channels */
-    public static interface SetpointOutputs {
+    public static final class SetpointOutputs {
+        private SetpointOutputs() {
+        }
+
         /** No Output */
         public static final int SO_NONE = 0;
         /** Output to digital Port */
@@ -939,7 +972,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** cbDaqSetTrigger trigger sources */
-    public static interface TriggerSource {
+    public static final class TriggerSource {
+        private TriggerSource() {
+        }
+
         public static final int TRIG_IMMEDIATE = 0;
         public static final int TRIG_EXTTTL = 1;
         public static final int TRIG_ANALOG_HW = 2;
@@ -950,7 +986,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** cbDaqSetTrigger trigger sensitivities */
-    public static interface TriggerSensitivity {
+    public static final class TriggerSensitivity {
+        private TriggerSensitivity() {
+        }
+
         public static final int RISING_EDGE = 0;
         public static final int FALLING_EDGE = 1;
         public static final int ABOVE_LEVEL = 2;
@@ -966,7 +1005,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int STOP_EVENT = 1;
 
     /** settling time settings */
-    public static interface SettleTime {
+    public static final class SettleTime {
+        private SettleTime() {
+        }
+
         public static final int SETTLE_DEFAULT = 0;
         public static final int SETTLE_1us = 1;
         public static final int SETTLE_5us = 2;
@@ -990,7 +1032,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int GETNEXT = -3;
 
     /** Temperature scales */
-    public static interface TemperatureScale {
+    public static final class TemperatureScale {
+        private TemperatureScale() {
+        }
+
         public static final int CELSIUS = 0;
         public static final int FAHRENHEIT = 1;
         public static final int KELVIN = 2;
@@ -1003,7 +1048,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int DEFAULTOPTION = 0x0000;
 
     /** Types of digital I/O Ports */
-    public static interface DIOPortType {
+    public static final class DIOPortType {
+        private DIOPortType() {
+        }
+
         public static final int AUXPORT = 1;
         public static final int AUXPORT0 = 1;
         public static final int AUXPORT1 = 2;
@@ -1044,14 +1092,20 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Analog input modes */
-    public static interface AInMode {
+    public static final class AInMode {
+        private AInMode() {
+        }
+
         public static final int DIFFERENTIAL = 0;
         public static final int SINGLE_ENDED = 1;
         public static final int GROUNDED = 16;
     }
 
     /** Selectable analog input modes (PCI-6000 series) */
-    public static interface PCI6000AInMode {
+    public static final class PCI6000AInMode {
+        private PCI6000AInMode() {
+        }
+
         /** Referenced Single-Ended */
         public static final int RSE = 0x1000;
         /** Non-Referenced Single-Ended */
@@ -1061,7 +1115,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Selectable A/D Ranges codes */
-    public static interface ADCRange {
+    public static final class ADCRange {
+        private ADCRange() {
+        }
+
         /** -60 to 60 Volts */
         public static final int BIP60VOLTS = 20;
         public static final int BIP30VOLTS = 23;
@@ -1166,7 +1223,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int ADDA2 = 1;
 
     /** 8536 counter output 1 control */
-    public static interface Counter8536Output {
+    public static final class Counter8536Output {
+        private Counter8536Output() {
+        }
+
         public static final int NOTLINKED = 0;
         public static final int GATECTR2 = 1;
         public static final int TRIGCTR2 = 2;
@@ -1174,14 +1234,20 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** 8536 trigger types */
-    public static interface Trigger8536 {
+    public static final class Trigger8536 {
+        private Trigger8536() {
+        }
+
         public static final int HW_START_TRIG = 0;
         public static final int HW_RETRIG = 1;
         public static final int SW_START_TRIG = 2;
     }
 
     /** Types of 8254 counter configurations */
-    public static interface Config8254 {
+    public static final class Config8254 {
+        private Config8254() {
+        }
+
         public static final int HIGHONLASTCOUNT = 0;
         public static final int ONESHOT = 1;
         public static final int RATEGENERATOR = 2;
@@ -1207,7 +1273,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int NEGATIVEEDGE = 1;
 
     /** Counter output control */
-    public static interface CounterOutput {
+    public static final class CounterOutput {
+        private CounterOutput() {
+        }
+
         /** 9513 */
         public static final int ALWAYSLOW = 0;
         /** 9513 and 8536 */
@@ -1223,7 +1292,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** 9513 Counter input sources */
-    public static interface Counter9513Input {
+    public static final class Counter9513Input {
+        private Counter9513Input() {
+        }
+
         public static final int TCPREVCTR = 0;
         public static final int CTRINPUT1 = 1;
         public static final int CTRINPUT2 = 2;
@@ -1288,7 +1360,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Counter load registers */
-    public static interface CounterLoadRegister {
+    public static final class CounterLoadRegister {
+        private CounterLoadRegister() {
+        }
+
         public static final int LOADREG0 = 0;
         public static final int LOADREG1 = 1;
         public static final int LOADREG2 = 2;
@@ -1313,7 +1388,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** 9513 Counter registers */
-    public static interface Counter9513Register {
+    public static final class Counter9513Register {
+        private Counter9513Register() {
+        }
+
         public static final int HOLDREG1 = 101;
         public static final int HOLDREG2 = 102;
         public static final int HOLDREG3 = 103;
@@ -1346,7 +1424,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** LS7266 Counter registers */
-    public static interface LS7266Register {
+    public static final class LS7266Register {
+        private LS7266Register() {
+        }
+
         public static final int COUNT1 = 601;
         public static final int COUNT2 = 602;
         public static final int COUNT3 = 603;
@@ -1400,7 +1481,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Counter Gate Control */
-    public static interface CounterGateCtrl {
+    public static final class CounterGateCtrl {
+        private CounterGateCtrl() {
+        }
+
         public static final int NOGATE = 0;
         public static final int AHLTCPREVCTR = 1;
         public static final int AHLNEXTGATE = 2;
@@ -1412,7 +1496,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** 7266 Counter Quadrature values */
-    public static interface Counter7266Quadrature {
+    public static final class Counter7266Quadrature {
+        private Counter7266Quadrature() {
+        }
+
         public static final int NO_QUAD = 0;
         public static final int X1_QUAD = 1;
         public static final int X2_QUAD = 2;
@@ -1420,7 +1507,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** 7266 Counter Counting Modes */
-    public static interface Counter7266CountMode {
+    public static final class Counter7266CountMode {
+        private Counter7266CountMode() {
+        }
+
         public static final int NORMAL_MODE = 0;
         public static final int RANGE_LIMIT = 1;
         public static final int NO_RECYCLE = 2;
@@ -1432,7 +1522,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int BINARY_ENCODING = 2;
 
     /** 7266 Counter Index Modes */
-    public static interface Counter7266IdxMode {
+    public static final class Counter7266IdxMode {
+        private Counter7266IdxMode() {
+        }
+
         public static final int INDEX_DISABLED = 0;
         public static final int LOAD_CTR = 1;
         public static final int LOAD_OUT_LATCH = 2;
@@ -1440,7 +1533,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** 7266 Counter Flag Pins */
-    public static interface Counter7266FlagPin {
+    public static final class Counter7266FlagPin {
+        private Counter7266FlagPin() {
+        }
+
         public static final int CARRY_BORROW = 1;
         public static final int COMPARE_BORROW = 2;
         public static final int CARRYBORROW_UPDOWN = 3;
@@ -1448,7 +1544,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Counter status bits */
-    public static interface CounterStatus {
+    public static final class CounterStatus {
+        private CounterStatus() {
+        }
+
         public static final int C_UNDERFLOW = 0x0001;
         public static final int C_OVERFLOW = 0x0002;
         public static final int C_COMPARE = 0x0004;
@@ -1459,7 +1558,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Scan counter mode constants */
-    public static interface ScanCounterMode {
+    public static final class ScanCounterMode {
+        private ScanCounterMode() {
+        }
+
         public static final int TOTALIZE = 0x0000;
         public static final int CLEAR_ON_READ = 0x0001;
         public static final int ROLLOVER = 0x0000;
@@ -1542,7 +1644,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** 25xx series counter debounce time constants */
-    public static interface Counter25xxDebounce {
+    public static final class Counter25xxDebounce {
+        private Counter25xxDebounce() {
+        }
+
         public static final int CTR_DEBOUNCE500ns = 0;
         public static final int CTR_DEBOUNCE1500ns = 1;
         public static final int CTR_DEBOUNCE3500ns = 2;
@@ -1571,7 +1676,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int CTR_FALLING_EDGE = 1;
 
     /** 25xx series counter tick size constants */
-    public static interface Counter25xxTickSize {
+    public static final class Counter25xxTickSize {
+        private Counter25xxTickSize() {
+        }
+
         public static final int CTR_TICK20PT83ns = 0;
         public static final int CTR_TICK208PT3ns = 1;
         public static final int CTR_TICK2083PT3ns = 2;
@@ -1584,7 +1692,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Types of triggers */
-    public static interface TriggerType {
+    public static final class TriggerType {
+        private TriggerType() {
+        }
+
         public static final int TRIGABOVE = 0;
         public static final int TRIGBELOW = 1;
         public static final int GATE_NEG_HYS = 2;
@@ -1616,7 +1727,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int IDLE_HIGH = 1;
 
     /** Signal I/O Configuration Parameters */
-    public static interface SignalIOConfig {
+    public static final class SignalIOConfig {
+        private SignalIOConfig() {
+        }
+
         /* --Connections */
         public static final int AUXIN0 = 0x01;
         public static final int AUXIN1 = 0x02;
@@ -1665,7 +1779,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Types of configuration information */
-    public static interface ConfigInfo {
+    public static final class ConfigInfo {
+        private ConfigInfo() {
+        }
+
         public static final int GLOBALINFO = 1;
         public static final int BOARDINFO = 2;
         public static final int DIGITALINFO = 3;
@@ -2092,7 +2209,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** AI channel Types */
-    public static interface AIChannelType {
+    public static final class AIChannelType {
+        private AIChannelType() {
+        }
+
         public static final int AI_CHAN_TYPE_VOLTAGE = 0;
         public static final int AI_CHAN_TYPE_CURRENT = 100;
         public static final int AI_CHAN_TYPE_RESISTANCE_10K4W = 201;
@@ -2112,7 +2232,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Thermocouple Types */
-    public static interface ThermocoupleType {
+    public static final class ThermocoupleType {
+        private ThermocoupleType() {
+        }
+
         public static final int TC_TYPE_J = 1;
         public static final int TC_TYPE_K = 2;
         public static final int TC_TYPE_T = 3;
@@ -2124,14 +2247,20 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Bridge Types */
-    public static interface BridgeType {
+    public static final class BridgeType {
+        private BridgeType() {
+        }
+
         public static final int BRIDGE_FULL = 1;
         public static final int BRIDGE_HALF = 2;
         public static final int BRIDGE_QUARTER = 3;
     }
 
     /** Platinum RTD Types */
-    public static interface RTDType {
+    public static final class RTDType {
+        private RTDType() {
+        }
+
         public static final int RTD_CUSTOM = 0x00;
         public static final int RTD_PT_3750 = 0x01;
         public static final int RTD_PT_3851 = 0x02;
@@ -2143,7 +2272,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Version types */
-    public static interface VersionType {
+    public static final class VersionType {
+        private VersionType() {
+        }
+
         public static final int VER_FW_MAIN = 0;
         public static final int VER_FW_MEASUREMENT = 1;
         public static final int VER_FW_RADIO = 2;
@@ -2152,7 +2284,10 @@ public class LibcbwJNA implements StdCallLibrary {
     }
 
     /** Types of events */
-    public static interface EventType {
+    public static final class EventType {
+        private EventType() {
+        }
+
         public static final int ON_SCAN_ERROR = 0x0001;
         public static final int ON_EXTERNAL_INTERRUPT = 0x0002;
         public static final int ON_PRETRIGGER = 0x0004;
@@ -2192,7 +2327,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int TIMEFORMAT_24HOUR = 1;
 
     /** delimiter constants */
-    public static interface Delimiter {
+    public static final class Delimiter {
+        private Delimiter() {
+        }
+
         public static final int DELIMITER_COMMA = 0;
         public static final int DELIMITER_SEMICOLON = 1;
         public static final int DELIMITER_SPACE = 2;
@@ -2215,7 +2353,10 @@ public class LibcbwJNA implements StdCallLibrary {
     public static final int CAL_TABLE_FACTORY = 0;
     public static final int CAL_TABLE_FIELD = 1;
 
-    public static interface DaqDeviceInterface {
+    public static final class DaqDeviceInterface {
+        private DaqDeviceInterface() {
+        }
+
         public static final int USB_IFC = (1 << 0);
         public static final int BLUETOOTH_IFC = (1 << 1);
         public static final int ETHERNET_IFC = (1 << 2);
