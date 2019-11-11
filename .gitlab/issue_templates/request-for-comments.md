@@ -2,7 +2,7 @@
 
 **Reviewers coments**
 
-
-* [ ] Please don't touch this issue - for assigned member only.
-**OR**
-* [X] Anyone welcome to contribute
+**Ownership**<br />
+[ ] Please don't touch this issue - for assigned member only. <br /> 
+**OR** <br /> 
+[X] Anyone welcome to contribute.
