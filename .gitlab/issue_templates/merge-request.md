@@ -2,6 +2,6 @@
 
 **Changes needed before merge is accepted:**
 
-* [ ] Please don't touch this issue - for assigned member only.
-**OR**
-* [X] Anyone welcome to contribute
+[ ] Please don't touch this issue - for assigned member only. <br /> 
+**OR** <br /> 
+[X] Anyone welcome to contribute.
