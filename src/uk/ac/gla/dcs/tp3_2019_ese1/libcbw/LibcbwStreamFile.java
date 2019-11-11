@@ -10,17 +10,18 @@ import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.ShortByReference;
 
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard.USB_1608FS;
+import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ADCRange;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ErrorCode;
 
 /**
- * A way of reading a file that has been created with 
- * {@link USB_1608FS#analogueInToFile(String, int, int, int, int, int, int)}
- * or similar.
+ * A way of reading a file that has been created with
+ * {@link USB_1608FS#analogueInToFile(String, int, int, int, int, int, int)} or
+ * similar.
  * 
  * @author Duncan Lowther (2402789L)
  */
 public class LibcbwStreamFile {
-	
+
 	private final String _filename;
 	private final int _first_channel;
 	private final int _channel_count;
@@ -37,17 +38,18 @@ public class LibcbwStreamFile {
 	 */
 	public LibcbwStreamFile(String filename) throws LibcbwException {
 		_filename = filename;
-		
+
 		ShortByReference low = new ShortByReference();
 		ShortByReference high = new ShortByReference();
 		NativeLongByReference pretrig = new NativeLongByReference();
 		NativeLongByReference total = new NativeLongByReference();
 		NativeLongByReference rate = new NativeLongByReference();
 		IntByReference range = new IntByReference();
-		
+
 		int err = LibcbwJNA.cbFileGetInfo(_filename, low, high, pretrig, total, rate, range);
-		if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
-		
+		if (err != ErrorCode.NOERRORS)
+			throw LibcbwException.fromErrorCode(err);
+
 		_first_channel = low.getValue();
 		_channel_count = high.getValue() - _first_channel + 1;
 		_pretrig_count = pretrig.getValue().intValue();
@@ -55,30 +57,33 @@ public class LibcbwStreamFile {
 		_sample_rate = rate.getValue().intValue();
 		_range = range.getValue();
 	}
-	
+
 	/**
 	 * Reads <code>count</code> samples from an arbitrary position in the file.
 	 * 
 	 * @param first - the index of the first sample to read.
 	 * @param count - the number of samples to read.
-	 * @return a two-dimensional array indexed as <code>array[channel][sample]</code> of
-	 *         16-bit unsigned measurements, zero-extended to fit <code>int</code>s
+	 * @return a two-dimensional array indexed as
+	 *         <code>array[channel][sample]</code> of 16-bit unsigned measurements,
+	 *         zero-extended to fit <code>int</code>s
 	 * @throws LibcbwException if an error occurs.
 	 */
 	public int[][] read(int first, int count) throws LibcbwException {
-		ShortBuffer buffer = ByteBuffer.allocateDirect(2 * count * _channel_count).order(ByteOrder.nativeOrder()).asShortBuffer();
+		ShortBuffer buffer = ByteBuffer.allocateDirect(2 * count * _channel_count).order(ByteOrder.nativeOrder())
+				.asShortBuffer();
 		NativeLongByReference count_ref = new NativeLongByReference(new NativeLong(count));
-		
+
 		int err = LibcbwJNA.cbFileRead(_filename, new NativeLong(first), count_ref, buffer);
-		if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
-		
+		if (err != ErrorCode.NOERRORS)
+			throw LibcbwException.fromErrorCode(err);
+
 		count = count_ref.getValue().intValue();
-		
+
 		short[] raw = buffer.array();
 		int[][] ret = new int[_channel_count][count];
-		
-		for(int chan = 0; chan < _channel_count; chan++) {
-			for(int sample = 0; sample < count; sample++) {
+
+		for (int chan = 0; chan < _channel_count; chan++) {
+			for (int sample = 0; sample < count; sample++) {
 				ret[chan][sample] = raw[sample * _channel_count + chan];
 			}
 		}
@@ -121,7 +126,8 @@ public class LibcbwStreamFile {
 	}
 
 	/**
-	 * @return a constant from {@link ADCRange} defining the voltage range of the samples.
+	 * @return a constant from {@link ADCRange} defining the voltage range of the
+	 *         samples.
 	 */
 	public int getRange() {
 		return _range;
