@@ -44,6 +44,12 @@ public class DaqDeviceDescriptor extends Structure {
         public T apply(int boardnum) throws LibcbwException;
     }
 
+    public static final int USB_IFC = (1 << 0);
+    public static final int BLUETOOTH_IFC = (1 << 1);
+    public static final int ETHERNET_IFC = (1 << 2);
+    public static final int ANY_IFC = (USB_IFC | BLUETOOTH_IFC | ETHERNET_IFC);
+
+
     @Override
     protected List<String> getFieldOrder() {
         return FIELDS;
@@ -64,7 +70,7 @@ public class DaqDeviceDescriptor extends Structure {
         int bnum = LibcbwJNA.cbGetBoardNumber(dis);
         if(bnum > -1) return constructor.apply(bnum);
         int err = LibcbwJNA.cbCreateDaqDevice(_next_id, dis);
-        if(err != LibcbwJNA.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
+        if(err != LibcbwException.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
         return constructor.apply(_next_id++);
     }
 
@@ -83,7 +89,7 @@ public class DaqDeviceDescriptor extends Structure {
             int bnum = LibcbwJNA.cbGetBoardNumber(dis);
             if(bnum > -1) return clazz.getDeclaredConstructor(int.class).newInstance(bnum);
             int err = LibcbwJNA.cbCreateDaqDevice(_next_id, dis);
-            if(err != LibcbwJNA.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
+            if(err != LibcbwException.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
             return clazz.getDeclaredConstructor(int.class).newInstance(_next_id++);
         } catch(InvocationTargetException ex) {
             Throwable ex1 = ex.getCause();
@@ -109,8 +115,8 @@ public class DaqDeviceDescriptor extends Structure {
     /**
      * Identify all valid devices currently connected.
      * 
-     * @param ifaceType - a constant from {@link LibcbwJNA.DaqDeviceInterface}
-     *                  indicating which type(s) of devices should be returned
+     * @param ifaceType - which type(s) of devices should be returned (one or more of {@link #USB_IFC},
+     *                    {@link #ETHERNET_IFC}, {@link #BLUETOOTH_IFC}, and {@link #ANY_IFC})
      * @param maxDev    - the maximum number of devices to return
      * @return an array containing descriptors of all valid devices currently
      *         connected.
@@ -121,7 +127,7 @@ public class DaqDeviceDescriptor extends Structure {
         DaqDeviceDescriptor[] buf = (DaqDeviceDescriptor[]) (new DaqDeviceDescriptor()).toArray(maxDev);
 
         int err = LibcbwJNA.cbGetDaqDeviceInventory(ifaceType, buf[0], nDev);
-        if(err != LibcbwJNA.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
+        if(err != LibcbwException.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
 
         DaqDeviceDescriptor[] ret = new DaqDeviceDescriptor[nDev.getValue()];
         System.arraycopy(buf, 0, ret, 0, nDev.getValue());
@@ -142,7 +148,7 @@ public class DaqDeviceDescriptor extends Structure {
         DaqDeviceDescriptor ret = new DaqDeviceDescriptor();
 
         int err = LibcbwJNA.cbGetNetDeviceDescriptor(host, port, ret, timeout);
-        if(err != LibcbwJNA.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
+        if(err != LibcbwException.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
 
         return ret;
     }

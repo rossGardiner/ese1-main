@@ -7,7 +7,6 @@ import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard.USB_1608FS;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ADCRange;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.DaqDeviceInterface;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.EventType;
 
 public class Test {
@@ -21,7 +20,7 @@ public class Test {
         try(Scanner scanner = new Scanner(System.in)) {
             DaqDeviceDescriptor dev;
             if(!LibcbwJNA.USE_INSTACAL) {
-                DaqDeviceDescriptor[] devs = DaqDeviceDescriptor.getDaqDeviceInventory(DaqDeviceInterface.USB_IFC, 16);
+                DaqDeviceDescriptor[] devs = DaqDeviceDescriptor.getDaqDeviceInventory(DaqDeviceDescriptor.USB_IFC, 16);
                 for(int i = 0; i < devs.length; i++) {
                     System.out.println("" + i + " : " + devs[i]);
                 }

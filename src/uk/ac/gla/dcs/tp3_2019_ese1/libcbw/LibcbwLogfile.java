@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 import com.sun.jna.ptr.IntByReference;
 
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ErrorCode;
+import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException.ErrorCode;
 
 /**
  * Frontend for the cbLogXXX() functions.

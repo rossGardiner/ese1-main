@@ -10,10 +10,10 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.ShortByReference;
 
+import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException.ErrorCode;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.CBWOptions;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ConfigInfo;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.DIOPortType;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ErrorCode;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.HGLOBAL;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.IOFunctions;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.JavaCallback;

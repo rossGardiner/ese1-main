@@ -10,8 +10,8 @@ import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.ShortByReference;
 
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard.USB_1608FS;
+import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException.ErrorCode;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ADCRange;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ErrorCode;
 
 /**
  * A way of reading a file that has been created with
@@ -77,13 +77,13 @@ public class LibcbwStreamFile {
 		if (err != ErrorCode.NOERRORS)
 			throw LibcbwException.fromErrorCode(err);
 
-		count = count_ref.getValue().intValue();
+		int actual_count = count_ref.getValue().intValue();
 
 		short[] raw = buffer.array();
-		int[][] ret = new int[_channel_count][count];
+		int[][] ret = new int[_channel_count][actual_count];
 
 		for (int chan = 0; chan < _channel_count; chan++) {
-			for (int sample = 0; sample < count; sample++) {
+			for (int sample = 0; sample < actual_count; sample++) {
 				ret[chan][sample] = raw[sample * _channel_count + chan];
 			}
 		}
