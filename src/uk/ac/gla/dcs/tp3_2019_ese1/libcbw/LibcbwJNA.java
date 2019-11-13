@@ -51,7 +51,7 @@ public class LibcbwJNA implements StdCallLibrary {
         public static final int STOPALL = 2;
     }
 
-    public static final boolean USE_INSTACAL = true;
+    public static final boolean USE_INSTACAL = false;
 
     static {
         Native.register(LibcbwJNA.JNA_LIBRARY_NAME);

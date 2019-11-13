@@ -13,10 +13,19 @@ import com.sun.jna.ptr.IntByReference;
  * @author Duncan Lowther (2402789L)
  */
 public class DaqDeviceDescriptor extends Structure {
-    public static class ByReference extends DaqDeviceDescriptor implements Structure.ByReference {
-    }
-
     public static class ByValue extends DaqDeviceDescriptor implements Structure.ByValue {
+        public ByValue() {
+            super();
+        }
+        public ByValue(DaqDeviceDescriptor ddd) {
+            System.arraycopy(ddd.ProductName, 0, ProductName, 0, 64);
+            ProductID = ddd.ProductID;
+            InterfaceType = ddd.InterfaceType;
+            System.arraycopy(ddd.DevString, 0, DevString, 0, 64);
+            System.arraycopy(ddd.UniqueID, 0, UniqueID, 0, 64);
+            NUID = ddd.NUID;
+            System.arraycopy(ddd.Reserved, 0, Reserved, 0, 512);
+        }
     }
 
     public static final List<String> FIELDS = createFieldsOrder("ProductName", "ProductID", "InterfaceType",
@@ -30,8 +39,8 @@ public class DaqDeviceDescriptor extends Structure {
     public long NUID;
     public byte[] Reserved = new byte[512];
 
-    private static int _next_id = 10;
-
+    private static int _next_id = 0x10;
+    
     /**
      * Functional interface to allow arbitrary subclasses of {@link LibcbwBoard} to
      * be instantiated by
@@ -66,7 +75,7 @@ public class DaqDeviceDescriptor extends Structure {
      */
     public <T extends LibcbwBoard> T createDaqDevice(BoardConstructor<T> constructor) throws LibcbwException {
         ByValue dis = (this instanceof ByValue) ? (ByValue) this
-                : Structure.newInstance(ByValue.class, this.getPointer());
+                 : new ByValue(this);
         int bnum = LibcbwJNA.cbGetBoardNumber(dis);
         if(bnum > -1) return constructor.apply(bnum);
         int err = LibcbwJNA.cbCreateDaqDevice(_next_id, dis);
@@ -85,7 +94,7 @@ public class DaqDeviceDescriptor extends Structure {
     public <T extends LibcbwBoard> T createDaqDevice(Class<T> clazz) throws LibcbwException {
         try {
             ByValue dis = (this instanceof ByValue) ? (ByValue) this
-                    : Structure.newInstance(ByValue.class, this.getPointer());
+                    : new ByValue(this);
             int bnum = LibcbwJNA.cbGetBoardNumber(dis);
             if(bnum > -1) return clazz.getDeclaredConstructor(int.class).newInstance(bnum);
             int err = LibcbwJNA.cbCreateDaqDevice(_next_id, dis);
