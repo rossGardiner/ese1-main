@@ -40,6 +40,10 @@ import java.awt.FlowLayout;
 import javax.swing.JRadioButton;
 import javax.swing.JToggleButton;
 import javax.swing.JMenu;
+import javax.swing.AbstractAction;
+import java.awt.event.ActionEvent;
+import javax.swing.Action;
+import java.awt.event.ActionListener;
 
 public class MainGUI {
 	private JFrame frame;
@@ -96,6 +100,7 @@ public class MainGUI {
 	private JTextField textField_48;
 	private JTextField textField_49;
 	private JTextField textField_50;
+	private final Action action = new SwingAction();
 
 	/**
 	 * Launch the application.
@@ -588,6 +593,10 @@ public class MainGUI {
 		mnFile.add(mntmSaveData);
 		
 		JMenuItem mntmLoadData = new JMenuItem("Load data");
+		mntmLoadData.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		mnFile.add(mntmLoadData);
 		
 		JMenuItem mntmPrintScreen = new JMenuItem("Print screen");
@@ -595,6 +604,14 @@ public class MainGUI {
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mnFile.add(mntmExit);
+		mntmExit.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+
+		});
 		
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);
@@ -943,4 +960,13 @@ public class MainGUI {
 		panel_11.add(label_1);
 	}
 
+	private class SwingAction extends AbstractAction {
+		public SwingAction() {
+			putValue(NAME, "");
+			putValue(SHORT_DESCRIPTION, "");
+		}
+		public void actionPerformed(ActionEvent e) {
+		}
+	}
+	
 }
