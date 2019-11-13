@@ -84,44 +84,6 @@ public class DaqDeviceDescriptor extends Structure {
     }
 
     /**
-     * Uses this descriptor to create a {@link LibcbwBoard} object that can then be
-     * used to perform various operations.
-     * 
-     * @param clazz - the desired subclass of {@link LibcbwBoard}
-     * @return the new {@link LibcbwBoard} object.
-     * @throws LibcbwException if an error occurs.
-     */
-    public <T extends LibcbwBoard> T createDaqDevice(Class<T> clazz) throws LibcbwException {
-        try {
-            ByValue dis = (this instanceof ByValue) ? (ByValue) this
-                    : new ByValue(this);
-            int bnum = LibcbwJNA.cbGetBoardNumber(dis);
-            if(bnum > -1) return clazz.getDeclaredConstructor(int.class).newInstance(bnum);
-            int err = LibcbwJNA.cbCreateDaqDevice(_next_id, dis);
-            if(err != LibcbwException.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
-            return clazz.getDeclaredConstructor(int.class).newInstance(_next_id++);
-        } catch(InvocationTargetException ex) {
-            Throwable ex1 = ex.getCause();
-            if(ex1 instanceof LibcbwException) throw (LibcbwException) ex1;
-            else if(ex1 instanceof RuntimeException) throw (RuntimeException) ex1;
-            else if(ex1 instanceof Error) throw (Error) ex1;
-            else {
-                /*
-                 * TODO Something bad happened -- Board constructors should not throw checked
-                 * exceptions other than LibcbwException
-                 */
-                throw new RuntimeException(ex);
-            }
-        } catch(IllegalAccessException | InstantiationException | NoSuchMethodException ex) {
-            /*
-             * TODO Something bad happened -- Board constructors should be instantiable,
-             * with a valid constructor accepting an int.
-             */
-            throw new RuntimeException(ex);
-        }
-    }
-
-    /**
      * Identify all valid devices currently connected.
      * 
      * @param ifaceType - which type(s) of devices should be returned (one or more of {@link #USB_IFC},

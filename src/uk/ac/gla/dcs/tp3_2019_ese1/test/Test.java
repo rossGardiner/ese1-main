@@ -30,7 +30,7 @@ public class Test {
                 dev = devs[scanner.nextInt()];
             }
             try(USB_1608FS board = LibcbwJNA.USE_INSTACAL ? new USB_1608FS(0)
-                    : dev.createDaqDevice(USB_1608FS.class/* ::new */)) {
+                    : dev.createDaqDevice(USB_1608FS::new)) {
                 board.digitalOut(MAGNET_OUT, true);
                 System.out.println("Holding...");
                 scanner.next();
