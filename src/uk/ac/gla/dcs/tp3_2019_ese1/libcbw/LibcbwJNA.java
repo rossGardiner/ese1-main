@@ -1721,6 +1721,11 @@ public class LibcbwJNA implements StdCallLibrary {
         void apply(int int1, int u1, int u2, Pointer voidPtr1);
     };
 
+    /**
+     * A functional interface defining a Java-friendly event callback.
+     * 
+     * @author Duncan Lowther (2402789L)
+     */
     @FunctionalInterface
     public interface JavaCallback {
         void apply(int boardNum, int evtType, int data);
