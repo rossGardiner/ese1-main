@@ -150,7 +150,9 @@ public class MainGUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1109, 802);
+		//frame.setBounds(100, 100, 1109, 802);
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+
 		
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
 		settingsPane.setToolTipText("SESTTING\r\n");
@@ -723,17 +725,6 @@ public class MainGUI {
 		gbl_panel_10.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_panel_10.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_10.setLayout(gbl_panel_10);
-		
-		
-		
-		//JTextPane txtpnAccelerationVsTime1 = new JTextPane();
-		//GridBagConstraints gbc_txtpnAccelerationVsTime1 = new GridBagConstraints();
-		//gbc_txtpnAccelerationVsTime1.fill = GridBagConstraints.BOTH;
-		//gbc_txtpnAccelerationVsTime1.insets = new Insets(0, 0, 0, 5);
-		//gbc_txtpnAccelerationVsTime1.gridx = 0;
-		//gbc_txtpnAccelerationVsTime1.gridy = 0;
-		//panel_10.add(txtpnAccelerationVsTime1, gbc_txtpnAccelerationVsTime1);
-		//txtpnAccelerationVsTime1.setText("Acceleration vs time graph for test 1");
 		
 		JTextArea txtrSecondGraphTest = new JTextArea();
 		GridBagConstraints gbc_txtrSecondGraphTest = new GridBagConstraints();
