@@ -703,9 +703,9 @@ public class MainGUI {
 		frame.getContentPane().add(dataViewPanel, BorderLayout.CENTER);
 		GridBagLayout gbl_dataViewPanel = new GridBagLayout();
 		gbl_dataViewPanel.columnWidths = new int[]{159, 157, 149, 75, 0};
-		gbl_dataViewPanel.rowHeights = new int[]{225, 224, 0, 230, 0};
+		gbl_dataViewPanel.rowHeights = new int[]{225, 0, 224, 0, 230, 0, 0};
 		gbl_dataViewPanel.columnWeights = new double[]{1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_dataViewPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
+		gbl_dataViewPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		dataViewPanel.setLayout(gbl_dataViewPanel);
 		
 		JPanel panel_10 = new JPanel();
@@ -800,8 +800,6 @@ public class MainGUI {
 		gbc_textField.gridy = 1;
 		panel_5.add(textField, gbc_textField);
 		textField.setColumns(10);
-		
-		JPanel panel_9 = new JPanel();
 		XYSeries series = new XYSeries("Series1");
 		for(int i = 0; i < 1000; i++) {
 			series.add(new XYDataItem(i, i*i));
@@ -809,8 +807,20 @@ public class MainGUI {
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
 		JFreeChart chart = ChartFactory.createXYLineChart("Acceleration Vs Time","Time","Acceleration", dataset);
-		ChartPanel chartPanel = new ChartPanel(chart);
-		chartPanel.addMouseListener(new MouseAdapter() {
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
+		gbc_tabbedPane.gridwidth = 4;
+		gbc_tabbedPane.insets = new Insets(0, 0, 5, 5);
+		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
+		gbc_tabbedPane.gridx = 0;
+		gbc_tabbedPane.gridy = 1;
+		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
+		
+		JPanel panel_9 = new JPanel();
+		tabbedPane.addTab("Acceleration Vs. Time", null, panel_9, null);
+		ChartPanel chartPanelAcceleration = new ChartPanel(chart);
+		chartPanelAcceleration.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount() == 2) {
@@ -819,42 +829,39 @@ public class MainGUI {
 				}
 			}
 		});
-		chartPanel.setDomainZoomable(true);
+		chartPanelAcceleration.setDomainZoomable(true);
 		panel_9.setLayout(new BorderLayout());
-		panel_9.add(chartPanel, BorderLayout.CENTER);
-		GridBagConstraints gbc_panel_9 = new GridBagConstraints();
-		gbc_panel_9.insets = new Insets(0, 0, 5, 5);
-		gbc_panel_9.fill = GridBagConstraints.BOTH;
-		gbc_panel_9.gridx = 0;
-		gbc_panel_9.gridy = 1;
-		dataViewPanel.add(panel_9, gbc_panel_9);
+		panel_9.add(chartPanelAcceleration, BorderLayout.CENTER);
 		
-		JTextArea txtrSecondGraphTest_1 = new JTextArea();
-		txtrSecondGraphTest_1.setText("Second graph test 2");
-		GridBagConstraints gbc_txtrSecondGraphTest_1 = new GridBagConstraints();
-		gbc_txtrSecondGraphTest_1.insets = new Insets(0, 0, 5, 5);
-		gbc_txtrSecondGraphTest_1.fill = GridBagConstraints.BOTH;
-		gbc_txtrSecondGraphTest_1.gridx = 1;
-		gbc_txtrSecondGraphTest_1.gridy = 1;
-		dataViewPanel.add(txtrSecondGraphTest_1, gbc_txtrSecondGraphTest_1);
+		JPanel panel_12 = new JPanel();
+		ChartPanel chartPanelGraph2 = new ChartPanel(chart);
+		chartPanelGraph2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new ChartViewerDialog(chart).setVisible(true);
+			}
+		});
+		chartPanelGraph2.setDomainZoomable(true);
+		panel_12.setLayout(new BorderLayout());
+		panel_12.add(chartPanelGraph2, BorderLayout.CENTER);
+		tabbedPane.addTab("Graph 2", null, panel_12, null);
 		
-		JTextArea txtrTestGraph = new JTextArea();
-		txtrTestGraph.setText("Test 2 graph 3");
-		GridBagConstraints gbc_txtrTestGraph = new GridBagConstraints();
-		gbc_txtrTestGraph.insets = new Insets(0, 0, 5, 5);
-		gbc_txtrTestGraph.fill = GridBagConstraints.BOTH;
-		gbc_txtrTestGraph.gridx = 2;
-		gbc_txtrTestGraph.gridy = 1;
-		dataViewPanel.add(txtrTestGraph, gbc_txtrTestGraph);
+		JPanel panel_13 = new JPanel();
+		ChartPanel chartPanelGraph3 = new ChartPanel(chart);
+		chartPanelGraph3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				new ChartViewerDialog(chart).setVisible(true);
+			}
+		});
+		chartPanelGraph3.setDomainZoomable(true);
+		panel_13.setLayout(new BorderLayout());
+		panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
+		tabbedPane.addTab("Graph 3", null, panel_13, null);
 		
 		JPanel panel_6 = new JPanel();
+		tabbedPane.addTab("Results", null, panel_6, null);
 		panel_6.setBorder(new TitledBorder(null, "JPanel title", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_panel_6 = new GridBagConstraints();
-		gbc_panel_6.fill = GridBagConstraints.BOTH;
-		gbc_panel_6.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_6.gridx = 3;
-		gbc_panel_6.gridy = 1;
-		dataViewPanel.add(panel_6, gbc_panel_6);
 		GridBagLayout gbl_panel_6 = new GridBagLayout();
 		gbl_panel_6.columnWidths = new int[]{75, 64, 0};
 		gbl_panel_6.rowHeights = new int[]{224, 0, 0};
@@ -898,10 +905,11 @@ public class MainGUI {
 		JPanel panel_7 = new JPanel();
 		panel_7.setBorder(new TitledBorder(null, "JPanel title", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_7 = new GridBagConstraints();
+		gbc_panel_7.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_7.fill = GridBagConstraints.BOTH;
 		gbc_panel_7.gridheight = 2;
 		gbc_panel_7.gridx = 3;
-		gbc_panel_7.gridy = 2;
+		gbc_panel_7.gridy = 3;
 		dataViewPanel.add(panel_7, gbc_panel_7);
 		GridBagLayout gbl_panel_7 = new GridBagLayout();
 		gbl_panel_7.columnWidths = new int[]{75, 64, 0};
@@ -948,27 +956,27 @@ public class MainGUI {
 		txtpnAcclerationVsTime.setText("Accleration vs time graph for test 3");
 		GridBagConstraints gbc_txtpnAcclerationVsTime = new GridBagConstraints();
 		gbc_txtpnAcclerationVsTime.fill = GridBagConstraints.BOTH;
-		gbc_txtpnAcclerationVsTime.insets = new Insets(0, 0, 0, 5);
+		gbc_txtpnAcclerationVsTime.insets = new Insets(0, 0, 5, 5);
 		gbc_txtpnAcclerationVsTime.gridx = 0;
-		gbc_txtpnAcclerationVsTime.gridy = 3;
+		gbc_txtpnAcclerationVsTime.gridy = 4;
 		dataViewPanel.add(txtpnAcclerationVsTime, gbc_txtpnAcclerationVsTime);
 		
 		JTextArea txtrTestGraph_1 = new JTextArea();
 		txtrTestGraph_1.setText("Test 3 graph 2");
 		GridBagConstraints gbc_txtrTestGraph_1 = new GridBagConstraints();
-		gbc_txtrTestGraph_1.insets = new Insets(0, 0, 0, 5);
+		gbc_txtrTestGraph_1.insets = new Insets(0, 0, 5, 5);
 		gbc_txtrTestGraph_1.fill = GridBagConstraints.BOTH;
 		gbc_txtrTestGraph_1.gridx = 1;
-		gbc_txtrTestGraph_1.gridy = 3;
+		gbc_txtrTestGraph_1.gridy = 4;
 		dataViewPanel.add(txtrTestGraph_1, gbc_txtrTestGraph_1);
 		
 		JTextArea txtrTestGraph_2 = new JTextArea();
 		txtrTestGraph_2.setText("Test 3 graph 3");
 		GridBagConstraints gbc_txtrTestGraph_2 = new GridBagConstraints();
-		gbc_txtrTestGraph_2.insets = new Insets(0, 0, 0, 5);
+		gbc_txtrTestGraph_2.insets = new Insets(0, 0, 5, 5);
 		gbc_txtrTestGraph_2.fill = GridBagConstraints.BOTH;
 		gbc_txtrTestGraph_2.gridx = 2;
-		gbc_txtrTestGraph_2.gridy = 3;
+		gbc_txtrTestGraph_2.gridy = 4;
 		dataViewPanel.add(txtrTestGraph_2, gbc_txtrTestGraph_2);
 		
 		JPanel averageResultsPanel = new JPanel();
