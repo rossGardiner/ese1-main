@@ -62,6 +62,8 @@ import javax.swing.Action;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainGUI {
 	private JFrame frame;
@@ -806,8 +808,17 @@ public class MainGUI {
 		}
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
-		JFreeChart chart = ChartFactory.createXYLineChart("test chart","","", dataset);
+		JFreeChart chart = ChartFactory.createXYLineChart("Acceleration Vs Time","Time","Acceleration", dataset);
 		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if(e.getClickCount() == 2) {
+					//new ChartViewer(chart).setVisible(true);
+					new ChartViewerDialog(chart).setVisible(true);
+				}
+			}
+		});
 		chartPanel.setDomainZoomable(true);
 		panel_9.setLayout(new BorderLayout());
 		panel_9.add(chartPanel, BorderLayout.CENTER);
@@ -998,5 +1009,6 @@ public class MainGUI {
 		public void actionPerformed(ActionEvent e) {
 		}
 	}
+
 	
 }
