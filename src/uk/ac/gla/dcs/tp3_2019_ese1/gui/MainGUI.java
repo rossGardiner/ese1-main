@@ -23,6 +23,8 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.GridLayout;
 import java.awt.Font;
+import java.awt.Graphics2D;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.BoxLayout;
@@ -32,6 +34,20 @@ import javax.swing.JLabel;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.border.TitledBorder;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.Plot;
+import org.jfree.chart.plot.PlotRenderingInfo;
+import org.jfree.chart.plot.PlotState;
+import org.jfree.data.xy.XYDataItem;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+//import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
+
 import javax.swing.JTextArea;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -44,6 +60,8 @@ import javax.swing.AbstractAction;
 import java.awt.event.ActionEvent;
 import javax.swing.Action;
 import java.awt.event.ActionListener;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
 public class MainGUI {
 	private JFrame frame;
@@ -684,7 +702,7 @@ public class MainGUI {
 		GridBagLayout gbl_dataViewPanel = new GridBagLayout();
 		gbl_dataViewPanel.columnWidths = new int[]{159, 157, 149, 75, 0};
 		gbl_dataViewPanel.rowHeights = new int[]{225, 224, 0, 230, 0};
-		gbl_dataViewPanel.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
+		gbl_dataViewPanel.columnWeights = new double[]{1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_dataViewPanel.rowWeights = new double[]{0.0, 1.0, 0.0, 1.0, Double.MIN_VALUE};
 		dataViewPanel.setLayout(gbl_dataViewPanel);
 		
@@ -704,14 +722,16 @@ public class MainGUI {
 		gbl_panel_10.rowWeights = new double[]{0.0, Double.MIN_VALUE};
 		panel_10.setLayout(gbl_panel_10);
 		
-		JTextPane txtpnAccelerationVsTime1 = new JTextPane();
-		GridBagConstraints gbc_txtpnAccelerationVsTime1 = new GridBagConstraints();
-		gbc_txtpnAccelerationVsTime1.fill = GridBagConstraints.BOTH;
-		gbc_txtpnAccelerationVsTime1.insets = new Insets(0, 0, 0, 5);
-		gbc_txtpnAccelerationVsTime1.gridx = 0;
-		gbc_txtpnAccelerationVsTime1.gridy = 0;
-		panel_10.add(txtpnAccelerationVsTime1, gbc_txtpnAccelerationVsTime1);
-		txtpnAccelerationVsTime1.setText("Acceleration vs time graph for test 1");
+		
+		
+		//JTextPane txtpnAccelerationVsTime1 = new JTextPane();
+		//GridBagConstraints gbc_txtpnAccelerationVsTime1 = new GridBagConstraints();
+		//gbc_txtpnAccelerationVsTime1.fill = GridBagConstraints.BOTH;
+		//gbc_txtpnAccelerationVsTime1.insets = new Insets(0, 0, 0, 5);
+		//gbc_txtpnAccelerationVsTime1.gridx = 0;
+		//gbc_txtpnAccelerationVsTime1.gridy = 0;
+		//panel_10.add(txtpnAccelerationVsTime1, gbc_txtpnAccelerationVsTime1);
+		//txtpnAccelerationVsTime1.setText("Acceleration vs time graph for test 1");
 		
 		JTextArea txtrSecondGraphTest = new JTextArea();
 		GridBagConstraints gbc_txtrSecondGraphTest = new GridBagConstraints();
@@ -779,14 +799,24 @@ public class MainGUI {
 		panel_5.add(textField, gbc_textField);
 		textField.setColumns(10);
 		
-		JTextPane txtpnAccelerationVsTime = new JTextPane();
-		txtpnAccelerationVsTime.setText("Acceleration vs time graph for test 2");
-		GridBagConstraints gbc_txtpnAccelerationVsTime = new GridBagConstraints();
-		gbc_txtpnAccelerationVsTime.fill = GridBagConstraints.BOTH;
-		gbc_txtpnAccelerationVsTime.insets = new Insets(0, 0, 5, 5);
-		gbc_txtpnAccelerationVsTime.gridx = 0;
-		gbc_txtpnAccelerationVsTime.gridy = 1;
-		dataViewPanel.add(txtpnAccelerationVsTime, gbc_txtpnAccelerationVsTime);
+		JPanel panel_9 = new JPanel();
+		XYSeries series = new XYSeries("Series1");
+		for(int i = 0; i < 1000; i++) {
+			series.add(new XYDataItem(i, i*i));
+		}
+		XYSeriesCollection dataset = new XYSeriesCollection();
+		dataset.addSeries(series);
+		JFreeChart chart = ChartFactory.createXYLineChart("test chart","","", dataset);
+		ChartPanel chartPanel = new ChartPanel(chart);
+		chartPanel.setDomainZoomable(true);
+		panel_9.setLayout(new BorderLayout());
+		panel_9.add(chartPanel, BorderLayout.CENTER);
+		GridBagConstraints gbc_panel_9 = new GridBagConstraints();
+		gbc_panel_9.insets = new Insets(0, 0, 5, 5);
+		gbc_panel_9.fill = GridBagConstraints.BOTH;
+		gbc_panel_9.gridx = 0;
+		gbc_panel_9.gridy = 1;
+		dataViewPanel.add(panel_9, gbc_panel_9);
 		
 		JTextArea txtrSecondGraphTest_1 = new JTextArea();
 		txtrSecondGraphTest_1.setText("Second graph test 2");
