@@ -18,6 +18,10 @@ import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import net.miginfocom.swing.MigLayout;
+import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
+import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
+import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
+
 import javax.swing.JTextField;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -34,6 +38,7 @@ import javax.swing.JLabel;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.synth.Region;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -121,6 +126,7 @@ public class MainGUI {
 	private JTextField textField_49;
 	private JTextField textField_50;
 	private final Action action = new SwingAction();
+	private LibcbwBoard.USB_1608FS board;
 
 	/**
 	 * Launch the application.
@@ -150,10 +156,18 @@ public class MainGUI {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		//frame.setBounds(100, 100, 1109, 802);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
-
-		
+		board = null;
+		try {
+			DaqDeviceDescriptor[] daqArray = DaqDeviceDescriptor.getDaqDeviceInventory(DaqDeviceDescriptor.USB_IFC, 5);
+			//routine to test devices for board
+			for(int i = 0; i< daqArray.length; i++) {
+				if(daqArray[i].ProductID == 125 || daqArray[i].ProductID == 234)  board = daqArray[i].createDaqDevice(LibcbwBoard.USB_1608FS::new);
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
 		settingsPane.setToolTipText("SESTTING\r\n");
 		frame.getContentPane().add(settingsPane, BorderLayout.EAST);
@@ -290,7 +304,6 @@ public class MainGUI {
 		
 		JCheckBox chckbxContinous = new JCheckBox("Continous");
 		panel_1.add(chckbxContinous, "cell 0 3");
-		
 		JCheckBox chckbxNoCalibration = new JCheckBox("No calibration");
 		panel_1.add(chckbxNoCalibration, "cell 0 4");
 		
@@ -564,6 +577,17 @@ public class MainGUI {
 		testLaunchPanel.setLayout(new MigLayout("", "[grow][]", "[][]"));
 		
 		JButton btnMagnetStatus_1 = new JButton("Magnet status");
+		btnMagnetStatus_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					board.digitalOut(0, true);
+				}
+				catch (LibcbwException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
 		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,growx");
 		
 		JButton btnRunTest_1 = new JButton("Run Test");
