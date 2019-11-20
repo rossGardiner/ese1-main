@@ -1,7 +1,25 @@
-image: blang/latex
+#image: blang/latex
+#build:
+#  script:
+#    - echo "passed"
+#  artifacts:
+#    paths:
+#      - "*.pdf"
+
+image: java:latest
+
+stages:
+  - build
+  - execute
+
 build:
-  script:
-    - echo "passed"
+  stage: build
+  script: ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI.java
   artifacts:
     paths:
-      - "*.pdf"
+     - MainGUI.*
+
+execute:
+  stage: execute
+  script: ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI
+
