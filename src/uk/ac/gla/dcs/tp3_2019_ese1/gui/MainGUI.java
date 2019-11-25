@@ -81,30 +81,10 @@ public class MainGUI {
 	private JTextField textField_7;
 	private JTextField textField_8;
 	private JTextField textField_9;
-	private JTextField textField_10;
-	private JTextField textField_11;
 	private JTextField textField_4;
 	private JTextField textField_5;
 	private JTextField textField_12;
 	private JTextField textField_13;
-	private JTextField textField_14;
-	private JTextField textField_15;
-	private JTextField textField_16;
-	private JTextField textField_17;
-	private JTextField textField_18;
-	private JTextField textField_19;
-	private JTextField textField_20;
-	private JTextField textField_21;
-	private JTextField textField_22;
-	private JTextField textField_23;
-	private JTextField textField_24;
-	private JTextField textField_25;
-	private JTextField textField_26;
-	private JTextField textField_27;
-	private JTextField textField_28;
-	private JTextField textField_29;
-	private JTextField textField_30;
-	private JTextField textField_31;
 	private JTextField textField_32;
 	private JTextField textField_33;
 	private JTextField textField_34;
@@ -127,6 +107,42 @@ public class MainGUI {
 	private JTextField textField_50;
 	private final Action action = new SwingAction();
 	private LibcbwBoard.USB_1608FS board;
+	private JTextField textField_10;
+	private JTextField textField_11;
+	private JTextField textField_14;
+	private JTextField textField_15;
+	private JTextField textField_16;
+	private JTextField textField_17;
+	private JTextField textField_18;
+	private JTextField textField_19;
+	private JTextField textField_20;
+	private JTextField textField_21;
+	private JTextField textField_22;
+	private JTextField textField_23;
+	private JTextField textField_24;
+	private JTextField textField_25;
+	private JTextField textField_26;
+	private JTextField textField_27;
+	private JTextField textField_28;
+	private JTextField textField_29;
+	private JTextField textField_30;
+	private JTextField textField_31;
+	private JTextField textField_51;
+	private JTextField textField_52;
+	private JTextField textField_53;
+	private JTextField textField_54;
+	private JTextField textField_55;
+	private JTextField textField_56;
+	private JTextField textField_57;
+	private JTextField textField_58;
+	private JTextField textField_59;
+	private JTextField textField_60;
+	private JTextField textField_61;
+	private JTextField textField_62;
+	private JTextField textField_63;
+	private JTextField textField_64;
+	private JTextField textField_65;
+	private JTextField textField_66;
 
 	/**
 	 * Launch the application.
@@ -372,8 +388,6 @@ public class MainGUI {
 		
 		JButton btnRestoreDefaults = new JButton("Restore Defaults");
 		setupTab.add(btnRestoreDefaults, "cell 0 7");
-		
-		JPanel lvdtTab = new JPanel();
 		settingsPane.addTab("Calibrate", null, calibrateTab, null);
 		calibrateTab.setLayout(new MigLayout("", "[][grow]", "[][][][][][]"));
 		
@@ -412,164 +426,10 @@ public class MainGUI {
 		calibrateTab.add(lblSaved, "cell 1 5");
 		
 		JPanel panel_4 = new JPanel();
-		settingsPane.addTab("LVDT", null, lvdtTab, null);
-		lvdtTab.setLayout(new MigLayout("", "[grow][grow][grow][grow][][grow]", "[][][][][][][][][][][][][][]"));
-		
-		JLabel lblLvdtCalibration = new JLabel("LVDT Calibration");
-		lvdtTab.add(lblLvdtCalibration, "cell 0 0");
-		
-		JLabel lblLvdt = new JLabel("LVDT1");
-		lvdtTab.add(lblLvdt, "cell 0 1");
-		
-		JLabel lblLvdt_1 = new JLabel("LVDT2");
-		lvdtTab.add(lblLvdt_1, "cell 2 1");
-		
-		JRadioButton radioButton = new JRadioButton("0.0");
-		lvdtTab.add(radioButton, "cell 0 2");
-		
-		textField_15 = new JTextField();
-		lvdtTab.add(textField_15, "cell 1 2,growx");
-		textField_15.setColumns(10);
-		
-		JRadioButton radioButton_8 = new JRadioButton("0.0");
-		lvdtTab.add(radioButton_8, "cell 2 2");
-		
-		textField_14 = new JTextField();
-		lvdtTab.add(textField_14, "cell 3 2,growx");
-		textField_14.setColumns(10);
-		
-		JRadioButton radioButton_1 = new JRadioButton("3.1");
-		lvdtTab.add(radioButton_1, "cell 0 3");
-		
-		textField_16 = new JTextField();
-		lvdtTab.add(textField_16, "cell 1 3,growx");
-		textField_16.setColumns(10);
-		
-		JRadioButton radioButton_9 = new JRadioButton("3.1");
-		lvdtTab.add(radioButton_9, "cell 2 3");
-		
-		textField_23 = new JTextField();
-		lvdtTab.add(textField_23, "cell 3 3,growx");
-		textField_23.setColumns(10);
-		
-		JRadioButton radioButton_2 = new JRadioButton("6.5");
-		lvdtTab.add(radioButton_2, "cell 0 4");
-		
-		textField_17 = new JTextField();
-		lvdtTab.add(textField_17, "cell 1 4,growx");
-		textField_17.setColumns(10);
-		
-		JRadioButton radioButton_10 = new JRadioButton("6.5");
-		lvdtTab.add(radioButton_10, "cell 2 4");
-		
-		textField_24 = new JTextField();
-		lvdtTab.add(textField_24, "cell 3 4,growx");
-		textField_24.setColumns(10);
-		
-		JRadioButton radioButton_3 = new JRadioButton("9.7");
-		lvdtTab.add(radioButton_3, "cell 0 5");
-		
-		textField_18 = new JTextField();
-		lvdtTab.add(textField_18, "cell 1 5,growx");
-		textField_18.setColumns(10);
-		
-		JRadioButton radioButton_11 = new JRadioButton("9.7");
-		lvdtTab.add(radioButton_11, "cell 2 5");
-		
-		textField_25 = new JTextField();
-		lvdtTab.add(textField_25, "cell 3 5,growx");
-		textField_25.setColumns(10);
-		
-		JRadioButton radioButton_4 = new JRadioButton("15.8");
-		lvdtTab.add(radioButton_4, "cell 0 6");
-		
-		textField_19 = new JTextField();
-		lvdtTab.add(textField_19, "cell 1 6,growx");
-		textField_19.setColumns(10);
-		
-		JRadioButton radioButton_12 = new JRadioButton("15.8");
-		lvdtTab.add(radioButton_12, "cell 2 6");
-		
-		textField_26 = new JTextField();
-		lvdtTab.add(textField_26, "cell 3 6,growx");
-		textField_26.setColumns(10);
-		
-		JRadioButton radioButton_5 = new JRadioButton("19.0");
-		lvdtTab.add(radioButton_5, "cell 0 7");
-		
-		textField_20 = new JTextField();
-		lvdtTab.add(textField_20, "cell 1 7,growx");
-		textField_20.setColumns(10);
-		
-		JRadioButton radioButton_13 = new JRadioButton("19.0");
-		lvdtTab.add(radioButton_13, "cell 2 7");
-		
-		textField_27 = new JTextField();
-		lvdtTab.add(textField_27, "cell 3 7,growx");
-		textField_27.setColumns(10);
-		
-		JRadioButton radioButton_6 = new JRadioButton("21.9");
-		lvdtTab.add(radioButton_6, "cell 0 8");
-		
-		textField_22 = new JTextField();
-		lvdtTab.add(textField_22, "cell 1 8,growx");
-		textField_22.setColumns(10);
-		
-		JRadioButton radioButton_14 = new JRadioButton("21.9");
-		lvdtTab.add(radioButton_14, "cell 2 8");
-		
-		textField_28 = new JTextField();
-		lvdtTab.add(textField_28, "cell 3 8,growx");
-		textField_28.setColumns(10);
-		
-		JRadioButton radioButton_7 = new JRadioButton("25.0");
-		lvdtTab.add(radioButton_7, "cell 0 9");
-		
-		textField_21 = new JTextField();
-		lvdtTab.add(textField_21, "cell 1 9,growx");
-		textField_21.setColumns(10);
-		
-		JRadioButton radioButton_15 = new JRadioButton("25.0");
-		lvdtTab.add(radioButton_15, "cell 2 9");
-		
-		textField_29 = new JTextField();
-		lvdtTab.add(textField_29, "cell 3 9,growx");
-		textField_29.setColumns(10);
-		
-		JButton btnRunCalibrate = new JButton("Run Calibrate");
-		lvdtTab.add(btnRunCalibrate, "cell 0 10");
-		
-		JButton btnValidate = new JButton("Validate");
-		lvdtTab.add(btnValidate, "cell 2 10");
-		
-		textField_30 = new JTextField();
-		lvdtTab.add(textField_30, "cell 0 11,growx");
-		textField_30.setColumns(10);
-		
-		textField_31 = new JTextField();
-		lvdtTab.add(textField_31, "cell 2 11,growx");
-		textField_31.setColumns(10);
-		
-		JButton btnSaveSettings_1 = new JButton("Save settings");
-		lvdtTab.add(btnSaveSettings_1, "cell 2 13");
 		
 		JPanel launchControlPanel = new JPanel();
 		frame.getContentPane().add(launchControlPanel, BorderLayout.WEST);
 		launchControlPanel.setLayout(new GridLayout(4, 0, 0, 0));
-		
-		JPanel selectTestPanel = new JPanel();
-		launchControlPanel.add(selectTestPanel);
-		selectTestPanel.setBorder(new TitledBorder(null, "Select test", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		selectTestPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
-		
-		JButton btnAaa = new JButton("AAA");
-		selectTestPanel.add(btnAaa, "cell 0 0,growx");
-		
-		JButton btnForceRed = new JButton("Force Red");
-		selectTestPanel.add(btnForceRed, "cell 0 1,growx");
-		
-		JButton btnDisplacement = new JButton("Displacement");
-		selectTestPanel.add(btnDisplacement, "cell 0 2,growx");
 		
 		JPanel testLaunchPanel = new JPanel();
 		launchControlPanel.add(testLaunchPanel);
@@ -623,9 +483,6 @@ public class MainGUI {
 		JButton btnReset_1 = new JButton("Reset");
 		panel_8.add(btnReset_1, "cell 1 3");
 		
-		JCheckBox chckbxSaveFile = new JCheckBox("Save file");
-		timerPanel.add(chckbxSaveFile, "cell 0 1");
-		
 		JButton btnSaveFile = new JButton("Save file");
 		timerPanel.add(btnSaveFile, "cell 0 2");
 		
@@ -644,9 +501,6 @@ public class MainGUI {
 			}
 		});
 		mnFile.add(mntmLoadData);
-		
-		JMenuItem mntmPrintScreen = new JMenuItem("Print screen");
-		mnFile.add(mntmPrintScreen);
 		
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mnFile.add(mntmExit);
@@ -718,9 +572,6 @@ public class MainGUI {
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
-		
-		JMenuItem mntmLicenceRegistration = new JMenuItem("Licence registration");
-		mnHelp.add(mntmLicenceRegistration);
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
@@ -996,32 +847,190 @@ public class MainGUI {
 		
 		JPanel averageResultsPanel = new JPanel();
 		frame.getContentPane().add(averageResultsPanel, BorderLayout.SOUTH);
-		averageResultsPanel.setLayout(new MigLayout("", "[77px]", "[14px]"));
+		averageResultsPanel.setLayout(new MigLayout("", "[77px][grow][grow][grow][grow]", "[][][14px][][][][][][][]"));
 		
-		JPanel panel_11 = new JPanel();
-		panel_11.setBorder(new TitledBorder(null, "Results (3 test average)", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		averageResultsPanel.add(panel_11, "cell 0 0,grow");
-		panel_11.setLayout(new GridLayout(0, 3, 0, 0));
+		JLabel lblTest = new JLabel("Test 1");
+		averageResultsPanel.add(lblTest, "cell 1 0");
 		
-		JLabel lblFmaxaverage = new JLabel("Fmax (average)");
-		panel_11.add(lblFmaxaverage);
+		JLabel lblTest_1 = new JLabel("Test 2");
+		averageResultsPanel.add(lblTest_1, "cell 2 0");
+		
+		JLabel lblTest_2 = new JLabel("Test 3");
+		averageResultsPanel.add(lblTest_2, "cell 3 0");
+		
+		JLabel lblAvgTests = new JLabel("Avg tests 2&3");
+		averageResultsPanel.add(lblAvgTests, "cell 4 0");
+		
+		JLabel lblPeakG = new JLabel("Peak G");
+		averageResultsPanel.add(lblPeakG, "cell 0 1,alignx trailing");
 		
 		textField_10 = new JTextField();
-		panel_11.add(textField_10);
+		averageResultsPanel.add(textField_10, "cell 1 1,growx");
 		textField_10.setColumns(10);
 		
-		JLabel label = new JLabel("");
-		panel_11.add(label);
-		
-		JLabel lblForceReductionaverage = new JLabel("Force reduction (average)");
-		panel_11.add(lblForceReductionaverage);
-		
 		textField_11 = new JTextField();
-		panel_11.add(textField_11);
+		averageResultsPanel.add(textField_11, "cell 2 1,growx");
 		textField_11.setColumns(10);
 		
-		JLabel label_1 = new JLabel("");
-		panel_11.add(label_1);
+		textField_14 = new JTextField();
+		averageResultsPanel.add(textField_14, "cell 3 1,growx");
+		textField_14.setColumns(10);
+		
+		textField_15 = new JTextField();
+		averageResultsPanel.add(textField_15, "cell 4 1,growx");
+		textField_15.setColumns(10);
+		
+		JLabel lblFmax_3 = new JLabel("Fmax");
+		averageResultsPanel.add(lblFmax_3, "flowy,cell 0 2,alignx trailing");
+		
+		textField_55 = new JTextField();
+		averageResultsPanel.add(textField_55, "cell 1 2,growx");
+		textField_55.setColumns(10);
+		
+		textField_56 = new JTextField();
+		averageResultsPanel.add(textField_56, "cell 2 2,growx");
+		textField_56.setColumns(10);
+		
+		textField_57 = new JTextField();
+		averageResultsPanel.add(textField_57, "cell 3 2,growx");
+		textField_57.setColumns(10);
+		
+		textField_58 = new JTextField();
+		averageResultsPanel.add(textField_58, "cell 4 2,growx");
+		textField_58.setColumns(10);
+		
+		JLabel lblVelocitymmsec = new JLabel("Velocity 1 (mm/sec)");
+		averageResultsPanel.add(lblVelocitymmsec, "cell 0 3,alignx trailing");
+		
+		textField_59 = new JTextField();
+		averageResultsPanel.add(textField_59, "cell 1 3,growx");
+		textField_59.setColumns(10);
+		
+		textField_60 = new JTextField();
+		averageResultsPanel.add(textField_60, "cell 2 3,growx");
+		textField_60.setColumns(10);
+		
+		textField_61 = new JTextField();
+		averageResultsPanel.add(textField_61, "cell 3 3,growx");
+		textField_61.setColumns(10);
+		
+		textField_62 = new JTextField();
+		averageResultsPanel.add(textField_62, "cell 4 3,growx");
+		textField_62.setColumns(10);
+		
+		JLabel lblVelocitymmsec_1 = new JLabel("Velocity2 (mm/sec)");
+		averageResultsPanel.add(lblVelocitymmsec_1, "cell 0 4,alignx trailing");
+		
+		textField_63 = new JTextField();
+		averageResultsPanel.add(textField_63, "cell 1 4,growx");
+		textField_63.setColumns(10);
+		
+		textField_64 = new JTextField();
+		averageResultsPanel.add(textField_64, "cell 2 4,growx");
+		textField_64.setColumns(10);
+		
+		textField_65 = new JTextField();
+		averageResultsPanel.add(textField_65, "cell 3 4,growx");
+		textField_65.setColumns(10);
+		
+		textField_66 = new JTextField();
+		averageResultsPanel.add(textField_66, "cell 4 4,growx");
+		textField_66.setColumns(10);
+		
+		JLabel lblDropHt = new JLabel("Drop HT");
+		averageResultsPanel.add(lblDropHt, "cell 0 5,alignx trailing");
+		
+		textField_16 = new JTextField();
+		averageResultsPanel.add(textField_16, "cell 1 5,growx");
+		textField_16.setColumns(10);
+		
+		textField_17 = new JTextField();
+		averageResultsPanel.add(textField_17, "cell 2 5,growx");
+		textField_17.setColumns(10);
+		
+		textField_18 = new JTextField();
+		averageResultsPanel.add(textField_18, "cell 3 5,growx");
+		textField_18.setColumns(10);
+		
+		textField_19 = new JTextField();
+		averageResultsPanel.add(textField_19, "cell 4 5,growx");
+		textField_19.setColumns(10);
+		
+		JLabel lblSpringDeformation = new JLabel("Spring deformation");
+		averageResultsPanel.add(lblSpringDeformation, "cell 0 6,alignx trailing");
+		
+		textField_20 = new JTextField();
+		averageResultsPanel.add(textField_20, "cell 1 6,growx");
+		textField_20.setColumns(10);
+		
+		textField_21 = new JTextField();
+		averageResultsPanel.add(textField_21, "cell 2 6,growx");
+		textField_21.setColumns(10);
+		
+		textField_22 = new JTextField();
+		averageResultsPanel.add(textField_22, "cell 3 6,growx");
+		textField_22.setColumns(10);
+		
+		textField_23 = new JTextField();
+		averageResultsPanel.add(textField_23, "cell 4 6,growx");
+		textField_23.setColumns(10);
+		
+		JLabel lblForceReduction_3 = new JLabel("Force reduction");
+		averageResultsPanel.add(lblForceReduction_3, "cell 0 7,alignx trailing");
+		
+		textField_24 = new JTextField();
+		averageResultsPanel.add(textField_24, "cell 1 7,growx");
+		textField_24.setColumns(10);
+		
+		textField_25 = new JTextField();
+		averageResultsPanel.add(textField_25, "cell 2 7,growx");
+		textField_25.setColumns(10);
+		
+		textField_26 = new JTextField();
+		averageResultsPanel.add(textField_26, "cell 3 7,growx");
+		textField_26.setColumns(10);
+		
+		textField_27 = new JTextField();
+		averageResultsPanel.add(textField_27, "cell 4 7,growx");
+		textField_27.setColumns(10);
+		
+		JLabel lblVerticalDeformation = new JLabel("Vertical deformation");
+		averageResultsPanel.add(lblVerticalDeformation, "cell 0 8,alignx trailing");
+		
+		textField_28 = new JTextField();
+		averageResultsPanel.add(textField_28, "cell 1 8,growx");
+		textField_28.setColumns(10);
+		
+		textField_29 = new JTextField();
+		averageResultsPanel.add(textField_29, "cell 2 8,growx");
+		textField_29.setColumns(10);
+		
+		textField_30 = new JTextField();
+		averageResultsPanel.add(textField_30, "cell 3 8,growx");
+		textField_30.setColumns(10);
+		
+		textField_31 = new JTextField();
+		averageResultsPanel.add(textField_31, "cell 4 8,growx");
+		textField_31.setColumns(10);
+		
+		JLabel lblEnergyRestitution = new JLabel("Energy restitution");
+		averageResultsPanel.add(lblEnergyRestitution, "cell 0 9,alignx trailing");
+		
+		textField_51 = new JTextField();
+		averageResultsPanel.add(textField_51, "cell 1 9,growx");
+		textField_51.setColumns(10);
+		
+		textField_52 = new JTextField();
+		averageResultsPanel.add(textField_52, "cell 2 9,growx");
+		textField_52.setColumns(10);
+		
+		textField_53 = new JTextField();
+		averageResultsPanel.add(textField_53, "cell 3 9,growx");
+		textField_53.setColumns(10);
+		
+		textField_54 = new JTextField();
+		averageResultsPanel.add(textField_54, "cell 4 9,growx");
+		textField_54.setColumns(10);
 	}
 
 	private class SwingAction extends AbstractAction {
