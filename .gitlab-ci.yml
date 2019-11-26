@@ -12,11 +12,14 @@ stages:
   - test
 
 build:
-  stage: build
-  script: 
+    stage: build
+    script: 
         - echo "Building"
         - mkdir build
         - touch build/info.txt
+    artifacts:
+        paths:
+            -build/
 #ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI.java
 #artifacts:
 # paths:
