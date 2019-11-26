@@ -19,7 +19,7 @@ build:
         - touch build/info.txt
     artifacts:
         paths:
-            -build/
+            - build/
 #ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI.java
 #artifacts:
 # paths:
