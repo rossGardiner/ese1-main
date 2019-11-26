@@ -5,21 +5,27 @@
 #  artifacts:
 #    paths:
 #      - "*.pdf"
-
-image: java:latest
+      
 
 stages:
   - build
-  - execute
+  - test
 
 build:
   stage: build
-  script: ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI.java
-  artifacts:
-    paths:
-     - MainGUI.*
+  script: 
+        - echo "Building"
+        - mkdir build
+        - touch build/info.txt
+#ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI.java
+#artifacts:
+# paths:
+# - MainGUI.*
 
-execute:
-  stage: execute
-  script: ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI
+test:
+  stage: test
+  script: 
+        - echo "Testing"
+        - test -f "build.info.txt"
+ #ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI
 
