@@ -82,9 +82,6 @@ public class MainGUI {
 	private JTextField textField_5;
 	private JTextField textField_12;
 	private JTextField textField_13;
-	private JTextField textField_32;
-	private JTextField textField_33;
-	private JTextField textField_34;
 	private JTextField textField_35;
 	private JTextField textField_36;
 	private JTextField textField_37;
@@ -95,9 +92,6 @@ public class MainGUI {
 	private JTextField textField_42;
 	private JTextField textField_43;
 	private JTextField textField_44;
-	private JTextField textField_45;
-	private JTextField txtPeak;
-	private JTextField textField_46;
 	private JTextField textField_47;
 	private JTextField textField_48;
 	private JTextField textField_49;
@@ -194,27 +188,6 @@ public class MainGUI {
 		settingsPane.addTab("Setup", null, setupTab, null);
 		setupTab.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][][][][][][][]"));
 		
-		JLabel lblStartChan = new JLabel("Start chan");
-		setupTab.add(lblStartChan, "cell 0 0");
-		
-		JLabel lblStopChan = new JLabel("Stop chan");
-		setupTab.add(lblStopChan, "cell 1 0");
-		
-		JLabel lblFrequency = new JLabel("Frequency");
-		setupTab.add(lblFrequency, "cell 2 0");
-		
-		textField_32 = new JTextField();
-		setupTab.add(textField_32, "cell 0 1,growx");
-		textField_32.setColumns(10);
-		
-		textField_33 = new JTextField();
-		setupTab.add(textField_33, "cell 1 1,growx");
-		textField_33.setColumns(10);
-		
-		textField_34 = new JTextField();
-		setupTab.add(textField_34, "cell 2 1,growx");
-		textField_34.setColumns(10);
-		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "Set gain", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setupTab.add(panel, "cell 0 2 2 2,grow");
@@ -299,55 +272,8 @@ public class MainGUI {
 		JLabel lblFilter = new JLabel("Filter");
 		setupTab.add(lblFilter, "cell 0 4");
 		
-		JToggleButton tglbtnYes = new JToggleButton("Yes");
-		setupTab.add(tglbtnYes, "cell 1 4");
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Sampling", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		setupTab.add(panel_1, "cell 2 4,grow");
-		panel_1.setLayout(new MigLayout("", "[grow]", "[][][][][][][]"));
-		
-		JLabel lblMethod = new JLabel("Method");
-		panel_1.add(lblMethod, "cell 0 0,alignx trailing");
-		
-		textField_45 = new JTextField();
-		panel_1.add(textField_45, "cell 0 1,growx");
-		textField_45.setColumns(10);
-		
-		JCheckBox chckbxBackground = new JCheckBox("Background");
-		panel_1.add(chckbxBackground, "cell 0 2");
-		
-		JCheckBox chckbxContinous = new JCheckBox("Continous");
-		panel_1.add(chckbxContinous, "cell 0 3");
-		JCheckBox chckbxNoCalibration = new JCheckBox("No calibration");
-		panel_1.add(chckbxNoCalibration, "cell 0 4");
-		
-		JCheckBox chckbxExtTrigger = new JCheckBox("Ext Trigger");
-		panel_1.add(chckbxExtTrigger, "cell 0 5");
-		
-		JCheckBox chckbxExtClock = new JCheckBox("Ext Clock");
-		panel_1.add(chckbxExtClock, "cell 0 6");
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(null, "Graph setup", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		setupTab.add(panel_2, "cell 0 5 2 1,grow");
-		panel_2.setLayout(new MigLayout("", "[grow][grow]", "[][]"));
-		
-		JLabel lblMethod_1 = new JLabel("Method");
-		panel_2.add(lblMethod_1, "cell 0 0,alignx trailing");
-		
-		txtPeak = new JTextField();
-		panel_2.add(txtPeak, "cell 1 0,growx");
-		txtPeak.setText("Peak");
-		txtPeak.setColumns(10);
-		
-		JLabel lblCount = new JLabel("Count");
-		panel_2.add(lblCount, "cell 0 1,alignx trailing");
-		
-		textField_46 = new JTextField();
-		panel_2.add(textField_46, "cell 1 1,growx");
-		textField_46.setText("12");
-		textField_46.setColumns(10);
+		JToggleButton tglbtnYesno = new JToggleButton("Yes/No");
+		setupTab.add(tglbtnYesno, "cell 1 4");
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(null, "Trigger", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -384,9 +310,6 @@ public class MainGUI {
 		
 		JButton btnSaveSetup = new JButton("Save Setup");
 		setupTab.add(btnSaveSetup, "cell 1 6");
-		
-		JButton btnRestoreDefaults = new JButton("Restore Defaults");
-		setupTab.add(btnRestoreDefaults, "cell 0 7");
 		settingsPane.addTab("Calibrate", null, calibrateTab, null);
 		calibrateTab.setLayout(new MigLayout("", "[][grow]", "[][][][][][]"));
 		
