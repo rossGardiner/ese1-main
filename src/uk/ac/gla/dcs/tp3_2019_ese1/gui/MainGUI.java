@@ -33,6 +33,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import java.awt.Component;
@@ -591,6 +592,30 @@ public class MainGUI {
 		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,growx");
 		
 		JButton btnRunTest_1 = new JButton("Run Test");
+		
+		/*
+		 *  Pausing the Button For 2 seconds to avoid 
+		 *  repeating too many tests
+		 */
+		int delay = 2000;
+		Timer timer = new Timer(delay, new ActionListener() {
+		    public void actionPerformed(ActionEvent evt) {
+		        btnRunTest_1.setEnabled(true);
+		    }
+		});
+		timer.setRepeats(false);
+		
+		btnRunTest_1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				JButton button = (JButton)(ae.getSource());
+				button.setEnabled(false);
+				System.out.printf("Wait a second");
+				timer.start();
+			}
+		});
+
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,grow");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
