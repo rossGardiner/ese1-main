@@ -11,6 +11,9 @@ stages:
   - build
   - test
 
+preprocessing:
+  - apt install default-jdk
+
 build:
     stage: build
     script: 
