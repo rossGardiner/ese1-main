@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import net.miginfocom.swing.MigLayout;
-import sun.security.provider.CtrDrbg;
+//import sun.security.provider.CtrDrbg;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
@@ -35,6 +35,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.JTextPane;
 import javax.swing.JLabel;
 import java.awt.Component;
@@ -599,28 +600,7 @@ public class MainGUI {
 		
 		JButton btnRunTest_1 = new JButton("Run Test");
 		
-		/*
-		 *  Pausing the Button For 2 seconds to avoid 
-		 *  repeating too many tests
-		 */
-		int delay = 2000;
-		Timer timer = new Timer(delay, new ActionListener() {
-		    public void actionPerformed(ActionEvent evt) {
-		        btnRunTest_1.setEnabled(true);
-		    }
-		});
-		timer.setRepeats(false);
-		
-		btnRunTest_1.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent ae) {
-				JButton button = (JButton)(ae.getSource());
-				button.setEnabled(false);
-				System.out.printf("Wait a second");
-				timer.start();
-			}
-		});
+
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,grow");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
@@ -649,6 +629,29 @@ public class MainGUI {
 		
 		JButton btnStart_1 = new JButton("Start");
 		panel_8.add(btnStart_1, "cell 0 3");
+		/*
+		 *  Pausing the Button For 2 seconds to avoid 
+		 *  repeating too many tests
+		 */
+		int delay = 2000;
+		Timer timer = new Timer(delay, new ActionListener() {
+		    public void actionPerformed(ActionEvent evt) {
+		    	btnStart_1.setEnabled(true);
+		    }
+		});
+		timer.setRepeats(false);
+		
+		btnStart_1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				JButton button = (JButton)(ae.getSource());
+				button.setEnabled(false);
+				System.out.printf("Wait a second");
+				timer.start();
+			}
+		});
+		
 		
 		JButton btnReset_1 = new JButton("Reset");
 		panel_8.add(btnReset_1, "cell 1 3");

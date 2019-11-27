@@ -1,7 +1,35 @@
-image: blang/latex
+#image: blang/latex
+#build:
+#  script:
+#    - echo "passed"
+#  artifacts:
+#    paths:
+#      - "*.pdf"
+      
+
+stages:
+  - build
+  - test
+
 build:
-  script:
-    - echo "passed"
-  artifacts:
-    paths:
-      - "*.pdf"
+    stage: build
+    script: 
+        - echo "Building"
+    #    - mkdir build
+    #    - touch build/info.txt
+ #   artifacts:
+ #       paths:
+ #           - build/
+#ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI.java
+#artifacts:
+# paths:
+# - MainGUI.*
+
+test:
+  stage: test
+  script: 
+        - echo "Testing"
+        - echo "Passed"
+    #    - test -f "build.info.txt"
+ #ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI
+
