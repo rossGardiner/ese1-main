@@ -5,16 +5,14 @@
 #  artifacts:
 #    paths:
 #      - "*.pdf"
-      
+image: java:latest
 
-
-before_script:
-  - apt install default-jdk
 
 build:
     stage: build
     script: 
         - echo "Building"
+        - java -version
         - javac -cp "lib/*" src/*/*.java
     #    - mkdir build
     #    - touch build/info.txt
