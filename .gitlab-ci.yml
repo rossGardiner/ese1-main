@@ -1,34 +1,15 @@
-#image: blang/latex
-#build:
-#  script:
-#    - echo "passed"
-#  artifacts:
-#    paths:
-#      - "*.pdf"
-      
-
-stages:
-  - build
-  - test
+image: java:latest
 
 build:
     stage: build
     script: 
         - echo "Building"
-        - mkdir build
-        - touch build/info.txt
-    artifacts:
-        paths:
-            - build/
-#ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI.java
-#artifacts:
-# paths:
-# - MainGUI.*
+        - java -version
+        - javac -cp "lib/*" src/uk/ac/gla/dcs/tp3_2019_ese1/*/*.java
 
 test:
   stage: test
   script: 
         - echo "Testing"
-        - test -f "build.info.txt"
- #ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI
+#       - java src/uk/ac/gla/dcs/tp3_2019_ese1/test/Test 
 
