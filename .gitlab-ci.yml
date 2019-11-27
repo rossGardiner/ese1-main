@@ -15,6 +15,7 @@ build:
     stage: build
     script: 
         - echo "Building"
+        - javac -cp "src/lib/*" src/*/*.java
     #    - mkdir build
     #    - touch build/info.txt
  #   artifacts:
