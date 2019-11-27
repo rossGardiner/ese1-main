@@ -78,11 +78,8 @@ public class MainGUI {
 	private final JPanel timerPanel = new JPanel();
 	private JTextField textField_2;
 	private JTextField textField_3;
-<<<<<<< HEAD
 	private JTextField textField_10;
 	private JTextField textField_11;
-=======
->>>>>>> dev
 	private JTextField textField_4;
 	private JTextField textField_5;
 	private JTextField textField_12;
@@ -103,8 +100,6 @@ public class MainGUI {
 	private JTextField textField_50;
 	private final Action action = new SwingAction();
 	private LibcbwBoard.USB_1608FS board;
-	private JTextField textField_10;
-	private JTextField textField_11;
 	private JTextField textField_14;
 	private JTextField textField_15;
 	private JTextField textField_16;
@@ -123,31 +118,13 @@ public class MainGUI {
 	private JTextField textField_29;
 	private JTextField textField_30;
 	private JTextField textField_31;
-<<<<<<< HEAD
 	private JTextField textField_32;
 	private JTextField textField_33;
 	private JTextField textField_34;
-	private JTextField textField_35;
-	private JTextField textField_36;
-	private JTextField textField_37;
-	private JTextField textField_38;
-	private JTextField textField_39;
-	private JTextField textField_40;
-	private JTextField textField_41;
-	private JTextField textField_42;
-	private JTextField textField_43;
-	private JTextField textField_44;
 	private JTextField textField_45;
 	private JTextField txtPeak;
 	private JTextField textField_46;
-	private JTextField textField_47;
-	private JTextField textField_48;
-	private JTextField textField_49;
-	private JTextField textField_50;
-	private final Action action = new SwingAction();
-	private LibcbwBoard.USB_1608FS board;
 	private JPanel panel_graph3;
-=======
 	private JTextField textField_51;
 	private JTextField textField_52;
 	private JTextField textField_53;
@@ -164,7 +141,7 @@ public class MainGUI {
 	private JTextField textField_64;
 	private JTextField textField_65;
 	private JTextField textField_66;
->>>>>>> dev
+
 
 	/**
 	 * Launch the application.
@@ -585,8 +562,7 @@ public class MainGUI {
 		resultsPane.add(textField_23, "cell 4 6,growx");
 		textField_23.setColumns(10);
 		
-<<<<<<< HEAD
-		JButton btnRunTest_1 = new JButton("Run Test");
+		btnRunTest_1 = new JButton("Run Test");
 		btnRunTest_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -596,11 +572,11 @@ public class MainGUI {
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
 		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
-=======
+
 		JLabel lblForceReduction_3 = new JLabel("Force reduction");
 		resultsPane.add(lblForceReduction_3, "cell 0 7,alignx trailing");
 		lblForceReduction_3.setFont(new Font("SansSerif", Font.BOLD, 12));
->>>>>>> dev
+
 		
 		textField_24 = new JTextField();
 		resultsPane.add(textField_24, "cell 1 7,growx");
@@ -702,12 +678,6 @@ public class MainGUI {
 		gbl_dataViewPanel.columnWeights = new double[]{1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_dataViewPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		dataViewPanel.setLayout(gbl_dataViewPanel);
-<<<<<<< HEAD
-		XYSeries series = new XYSeries("Test 1");
-		XYSeries series2 = new XYSeries("Test 2");
-		XYSeries series3 = new XYSeries("Test 3");
-=======
-		
 		JPanel panel_10 = new JPanel();
 		panel_10.setBorder(new TitledBorder(null, "Current test", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		GridBagConstraints gbc_panel_10 = new GridBagConstraints();
@@ -742,7 +712,9 @@ public class MainGUI {
 		panel_10.add(txtrThirdGraphTest, gbc_txtrThirdGraphTest);
 		txtrThirdGraphTest.setText("Third graph test 1");
 		XYSeries series = new XYSeries("Series1");
->>>>>>> dev
+		XYSeries series2  = new XYSeries("Series2");
+		XYSeries series3 = new XYSeries("Series3");
+
 		for(int i = 0; i < 1000; i++) {
 			series.add(new XYDataItem(i, i));
 			series2.add(new XYDataItem(i, 1000-i));
@@ -803,7 +775,7 @@ public class MainGUI {
 			}
 		});
 		chartPanelGraph3.setDomainZoomable(true);
-<<<<<<< HEAD
+
 		panel_graph3.setLayout(new BorderLayout());
 		panel_graph3.add(chartPanelGraph3, BorderLayout.CENTER);
 		tabbedPane.addTab("Graph 3", null, panel_graph3, null);
@@ -836,11 +808,9 @@ public class MainGUI {
 		
 		JLabel label_1 = new JLabel("");
 		panel_11.add(label_1);
-=======
-		panel_13.setLayout(new BorderLayout());
-		panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
-		tabbedPane.addTab("Graph 3", null, panel_13, null);
->>>>>>> dev
+		//panel_13.setLayout(new BorderLayout());
+		//panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
+		//tabbedPane.addTab("Graph 3", null, panel_13, null);
 	}
 
 	private class SwingAction extends AbstractAction {
