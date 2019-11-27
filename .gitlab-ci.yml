@@ -7,13 +7,8 @@
 #      - "*.pdf"
       
 
-stages:
-  - build
-  - test
 
-preprocessing:
-  stage: preprocessing
-  script:
+before_script:
   - apt install default-jdk
 
 build:
