@@ -8,13 +8,13 @@
       
 
 stages:
-  - build
+  #- build
   - test
 
-build:
-  stage: build
-  script: 
-        - echo "Building"
+#build:
+#  stage: build
+#  script: 
+#        - echo "Building"
     #    - mkdir build
      #   - touch build/info.txt
 #ese1-main/src/uk/ac/gla/dcs/tp3_2019_ese1/gui/MainGUI.java
