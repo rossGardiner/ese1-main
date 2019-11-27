@@ -13,7 +13,7 @@ build:
     script: 
         - echo "Building"
         - java -version
-        - javac -cp "lib/*" src/*/*.java
+        - javac -cp "lib/*" src\uk\ac\gla\dcs\tp3_2019_ese1\*\*.java
     #    - mkdir build
     #    - touch build/info.txt
  #   artifacts:
