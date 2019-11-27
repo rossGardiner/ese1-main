@@ -10,7 +10,8 @@ package uk.ac.gla.dcs.tp3_2019_ese1.gui;
  
 
 import java.awt.EventQueue;
-
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
@@ -18,6 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import net.miginfocom.swing.MigLayout;
+import sun.security.provider.CtrDrbg;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
@@ -31,6 +33,7 @@ import java.awt.Graphics2D;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
 import javax.swing.JTextPane;
@@ -40,6 +43,7 @@ import javax.swing.Box;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.synth.Region;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -67,6 +71,8 @@ import javax.swing.Action;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.util.Timer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -150,6 +156,8 @@ public class MainGUI {
 	public MainGUI() {
 		initialize();
 	}
+	
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -591,6 +599,26 @@ public class MainGUI {
 		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,growx");
 		
 		JButton btnRunTest_1 = new JButton("Run Test");
+		btnRunTest_1.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg1) {
+				// TODO Auto-generated method stub
+				int secondPassed = 0;
+				Timer timer = new Timer();
+				TimerTask timerTask = new TimerTask() {
+					
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						secondPassed ++;
+						//Output timer to TextLabel
+					}
+				};
+		
+			}
+			
+		});
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,grow");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
@@ -627,6 +655,20 @@ public class MainGUI {
 		timerPanel.add(chckbxSaveFile, "cell 0 1");
 		
 		JButton btnSaveFile = new JButton("Save file");
+		btnSaveFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser saveFile = new JFileChooser();
+				saveFile.setDialogTitle("Choose where to save the file");
+				int userSelection = saveFile.showSaveDialog(frame);
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File file = saveFile.getSelectedFile();
+					//Save file into xml format
+					file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".xml");
+					
+				}
+				
+			}
+		});
 		timerPanel.add(btnSaveFile, "cell 0 2");
 		
 		JMenuBar menuBar = new JMenuBar();
