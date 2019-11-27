@@ -10,7 +10,6 @@ package uk.ac.gla.dcs.tp3_2019_ese1.gui;
  
 
 import java.awt.EventQueue;
-import java.util.Timer;
 import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
@@ -42,6 +41,7 @@ import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.border.TitledBorder;
 import javax.swing.plaf.synth.Region;
+import javax.swing.Timer;
 
 import org.apache.commons.io.FilenameUtils;
 import org.jfree.chart.ChartFactory;
@@ -599,25 +599,28 @@ public class MainGUI {
 		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,growx");
 		
 		JButton btnRunTest_1 = new JButton("Run Test");
+		
+		/*
+		 *  Pausing the Button For 2 seconds to avoid 
+		 *  repeating too many tests
+		 */
+		int delay = 2000;
+		Timer timer = new Timer(delay, new ActionListener() {
+		    public void actionPerformed(ActionEvent evt) {
+		        btnRunTest_1.setEnabled(true);
+		    }
+		});
+		timer.setRepeats(false);
+		
 		btnRunTest_1.addActionListener(new ActionListener() {
 			
 			@Override
-			public void actionPerformed(ActionEvent arg1) {
-				// TODO Auto-generated method stub
-				int secondPassed = 0;
-				Timer timer = new Timer();
-				TimerTask timerTask = new TimerTask() {
-					
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						secondPassed ++;
-						//Output timer to TextLabel
-					}
-				};
-		
+			public void actionPerformed(ActionEvent ae) {
+				JButton button = (JButton)(ae.getSource());
+				button.setEnabled(false);
+				System.out.printf("Wait a second");
+				timer.start();
 			}
-			
 		});
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,grow");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
