@@ -1,11 +1,3 @@
-#image: blang/latex
-#build:
-#  script:
-#    - echo "passed"
-#  artifacts:
-#    paths:
-#      - "*.pdf"
-
 image: java:latest
 
 build:
