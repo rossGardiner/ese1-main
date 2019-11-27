@@ -12,4 +12,5 @@ test:
   script: 
         - echo "Testing"
         - echo "Passed"
+        - java src\uk\ac\gla\dcs\tp3_2019_ese1\test\Test.java 
 
