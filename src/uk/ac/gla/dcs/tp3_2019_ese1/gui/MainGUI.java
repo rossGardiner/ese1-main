@@ -660,20 +660,7 @@ public class MainGUI {
 		timerPanel.add(chckbxSaveFile, "cell 0 1");
 		
 		JButton btnSaveFile = new JButton("Save file");
-		btnSaveFile.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser saveFile = new JFileChooser();
-				saveFile.setDialogTitle("Choose where to save the file");
-				int userSelection = saveFile.showSaveDialog(frame);
-				if (userSelection == JFileChooser.APPROVE_OPTION) {
-					File file = saveFile.getSelectedFile();
-					//Save file into xml format
-					file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".xml");
-					
-				}
-				
-			}
-		});
+		
 		timerPanel.add(btnSaveFile, "cell 0 2");
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -870,6 +857,7 @@ public class MainGUI {
 		dataset.addSeries(series);
 		JFreeChart chart = ChartFactory.createXYLineChart("Acceleration Vs Time","Time","Acceleration", dataset);
 		
+		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
 		gbc_tabbedPane.gridwidth = 4;
@@ -878,6 +866,24 @@ public class MainGUI {
 		gbc_tabbedPane.gridx = 0;
 		gbc_tabbedPane.gridy = 1;
 		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
+		
+		/*
+		 * GENERATING XML REPORT
+		 */
+		btnSaveFile.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser saveFile = new JFileChooser();
+				saveFile.setDialogTitle("Choose where to save the file");
+				int userSelection = saveFile.showSaveDialog(frame);
+				if (userSelection == JFileChooser.APPROVE_OPTION) {
+					File file = saveFile.getSelectedFile();
+					//Save file into xml format
+					file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".xml");
+					
+				}
+				
+			}
+		});
 		
 		JPanel panel_9 = new JPanel();
 		tabbedPane.addTab("Acceleration Vs. Time", null, panel_9, null);
