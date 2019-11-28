@@ -10,6 +10,7 @@ package uk.ac.gla.dcs.tp3_2019_ese1.gui;
  
 
 import java.awt.EventQueue;
+import java.util.ArrayList;
 import java.util.TimerTask;
 import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
@@ -47,10 +48,15 @@ import javax.swing.Timer;
 import org.apache.commons.io.FilenameUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
+import org.jfree.chart.ChartRenderingInfo;
+import org.jfree.chart.ChartUtils;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.entity.StandardEntityCollection;
 import org.jfree.chart.plot.Plot;
 import org.jfree.chart.plot.PlotRenderingInfo;
 import org.jfree.chart.plot.PlotState;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.data.general.Dataset;
 import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -879,7 +885,26 @@ public class MainGUI {
 					File file = saveFile.getSelectedFile();
 					//Save file into xml format
 					file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".xml");
-					
+					try 
+					{
+						ArrayList<String> csv = new ArrayList<>();
+					    if (chart.getPlot() instanceof XYPlot) {
+					    	Dataset dataset = chart.getXYPlot().getDataset();
+					        XYDataset xyDataset = (XYDataset) dataset;
+					        int seriesCount = xyDataset.getSeriesCount();
+					        for (int i = 0; i < seriesCount; i++) {
+					        	int itemCount = xyDataset.getItemCount(i);
+					            for (int j = 0; j < itemCount; j++) {
+					               Comparable key = xyDataset.getSeriesKey(i);
+					               Number x = xyDataset.getX(i, j);
+					               Number y = xyDataset.getY(i, j);
+					               csv.add(String.format("%s, %s, %s", key, x, y));
+					            }
+					         }
+					    }
+					} catch (Exception e) {
+						// TODO: handle exception
+					}
 				}
 				
 			}
