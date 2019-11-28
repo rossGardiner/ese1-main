@@ -78,7 +78,10 @@ import javax.swing.Action;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -885,25 +888,29 @@ public class MainGUI {
 					File file = saveFile.getSelectedFile();
 					//Save file into xml format
 					file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".xml");
-					try 
+					ArrayList<String> csv = new ArrayList<>();
+				    if (chart.getPlot() instanceof XYPlot) {
+				    	Dataset dataset = chart.getXYPlot().getDataset();
+				        XYDataset xyDataset = (XYDataset) dataset;
+				        int seriesCount = xyDataset.getSeriesCount();
+				        for (int i = 0; i < seriesCount; i++) {
+				        	int itemCount = xyDataset.getItemCount(i);
+				            for (int j = 0; j < itemCount; j++) {
+				               Comparable key = xyDataset.getSeriesKey(i);
+				               Number x = xyDataset.getX(i, j);
+				               Number y = xyDataset.getY(i, j);
+				               csv.add(String.format("%s, %s, %s", key, x, y));
+				            }
+				         }
+				    }
+					try(BufferedWriter writer = new BufferedWriter(new FileWriter(file));)
 					{
-						ArrayList<String> csv = new ArrayList<>();
-					    if (chart.getPlot() instanceof XYPlot) {
-					    	Dataset dataset = chart.getXYPlot().getDataset();
-					        XYDataset xyDataset = (XYDataset) dataset;
-					        int seriesCount = xyDataset.getSeriesCount();
-					        for (int i = 0; i < seriesCount; i++) {
-					        	int itemCount = xyDataset.getItemCount(i);
-					            for (int j = 0; j < itemCount; j++) {
-					               Comparable key = xyDataset.getSeriesKey(i);
-					               Number x = xyDataset.getX(i, j);
-					               Number y = xyDataset.getY(i, j);
-					               csv.add(String.format("%s, %s, %s", key, x, y));
-					            }
-					         }
-					    }
-					} catch (Exception e) {
-						// TODO: handle exception
+						for (String line : csv) {
+				            writer.append(line);
+				            writer.newLine();
+				         }
+					} catch (IOException e) {
+						throw new IllegalStateException("Cannot write dataset",e);
 					}
 				}
 				
