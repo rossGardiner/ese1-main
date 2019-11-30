@@ -1,7 +1,15 @@
-image: blang/latex
+image: java:latest
+
 build:
-  script:
-    - echo "passed"
-  artifacts:
-    paths:
-      - "*.pdf"
+    stage: build
+    script: 
+        - echo "Building"
+        - java -version
+        - javac -cp "lib/*" src/uk/ac/gla/dcs/tp3_2019_ese1/*/*.java
+
+test:
+  stage: test
+  script: 
+        - echo "Testing"
+#       - java src/uk/ac/gla/dcs/tp3_2019_ese1/test/Test 
+
