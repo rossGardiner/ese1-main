@@ -196,7 +196,7 @@ public class MainGUI {
 		settingsPane.addTab("Setup", null, setupTab, null);
 		setupTab.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][][][][][][][]"));
 		
-		JPanel panel = new JPanel();
+		JPanel panel = new JPanel();;
 		panel.setBorder(new TitledBorder(null, "Set gain", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		setupTab.add(panel, "cell 0 2 2 2,grow");
 		panel.setLayout(new MigLayout("", "[grow][grow]", "[][][][][][][][][]"));
