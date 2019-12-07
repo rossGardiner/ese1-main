@@ -4,17 +4,17 @@ import java.awt.event.ActionEvent;
 import java.util.Arrays;
 
 import uk.ac.gla.dcs.tp3_2019_ese1.gui.IGUI;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard.USB_1608FS;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ADCRange;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.EventType;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.EnumADCRange;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.EnumEventType;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.EnumScanFlags;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.IUSB_1608FS;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.MCCException;
 
 public class AAARunner {
 
     private static final int ACCELEROMETER_IN = 1;
     public static final int MAGNET_OUT = 0;
 
-    private static final double SCALING_5V = (5.0 / 65536.0);
     private static final int SAMPLE_COUNT = 32768;
     private static final int SAMPLE_RATE = 50000; /* Hz */
     private static final int PRE_DROP_CNT = 256;
@@ -25,12 +25,12 @@ public class AAARunner {
     private static final double CONCRETE = 6760.0;
     private static final double SPRINGCAL = 2043.36; /* XXX not this */
 
-    private final USB_1608FS _board;
+    private final IUSB_1608FS _board;
     private final IGUI _gui;
     private int _testNr = 0; //added 19/01/2020 by RG
     
     
-    public AAARunner(USB_1608FS board, IGUI gui) {
+    public AAARunner(IUSB_1608FS board, IGUI gui) {
         _board = board;
         _gui = gui;
     }
@@ -42,32 +42,31 @@ public class AAARunner {
      *            function a valid ActionListener
      */
     public void runTest(ActionEvent evt) {
-    	try {
-            _board.enableEvent(EventType.ON_END_OF_INPUT_SCAN, (b, t, d) -> {
+        try {
+            _board.enableEvent(EnumEventType.ON_END_OF_INPUT_SCAN, (b, t, d) -> {
                 double volts_per_g = GAIN_CALI / 10 * 5; /* V/G ? */
 
-                int[] raw = _board.analogueInStopAsync()[0];
-                int offset = Arrays.stream(raw).limit(PRE_DROP_CNT).sum() / PRE_DROP_CNT;
-                double[] acceleration = Arrays.stream(raw).mapToDouble(r -> SCALING_5V * (r - offset) / volts_per_g).toArray();
+                double[] raw = _board.analogueInStopAsync()[0];
+                double offset = Arrays.stream(raw).limit(PRE_DROP_CNT).sum() / PRE_DROP_CNT;
+                double[] acceleration = Arrays.stream(raw).map(r -> (r - offset) / volts_per_g).toArray();
                 _testNr++;
-                //analyseResults(acceleration);
+
                 analyseResults(applyLegacyFilter(acceleration));
                 try {
-                    _board.disableEvent(EventType.ON_END_OF_INPUT_SCAN);
+                    _board.disableEvent(EnumEventType.ON_END_OF_INPUT_SCAN);
                     _board.digitalOut(MAGNET_OUT, true);
-                } catch(LibcbwException ex) {
+                } catch(MCCException ex) {
                     ex.printStackTrace();
                 }
             });
             System.out.println("Reading...");
-            _board.analogueInStartAsync(ACCELEROMETER_IN, 1, ADCRange.BIP5VOLTS, SAMPLE_COUNT, SAMPLE_RATE, 0);
+            _board.analogueInStartAsync(ACCELEROMETER_IN, 1, EnumADCRange.BIP5VOLTS, SAMPLE_COUNT, SAMPLE_RATE, EnumScanFlags.DEFAULTIO);
             System.out.println("Dropping...");
             _board.digitalOut(MAGNET_OUT, false);
-            } catch(LibcbwException ex) {
-            	ex.printStackTrace();
-            }
+        } catch(MCCException ex) {
+            ex.printStackTrace();
         }
-    	
+    }
     
     
     private static double GAIN_CALI = 0.208; //modified 20/01/2020 - (calibration * gain) / 2

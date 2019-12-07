@@ -1,4 +1,4 @@
-package uk.ac.gla.dcs.tp3_2019_ese1.libcbw;
+package uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 
 import com.sun.jna.ptr.IntByReference;
 
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException.ErrorCode;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwException.ErrorCode;
 
 /**
  * Frontend for the cbLogXXX() functions.

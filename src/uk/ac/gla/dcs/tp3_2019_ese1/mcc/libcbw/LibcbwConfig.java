@@ -1,9 +1,9 @@
-package uk.ac.gla.dcs.tp3_2019_ese1.libcbw;
+package uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw;
 
 import com.sun.jna.ptr.IntByReference;
 
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException.ErrorCode;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ConfigInfo;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwException.ErrorCode;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwJNA.ConfigInfo;
 
 /**
  * Java-friendly global configuration functions.

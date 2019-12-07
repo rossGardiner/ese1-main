@@ -1,14 +1,16 @@
-package uk.ac.gla.dcs.tp3_2019_ese1.libcbw;
+package uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.MCCException;
 
 /**
  * An exception stemming from a libcbw error code.
  * 
  * @author Duncan Lowther (2402789L)
  */
-public class LibcbwException extends Exception {
+public class LibcbwException extends MCCException {
     private static final long serialVersionUID = -4837377909253322962L;
 
     /** System error code */

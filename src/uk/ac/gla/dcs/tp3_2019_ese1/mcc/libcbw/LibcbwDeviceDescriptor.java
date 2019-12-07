@@ -1,6 +1,5 @@
-package uk.ac.gla.dcs.tp3_2019_ese1.libcbw;
+package uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 import com.sun.jna.Structure;
@@ -12,12 +11,12 @@ import com.sun.jna.ptr.IntByReference;
  * 
  * @author Duncan Lowther (2402789L)
  */
-public class DaqDeviceDescriptor extends Structure {
-    public static class ByValue extends DaqDeviceDescriptor implements Structure.ByValue {
+public class LibcbwDeviceDescriptor extends Structure {
+    public static class ByValue extends LibcbwDeviceDescriptor implements Structure.ByValue {
         public ByValue() {
             super();
         }
-        public ByValue(DaqDeviceDescriptor ddd) {
+        public ByValue(LibcbwDeviceDescriptor ddd) {
             System.arraycopy(ddd.ProductName, 0, ProductName, 0, 64);
             ProductID = ddd.ProductID;
             InterfaceType = ddd.InterfaceType;
@@ -44,7 +43,7 @@ public class DaqDeviceDescriptor extends Structure {
     /**
      * Functional interface to allow arbitrary subclasses of {@link LibcbwBoard} to
      * be instantiated by
-     * {@link DaqDeviceDescriptor#createDaqDevice(BoardConstructor)}
+     * {@link LibcbwDeviceDescriptor#createDaqDevice(BoardConstructor)}
      * 
      * @author Duncan Lowther (2402789L)
      */
@@ -93,14 +92,14 @@ public class DaqDeviceDescriptor extends Structure {
      *         connected.
      * @throws LibcbwException if an error occurs.
      */
-    public static DaqDeviceDescriptor[] getDaqDeviceInventory(int ifaceType, int maxDev) throws LibcbwException {
+    public static LibcbwDeviceDescriptor[] getDaqDeviceInventory(int ifaceType, int maxDev) throws LibcbwException {
         IntByReference nDev = new IntByReference(maxDev);
-        DaqDeviceDescriptor[] buf = (DaqDeviceDescriptor[]) (new DaqDeviceDescriptor()).toArray(maxDev);
+        LibcbwDeviceDescriptor[] buf = (LibcbwDeviceDescriptor[]) (new LibcbwDeviceDescriptor()).toArray(maxDev);
 
         int err = LibcbwJNA.cbGetDaqDeviceInventory(ifaceType, buf[0], nDev);
         if(err != LibcbwException.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
 
-        DaqDeviceDescriptor[] ret = new DaqDeviceDescriptor[nDev.getValue()];
+        LibcbwDeviceDescriptor[] ret = new LibcbwDeviceDescriptor[nDev.getValue()];
         System.arraycopy(buf, 0, ret, 0, nDev.getValue());
         return ret;
     }
@@ -114,9 +113,9 @@ public class DaqDeviceDescriptor extends Structure {
      * @return a descriptor of the device at the specified address.
      * @throws LibcbwException if an error occurs.
      */
-    public static DaqDeviceDescriptor getNetDeviceDescriptor(String host, int port, int timeout)
+    public static LibcbwDeviceDescriptor getNetDeviceDescriptor(String host, int port, int timeout)
             throws LibcbwException {
-        DaqDeviceDescriptor ret = new DaqDeviceDescriptor();
+        LibcbwDeviceDescriptor ret = new LibcbwDeviceDescriptor();
 
         int err = LibcbwJNA.cbGetNetDeviceDescriptor(host, port, ret, timeout);
         if(err != LibcbwException.ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);

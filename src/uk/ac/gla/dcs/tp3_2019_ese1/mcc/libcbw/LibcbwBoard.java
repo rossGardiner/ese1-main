@@ -1,7 +1,8 @@
-package uk.ac.gla.dcs.tp3_2019_ese1.libcbw;
+package uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.EnumSet;
 
 import com.sun.jna.NativeLong;
 import com.sun.jna.Pointer;
@@ -10,14 +11,17 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.ShortByReference;
 
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException.ErrorCode;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.CBWOptions;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ConfigInfo;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.DIOPortType;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.HGLOBAL;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.IOFunctions;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.JavaCallback;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.TriggerType;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwException.ErrorCode;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwJNA.CBWOptions;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwJNA.ConfigInfo;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwJNA.HGLOBAL;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwJNA.IOFunctions;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwJNA.TriggerType;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.DIOPortType;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.EnumADCRange;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.EnumEventType;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.EnumScanFlags;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.shared.IUSB_1608FS;
 
 /**
  * Represents a single connected breakout board.
@@ -172,12 +176,13 @@ public class LibcbwBoard implements AutoCloseable {
      *         Functions : cbFlashLED()<br>
      * 
      */
-    public static class USB_1608FS extends LibcbwBoard {
+    public static class USB_1608FS extends LibcbwBoard implements IUSB_1608FS {
         private static final String BOARD_NAME = "USB-1608FS";
         private HGLOBAL _bkgnd_buffer = null;
         private int _bkgnd_buffer_size = 0;
         private int _bkgnd_buffer_pos = -1;
         private int _bkgnd_channel_count = 0;
+        private EnumADCRange _bkgnd_range = null;
 
         /**
          * Initialize board already set up with InstaCal
@@ -212,22 +217,13 @@ public class LibcbwBoard implements AutoCloseable {
             return (val.getValue() & 0xFFFF);
         }
 
-        /**
-         * Read one of the ADC channels and return the result in volts.
-         * 
-         * @param channel - the ADC channel number (0 to 7, inclusive)
-         * @param range   - the voltage range for the reading. Must be one of the
-         *                following constants specified in {@link LibcbwJNA.ADCRange}:
-         *                BIP1VOLTS, BIP2VOLTS, BIP5VOLTS, or BIP10VOLTS
-         * @return the measurement in volts, as a single-precision float.
-         * @throws LibcbwException if an error occurs.
-         */
-        public float analogueInVolts(int channel, int range) throws LibcbwException {
+        @Override
+        public double analogueInVolts(int channel, EnumADCRange range) throws LibcbwException {
             ShortByReference raw = new ShortByReference();
-            int err = LibcbwJNA.cbAIn(_boardnum, channel, range, raw);
+            int err = LibcbwJNA.cbAIn(_boardnum, channel, range.getValLibcbw(), raw);
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
             FloatByReference volts = new FloatByReference();
-            err = LibcbwJNA.cbToEngUnits(_boardnum, range, raw.getValue(), volts);
+            err = LibcbwJNA.cbToEngUnits(_boardnum, range.getValLibcbw(), raw.getValue(), volts);
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
             return volts.getValue();
         }
@@ -262,14 +258,14 @@ public class LibcbwBoard implements AutoCloseable {
          *         zero-extended to fit <code>int</code>s
          * @throws LibcbwException if an error occurs.
          */
-        public int[][] analogueInScan(int lowchan, int numChannels, int range, int samplesPerChannel, int freq,
+        public int[][] analogueInScan(int lowchan, int numChannels, EnumADCRange range, int samplesPerChannel, int freq,
                 int options) throws LibcbwException {
             NativeLong lcount = new NativeLong(samplesPerChannel * numChannels);
             HGLOBAL memhandle = LibcbwJNA.cbWinBufAlloc(lcount);
             NativeLongByReference rateref = new NativeLongByReference(new NativeLong(freq * numChannels));
 
-            int err = LibcbwJNA.cbAInScan(_boardnum, lowchan, lowchan + numChannels - 1, lcount, rateref, range,
-                    memhandle, options);
+            int err = LibcbwJNA.cbAInScan(_boardnum, lowchan, lowchan + numChannels - 1, lcount, rateref,
+                    range.getValLibcbw(), memhandle, options);
             if(err != ErrorCode.NOERRORS) {
                 LibcbwJNA.cbWinBufFree(memhandle);
                 throw LibcbwException.fromErrorCode(err);
@@ -285,6 +281,13 @@ public class LibcbwBoard implements AutoCloseable {
             }
             LibcbwJNA.cbWinBufFree(memhandle);
             return ret;
+        }
+
+        @Override
+        public void analogueInStartAsync(int lowchan, int numChannels, EnumADCRange range, int samplesPerChannel,
+                int freq, EnumSet<EnumScanFlags> flags) throws LibcbwException {
+            analogueInStartAsync(lowchan, numChannels, range, samplesPerChannel, freq,
+                    EnumScanFlags.asLibcbwFlags(flags));
         }
 
         /**
@@ -314,8 +317,8 @@ public class LibcbwBoard implements AutoCloseable {
          *                          exceed 32768.
          * @throws LibcbwException if an error occurs.
          */
-        public void analogueInStartAsync(int lowchan, int numChannels, int range, int samplesPerChannel, int freq,
-                int options) throws LibcbwException {
+        public void analogueInStartAsync(int lowchan, int numChannels, EnumADCRange range, int samplesPerChannel,
+                int freq, int options) throws LibcbwException {
             if(_bkgnd_buffer != null) throw LibcbwException.fromErrorCode(ErrorCode.ALREADYACTIVE);
 
             NativeLong lcount = new NativeLong(samplesPerChannel * numChannels);
@@ -323,10 +326,11 @@ public class LibcbwBoard implements AutoCloseable {
             _bkgnd_buffer_pos = 0;
             _bkgnd_buffer_size = samplesPerChannel * numChannels;
             _bkgnd_channel_count = numChannels;
+            _bkgnd_range = range;
             NativeLongByReference rateref = new NativeLongByReference(new NativeLong(freq * numChannels));
 
-            int err = LibcbwJNA.cbAInScan(_boardnum, lowchan, lowchan + numChannels - 1, lcount, rateref, range,
-                    _bkgnd_buffer, options | CBWOptions.BACKGROUND);
+            int err = LibcbwJNA.cbAInScan(_boardnum, lowchan, lowchan + numChannels - 1, lcount, rateref,
+                    range.getValLibcbw(), _bkgnd_buffer, options | CBWOptions.BACKGROUND);
             if(err != ErrorCode.NOERRORS) {
                 LibcbwJNA.cbWinBufFree(_bkgnd_buffer);
                 _bkgnd_buffer = null;
@@ -334,16 +338,8 @@ public class LibcbwBoard implements AutoCloseable {
             }
         }
 
-        /**
-         * End an asynchronous scan, and return all samples that have yet to be
-         * processed.
-         * 
-         * @return a two-dimensional array indexed as
-         *         <code>array[channel][sample]</code> of 16-bit unsigned measurements,
-         *         zero-extended to fit <code>int</code>s, or <code>null</code> if no
-         *         asynchronous scan is active.
-         */
-        public int[][] analogueInStopAsync() {
+        @Override
+        public double[][] analogueInStopAsync() {
             if(_bkgnd_buffer == null) return null;
 
             LibcbwJNA.cbStopIOBackground(_boardnum, IOFunctions.AIFUNCTION);
@@ -364,7 +360,7 @@ public class LibcbwBoard implements AutoCloseable {
             if(cur_idx == _bkgnd_buffer_pos - 1) {
                 LibcbwJNA.cbWinBufFree(_bkgnd_buffer);
                 _bkgnd_buffer = null;
-                return new int[_bkgnd_channel_count][0];
+                return new double[_bkgnd_channel_count][0];
             } else if(cur_idx < _bkgnd_buffer_pos) {
                 buffer = _bkgnd_buffer.getPointer().getShortArray(_bkgnd_buffer_pos,
                         _bkgnd_buffer_size - _bkgnd_buffer_pos);
@@ -374,18 +370,26 @@ public class LibcbwBoard implements AutoCloseable {
                 buffer2 = new short[0];
             }
 
-            int[][] ret = new int[_bkgnd_channel_count][(buffer.length + buffer2.length) / _bkgnd_channel_count];
+            double scaling = switch(_bkgnd_range) {
+                case BIP10VOLTS -> (20.0 / 65536.0);
+                case BIP5VOLTS -> (10.0 / 65536.0);
+                case BIP2VOLTS -> (4.0 / 65536.0);
+                case BIP1VOLTS -> (2.0 / 65536.0);
+                default -> 1.0;
+            };
+
+            double[][] ret = new double[_bkgnd_channel_count][(buffer.length + buffer2.length) / _bkgnd_channel_count];
 
             for(int sample = 0; (sample * _bkgnd_channel_count) < buffer.length; sample++) {
                 for(int chan = 0; chan < _bkgnd_channel_count; chan++) {
-                    ret[chan][sample] = buffer[sample * _bkgnd_channel_count + chan] & 0xFFFF;
+                    ret[chan][sample] = ((buffer[sample * _bkgnd_channel_count + chan] & 0xFFFF) - 0x8000) * scaling;
                 }
             }
             for(int sample = 0; (sample * _bkgnd_channel_count) < buffer2.length; sample++) {
                 for(int chan = 0; chan < _bkgnd_channel_count; chan++) {
-                    ret[chan][sample
-                            + (buffer.length / _bkgnd_channel_count)] = buffer2[sample * _bkgnd_channel_count + chan]
-                                    & 0xFFFF;
+                    ret[chan][sample + (buffer.length
+                            / _bkgnd_channel_count)] = ((buffer2[sample * _bkgnd_channel_count + chan] & 0xFFFF)
+                                    - 0x8000) * scaling;
                 }
             }
 
@@ -488,13 +492,7 @@ public class LibcbwBoard implements AutoCloseable {
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
         }
 
-        /**
-         * Reads from a single DIO line.
-         * 
-         * @param bit - the index of the DIO line to read
-         * @return the logic value of the DIO line
-         * @throws LibcbwException if an error occurs.
-         */
+        @Override
         public boolean digitalIn(int bit) throws LibcbwException {
             int err = LibcbwJNA.cbDConfigBit(_boardnum, DIOPortType.AUXPORT, bit, LibcbwJNA.DIGITALIN);
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
@@ -506,13 +504,7 @@ public class LibcbwBoard implements AutoCloseable {
             return (0 != valref.getValue());
         }
 
-        /**
-         * Simultaneously reads from all eight DIO lines.
-         * 
-         * @return the logic values of the DIO lines taken together as a
-         *         <code>byte</code>.
-         * @throws LibcbwException if an error occurs.
-         */
+        @Override
         public byte digitalIn() throws LibcbwException {
             int err = LibcbwJNA.cbDConfigPort(_boardnum, DIOPortType.AUXPORT, LibcbwJNA.DIGITALIN);
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
@@ -524,13 +516,7 @@ public class LibcbwBoard implements AutoCloseable {
             return (byte) valref.getValue();
         }
 
-        /**
-         * Writes to a single DIO line.
-         * 
-         * @param bit   - the index of the DIO line to write to
-         * @param value - the logic value to write
-         * @throws LibcbwException if an error occurs.
-         */
+        @Override
         public void digitalOut(int bit, boolean value) throws LibcbwException {
             int err = LibcbwJNA.cbDConfigBit(_boardnum, DIOPortType.AUXPORT, bit, LibcbwJNA.DIGITALOUT);
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
@@ -539,13 +525,7 @@ public class LibcbwBoard implements AutoCloseable {
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
         }
 
-        /**
-         * Simultaneously writes to all eight DIO lines.
-         * 
-         * @param value - a <code>byte</code> with each bit representing the value to
-         *              write to a different DIO line.
-         * @throws LibcbwException if an error occurs.
-         */
+        @Override
         public void digitalOut(byte value) throws LibcbwException {
             int err = LibcbwJNA.cbDConfigPort(_boardnum, DIOPortType.AUXPORT, LibcbwJNA.DIGITALOUT);
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
@@ -554,63 +534,43 @@ public class LibcbwBoard implements AutoCloseable {
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
         }
 
-        /**
-         * Registers an event handler for the specified interrupt type on this board.
-         * 
-         * @param type     - the type of event to handle. Must be one of the following
-         *                 constants (declared in {@link LibcbwJNA.EventType}):
-         *                 ON_SCAN_ERROR, ON_DATA_AVAILABLE, ON_END_OF_INPUT_SCAN
-         * @param callback - the event handler to call when the specified event occurs
-         * @throws LibcbwException if an error occurs.
-         */
-        public void enableEvent(int type, JavaCallback callback) throws LibcbwException {
-            int err = LibcbwJNA.cbEnableEvent(_boardnum, type, 0,
-                    (bnum, etype, edata, udata) -> callback.apply(bnum, etype, edata), Pointer.NULL);
+        @Override
+        public void enableEvent(EnumEventType type, JavaCallback callback) throws LibcbwException {
+            enableEvent(EnumSet.of(type), callback);
+        }
+
+        @Override
+        public void enableEvent(EnumSet<EnumEventType> type, JavaCallback callback) throws LibcbwException {
+            int err = LibcbwJNA.cbEnableEvent(_boardnum, EnumEventType.asLibcbwFlags(type), 0,
+                    (bnum, etype, edata, udata) -> callback.apply(this, EnumEventType.forLibcbwFlag(etype), edata),
+                    Pointer.NULL);
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
         }
 
-        /**
-         * Deregisters any event handler for the specified interrupt type(s) on this
-         * board.
-         * 
-         * @param type - the type of event to stop handling. Must be one of the
-         *             following constants (declared in {@link LibcbwJNA.EventType}):
-         *             ON_SCAN_ERROR, ON_DATA_AVAILABLE, ON_END_OF_INPUT_SCAN, or
-         *             ALL_EVENT_TYPES
-         * @throws LibcbwException if an error occurs.
-         */
-        public void disableEvent(int type) throws LibcbwException {
-            int err = LibcbwJNA.cbDisableEvent(_boardnum, type);
+        @Override
+        public void disableEvent(EnumEventType type) throws LibcbwException {
+            disableEvent(EnumSet.of(type));
+        }
+
+        @Override
+        public void disableEvent(EnumSet<EnumEventType> type) throws LibcbwException {
+            int err = LibcbwJNA.cbDisableEvent(_boardnum, EnumEventType.asLibcbwFlags(type));
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
         }
 
-        /**
-         * Causes the LED on the board to flash.
-         * 
-         * @throws LibcbwException if an error occurs.
-         */
+        @Override
         public void flashLED() throws LibcbwException {
             int err = LibcbwJNA.cbFlashLED(_boardnum);
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
         }
 
-        /**
-         * Clears the board's event counter.
-         * 
-         * @throws LibcbwException if an error occurs.
-         */
+        @Override
         public void clearCounter() throws LibcbwException {
             int err = LibcbwJNA.cbCClear(_boardnum, 1);
             if(err != ErrorCode.NOERRORS) throw LibcbwException.fromErrorCode(err);
         }
 
-        /**
-         * Reads the board's event counter.
-         * 
-         * @return the current count value as a 32-bit unsigned integer, zero extended
-         *         to fit a <code>long</code>
-         * @throws LibcbwException if an error occurs.
-         */
+        @Override
         public long readCounter() throws LibcbwException {
             NativeLongByReference count = new NativeLongByReference();
             int err = LibcbwJNA.cbCIn32(_boardnum, 1, count);

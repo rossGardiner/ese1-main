@@ -10,7 +10,6 @@ package uk.ac.gla.dcs.tp3_2019_ese1.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -41,8 +40,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
+import javax.swing.UIManager;
 import javax.swing.border.TitledBorder;
-import javax.swing.UIManager; 
 
 import org.apache.commons.io.FilenameUtils;
 import org.jfree.chart.ChartFactory;
@@ -54,15 +53,13 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import com.jtattoo.plaf.acryl.AcrylLookAndFeel;
+
 import net.miginfocom.swing.MigLayout;
 import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
-
-//import sun.security.provider.CtrDrbg;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
-import com.jtattoo.plaf.acryl.*;
- 
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwBoard;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwDeviceDescriptor;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwException;
 
 public class MainGUI implements IGUI {
 
@@ -190,7 +187,7 @@ public class MainGUI implements IGUI {
 
 		board = null;
 		try {
-			DaqDeviceDescriptor[] daqArray = DaqDeviceDescriptor.getDaqDeviceInventory(DaqDeviceDescriptor.USB_IFC, 5);
+			LibcbwDeviceDescriptor[] daqArray = LibcbwDeviceDescriptor.getDaqDeviceInventory(LibcbwDeviceDescriptor.USB_IFC, 5);
 			//routine to test devices for board
 			for(int i = 0; i< daqArray.length; i++) {
 				if(daqArray[i].ProductID == 125 || daqArray[i].ProductID == 234)  board = daqArray[i].createDaqDevice(LibcbwBoard.USB_1608FS::new);

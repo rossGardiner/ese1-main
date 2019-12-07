@@ -1,4 +1,4 @@
-package uk.ac.gla.dcs.tp3_2019_ese1.libcbw;
+package uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw;
 
 import java.nio.ByteBuffer;
 import java.nio.DoubleBuffer;
@@ -405,50 +405,6 @@ public class LibcbwJNA implements StdCallLibrary {
     /** Default option */
     public static final int DEFAULTOPTION = 0x0000;
 
-    /** Types of digital I/O Ports */
-    public static final class DIOPortType {
-        private DIOPortType() {
-        }
-
-        public static final int AUXPORT = 1;
-        public static final int AUXPORT0 = 1;
-        public static final int AUXPORT1 = 2;
-        public static final int AUXPORT2 = 3;
-        public static final int FIRSTPORTA = 10;
-        public static final int FIRSTPORTB = 11;
-        public static final int FIRSTPORTCL = 12;
-        public static final int FIRSTPORTC = 12;
-        public static final int FIRSTPORTCH = 13;
-        public static final int SECONDPORTA = 14;
-        public static final int SECONDPORTB = 15;
-        public static final int SECONDPORTCL = 16;
-        public static final int SECONDPORTCH = 17;
-        public static final int THIRDPORTA = 18;
-        public static final int THIRDPORTB = 19;
-        public static final int THIRDPORTCL = 20;
-        public static final int THIRDPORTCH = 21;
-        public static final int FOURTHPORTA = 22;
-        public static final int FOURTHPORTB = 23;
-        public static final int FOURTHPORTCL = 24;
-        public static final int FOURTHPORTCH = 25;
-        public static final int FIFTHPORTA = 26;
-        public static final int FIFTHPORTB = 27;
-        public static final int FIFTHPORTCL = 28;
-        public static final int FIFTHPORTCH = 29;
-        public static final int SIXTHPORTA = 30;
-        public static final int SIXTHPORTB = 31;
-        public static final int SIXTHPORTCL = 32;
-        public static final int SIXTHPORTCH = 33;
-        public static final int SEVENTHPORTA = 34;
-        public static final int SEVENTHPORTB = 35;
-        public static final int SEVENTHPORTCL = 36;
-        public static final int SEVENTHPORTCH = 37;
-        public static final int EIGHTHPORTA = 38;
-        public static final int EIGHTHPORTB = 39;
-        public static final int EIGHTHPORTCL = 40;
-        public static final int EIGHTHPORTCH = 41;
-    }
-
     /** Analog input modes */
     public static final class AInMode {
         private AInMode() {
@@ -470,110 +426,6 @@ public class LibcbwJNA implements StdCallLibrary {
         public static final int NRSE = 0x2000;
         /** Differential */
         public static final int DIFF = 0x4000;
-    }
-
-    /** Selectable A/D Ranges codes */
-    public static final class ADCRange {
-        private ADCRange() {
-        }
-
-        /** -60 to 60 Volts */
-        public static final int BIP60VOLTS = 20;
-        public static final int BIP30VOLTS = 23;
-        /** -20 to +20 Volts */
-        public static final int BIP20VOLTS = 15;
-        /** -15 to +15 Volts */
-        public static final int BIP15VOLTS = 21;
-        /** -10 to +10 Volts */
-        public static final int BIP10VOLTS = 1;
-        /** -5 to +5 Volts */
-        public static final int BIP5VOLTS = 0;
-        /** -4 to + 4 Volts */
-        public static final int BIP4VOLTS = 16;
-        /** -2.5 to +2.5 Volts */
-        public static final int BIP2PT5VOLTS = 2;
-        /** -2.0 to +2.0 Volts */
-        public static final int BIP2VOLTS = 14;
-        /** -1.25 to +1.25 Volts */
-        public static final int BIP1PT25VOLTS = 3;
-        /** -1 to +1 Volts */
-        public static final int BIP1VOLTS = 4;
-        /** -.625 to +.625 Volts */
-        public static final int BIPPT625VOLTS = 5;
-        /** -.5 to +.5 Volts */
-        public static final int BIPPT5VOLTS = 6;
-        /** -0.25 to +0.25 Volts */
-        public static final int BIPPT25VOLTS = 12;
-        /** -0.2 to +0.2 Volts */
-        public static final int BIPPT2VOLTS = 13;
-        /** -.1 to +.1 Volts */
-        public static final int BIPPT1VOLTS = 7;
-        /** -.05 to +.05 Volts */
-        public static final int BIPPT05VOLTS = 8;
-        /** -.01 to +.01 Volts */
-        public static final int BIPPT01VOLTS = 9;
-        /** -.005 to +.005 Volts */
-        public static final int BIPPT005VOLTS = 10;
-        /** -1.67 to +1.67 Volts */
-        public static final int BIP1PT67VOLTS = 11;
-        /** -0.312 to +0.312 Volts */
-        public static final int BIPPT312VOLTS = 17;
-        /** -0.156 to +0.156 Volts */
-        public static final int BIPPT156VOLTS = 18;
-        /** -0.125 to +0.125 Volts */
-        public static final int BIPPT125VOLTS = 22;
-        /** -0.078 to +0.078 Volts */
-        public static final int BIPPT078VOLTS = 19;
-
-        /** 0 to 10 Volts */
-        public static final int UNI10VOLTS = 100;
-        /** 0 to 5 Volts */
-        public static final int UNI5VOLTS = 101;
-        /** 0 to 4 Volts */
-        public static final int UNI4VOLTS = 114;
-        /** 0 to 2.5 Volts */
-        public static final int UNI2PT5VOLTS = 102;
-        /** 0 to 2 Volts */
-        public static final int UNI2VOLTS = 103;
-        /** 0 to 1.67 Volts */
-        public static final int UNI1PT67VOLTS = 109;
-        /** 0 to 1.25 Volts */
-        public static final int UNI1PT25VOLTS = 104;
-        /** 0 to 1 Volt */
-        public static final int UNI1VOLTS = 105;
-        /** 0 to .5 Volt */
-        public static final int UNIPT5VOLTS = 110;
-        /** 0 to 0.25 Volt */
-        public static final int UNIPT25VOLTS = 111;
-        /** 0 to .2 Volt */
-        public static final int UNIPT2VOLTS = 112;
-        /** 0 to .1 Volt */
-        public static final int UNIPT1VOLTS = 106;
-        /** 0 to .05 Volt */
-        public static final int UNIPT05VOLTS = 113;
-        /** 0 to .02 Volt */
-        public static final int UNIPT02VOLTS = 108;
-        /** 0 to .01 Volt */
-        public static final int UNIPT01VOLTS = 107;
-
-        /** 4 to 20 ma */
-        public static final int MA4TO20 = 200;
-        /** 2 to 10 ma */
-        public static final int MA2TO10 = 201;
-        /** 1 to 5 ma */
-        public static final int MA1TO5 = 202;
-        /** .5 to 2.5 ma */
-        public static final int MAPT5TO2PT5 = 203;
-        /** 0 to 20 ma */
-        public static final int MA0TO20 = 204;
-        /** -0.025 to 0.025 ma */
-        public static final int BIPPT025AMPS = 205;
-
-        public static final int UNIPOLAR = 300;
-        public static final int BIPOLAR = 301;
-
-        /** -0.025 to +0.025 V/V */
-        public static final int BIPPT025VOLTSPERVOLT = 400;
     }
 
     /* Types of D/A */
@@ -1642,37 +1494,6 @@ public class LibcbwJNA implements StdCallLibrary {
         public static final int VER_FW_MEASUREMENT_EXP = 4;
     }
 
-    /** Types of events */
-    public static final class EventType {
-        private EventType() {
-        }
-
-        public static final int ON_SCAN_ERROR = 0x0001;
-        public static final int ON_EXTERNAL_INTERRUPT = 0x0002;
-        public static final int ON_PRETRIGGER = 0x0004;
-        public static final int ON_DATA_AVAILABLE = 0x0008;
-        @Deprecated
-        /** deprecated, use ON_END_OF_INPUT_SCAN */
-        public static final int ON_END_OF_AI_SCAN = 0x0010;
-        @Deprecated
-        /** deprecated, use ON_END_OF_OUTPUT_SCAN */
-        public static final int ON_END_OF_AO_SCAN = 0x0020;
-        public static final int ON_END_OF_INPUT_SCAN = 0x0010;
-        public static final int ON_END_OF_OUTPUT_SCAN = 0x0020;
-        public static final int ON_CHANGE_DI = 0x0040;
-        public static final int ALL_EVENT_TYPES = 0xffff;
-
-        public static final int NUM_EVENT_TYPES = 6;
-        public static final int MAX_NUM_EVENT_TYPES = 32;
-
-        public static final int SCAN_ERROR_IDX = 0;
-        public static final int EXTERNAL_INTERRUPT_IDX = 1;
-        public static final int PRETRIGGER_IDX = 2;
-        public static final int DATA_AVAILABLE_IDX = 3;
-        public static final int END_OF_AI_IDX = 4;
-        public static final int END_OF_AO_IDX = 5;
-    }
-
     /* ON_EXTERNAL_INTERRUPT event parameters */
     public static final int LATCH_DI = 1;
     public static final int LATCH_DO = 2;
@@ -1720,16 +1541,6 @@ public class LibcbwJNA implements StdCallLibrary {
     interface EVENTCALLBACK extends StdCallCallback {
         void apply(int int1, int u1, int u2, Pointer voidPtr1);
     };
-
-    /**
-     * A functional interface defining a Java-friendly event callback.
-     * 
-     * @author Duncan Lowther (2402789L)
-     */
-    @FunctionalInterface
-    public interface JavaCallback {
-        void apply(int boardNum, int evtType, int data);
-    }
 
     /**
      * Original signature :
@@ -2463,13 +2274,13 @@ public class LibcbwJNA implements StdCallLibrary {
      * Original signature :
      * <code>int cbCreateDaqDevice(int, DaqDeviceDescriptor)</code>
      */
-    static native int cbCreateDaqDevice(int BdNum, DaqDeviceDescriptor.ByValue DeviceDescriptor);
+    static native int cbCreateDaqDevice(int BdNum, LibcbwDeviceDescriptor.ByValue DeviceDescriptor);
 
     /**
      * Original signature :
      * <code>int cbGetDaqDeviceInventory(DaqDeviceInterface, DaqDeviceDescriptor*, INT*)</code>
      */
-    static native int cbGetDaqDeviceInventory(int InterfaceType, DaqDeviceDescriptor Inventory,
+    static native int cbGetDaqDeviceInventory(int InterfaceType, LibcbwDeviceDescriptor Inventory,
             IntByReference NumberOfDevices);
 
     /**
@@ -2480,13 +2291,13 @@ public class LibcbwJNA implements StdCallLibrary {
     /**
      * Original signature : <code>int cbGetBoardNumber(DaqDeviceDescriptor)</code>
      */
-    static native int cbGetBoardNumber(DaqDeviceDescriptor.ByValue DeviceDescriptor);
+    static native int cbGetBoardNumber(LibcbwDeviceDescriptor.ByValue DeviceDescriptor);
 
     /**
      * Original signature :
      * <code>int cbGetNetDeviceDescriptor(CHAR*, INT, DaqDeviceDescriptor*, INT)</code>
      */
-    static native int cbGetNetDeviceDescriptor(String Host, int Port, DaqDeviceDescriptor DeviceDescriptor,
+    static native int cbGetNetDeviceDescriptor(String Host, int Port, LibcbwDeviceDescriptor DeviceDescriptor,
             int Timeout);
 
 }

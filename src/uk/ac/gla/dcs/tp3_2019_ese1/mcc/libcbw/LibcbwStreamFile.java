@@ -1,4 +1,4 @@
-package uk.ac.gla.dcs.tp3_2019_ese1.libcbw;
+package uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -9,9 +9,8 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.NativeLongByReference;
 import com.sun.jna.ptr.ShortByReference;
 
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard.USB_1608FS;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException.ErrorCode;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ADCRange;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwBoard.USB_1608FS;
+import uk.ac.gla.dcs.tp3_2019_ese1.mcc.libcbw.LibcbwException.ErrorCode;
 
 /**
  * A way of reading a file that has been created with
