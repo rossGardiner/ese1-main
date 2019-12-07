@@ -5,7 +5,8 @@ build:
     script: 
         - echo "Building"
         - java -version
-        - javac -cp "lib/*" src/uk/ac/gla/dcs/tp3_2019_ese1/*/*.java
+        - mkdir bin
+        - javac -cp "lib/*" -d bin $(find ./src/* | grep .java)
 
 test:
   stage: test
