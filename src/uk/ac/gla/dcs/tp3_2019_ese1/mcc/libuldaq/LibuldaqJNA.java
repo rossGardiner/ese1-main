@@ -323,7 +323,7 @@ public class LibuldaqJNA {
      * Original signature :
      * <code>UlError ulAInLoadQueue(DaqDeviceHandle, AiQueueElement[], unsigned int)</code>
      */
-    static native int ulAInLoadQueue(long daqDeviceHandle, AInQueueElement[] queue,
+    static native int ulAInLoadQueue(long daqDeviceHandle, AInQueueElement queue,
             int numElements); /* XXX check for error passing array */
 
     /**
@@ -592,7 +592,7 @@ public class LibuldaqJNA {
      * Original signature :
      * <code>UlError ulDaqInScan(DaqDeviceHandle, DaqInChanDescriptor[], int, int, double*, ScanOption, DaqInScanFlag, double[])</code>
      *//* XXX check array passing of DaqInChanDescriptor */
-    static native int ulDaqInScan(long daqDeviceHandle, DaqInChanDescriptor[] chanDescriptors, int numChans,
+    static native int ulDaqInScan(long daqDeviceHandle, DaqInChanDescriptor chanDescriptors, int numChans,
             int samplesPerChan, DoubleByReference rate, int options, int flags, DoubleBuffer data);
 
     /**
@@ -623,7 +623,7 @@ public class LibuldaqJNA {
      * Original signature :
      * <code>UlError ulDaqOutScan(DaqDeviceHandle, DaqInChanDescriptor[], int, int, double*, ScanOption, DaqOutScanFlag, double[])</code>
      *//* XXX check array passing of DaqOutChanDescriptor */
-    static native int ulDaqOutScan(long daqDeviceHandle, DaqOutChanDescriptor[] chanDescriptors, int numChans,
+    static native int ulDaqOutScan(long daqDeviceHandle, DaqOutChanDescriptor chanDescriptors, int numChans,
             int samplesPerChan, DoubleByReference rate, int options, int flags, DoubleBuffer data);
 
     /**
