@@ -142,6 +142,7 @@ public class MainGUI {
 	private JTextField textField_50;
 	private final Action action = new SwingAction();
 	private LibcbwBoard.USB_1608FS board;
+	private static int delay;
 
 	/**
 	 * Launch the application.
@@ -639,10 +640,10 @@ public class MainGUI {
 		JButton btnStart_1 = new JButton("Start");
 		panel_8.add(btnStart_1, "cell 0 3");
 		/*
-		 *  Pausing the Button For 2 seconds to avoid 
+		 *  Pausing the Button For given seconds to avoid 
 		 *  repeating too many tests
 		 */
-		int delay = 2000;
+		
 		Timer timer = new Timer(delay, new ActionListener() {
 		    public void actionPerformed(ActionEvent evt) {
 		    	btnStart_1.setEnabled(true);
@@ -656,8 +657,18 @@ public class MainGUI {
 			public void actionPerformed(ActionEvent ae) {
 				JButton button = (JButton)(ae.getSource());
 				button.setEnabled(false);
-				System.out.printf("Wait a second");
+				System.out.printf("Timer running");
+				int getTime = getTime();
 				timer.start();
+				}
+
+			private int getTime() {
+				int minutes = Integer.parseInt(textField_2.getText());
+				int seconds = Integer.parseInt(textField_3.getText());
+				minutes = minutes * 10000;
+				seconds = seconds * 1000;
+				delay = minutes + seconds;
+				return delay;
 			}
 		});
 		
@@ -879,6 +890,7 @@ public class MainGUI {
 		/*
 		 * GENERATING XML REPORT
 		 */
+		/*
 		btnSaveFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser saveFile = new JFileChooser();
@@ -916,7 +928,7 @@ public class MainGUI {
 				
 			}
 		});
-		
+		*/
 		JPanel panel_9 = new JPanel();
 		tabbedPane.addTab("Acceleration Vs. Time", null, panel_9, null);
 		ChartPanel chartPanelAcceleration = new ChartPanel(chart);
