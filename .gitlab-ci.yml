@@ -6,7 +6,6 @@ build:
         - echo "Building"
         - java -version
         - javac -cp "lib/*" src/uk/ac/gla/dcs/tp3_2019_ese1/*/*.java
-
 test:
   stage: test
   script: 

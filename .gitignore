@@ -135,6 +135,7 @@ local.properties
 
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
+.class
 
 # Annotation Processing
 .apt_generated
@@ -177,4 +178,7 @@ tags
 [._]*.un~
 
 # End of https://www.gitignore.io/api/c,git,vim,cmake,eclipse
+
+*.log
+doc/
 
