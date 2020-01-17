@@ -9,6 +9,7 @@
 package uk.ac.gla.dcs.tp3_2019_ese1.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -79,6 +80,7 @@ public class MainGUI implements IGUI {
 	private final Action action = new SwingAction();
 	private LibcbwBoard.USB_1608FS board;
 	private AAARunner _runner;
+	private boolean _magnetStatus;
 	private JTextField textField_14;
 	private JTextField textField_15;
 	private JTextField textField_16;
@@ -351,11 +353,18 @@ public class MainGUI implements IGUI {
 		testLaunchPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
 		
 		JButton btnMagnetStatus_1 = new JButton("Magnet status");
+		_magnetStatus = false;
 		btnMagnetStatus_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					board.digitalOut(0, true);
+					_magnetStatus = !_magnetStatus;
+					board.digitalOut(0, _magnetStatus);
+					if(_magnetStatus){
+						btnMagnetStatus_1.setBackground(new Color(0,71,137)); //SportsLabs Colors
+					}else{
+						btnMagnetStatus_1.setBackground(null);
+					}
 				}
 				catch (LibcbwException ex) {
 					ex.printStackTrace();
