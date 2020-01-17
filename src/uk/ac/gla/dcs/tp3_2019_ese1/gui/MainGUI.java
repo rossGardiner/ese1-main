@@ -825,6 +825,16 @@ public class MainGUI implements IGUI {
     @Override
     public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
             double drop_dist, double spring, double material) {
+   	 textField_10.setText(Double.toString(peakG));
+	 textField_55.setText(Double.toString(fmax));
+	 textField_59.setText(Double.toString(v1));
+	 textField_63.setText(Double.toString(v2));
+	 textField_16.setText(Double.toString(drop_dist));
+	 textField_20.setText(Double.toString(spring));
+	 textField_24.setText(Double.toString(fred));
+	 textField_51.setText(Double.toString(energy));
+
+
         // TODO Auto-generated method stub
     	
         
