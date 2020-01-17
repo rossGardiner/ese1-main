@@ -496,7 +496,7 @@ public class MainGUI implements IGUI {
 		resultsPane.add(textField_62, "cell 4 3,growx");
 		textField_62.setColumns(10);
 		
-		JLabel lblVelocitymmsec_1 = new JLabel("Velocity2 (mm/sec)");
+		JLabel lblVelocitymmsec_1 = new JLabel("Velocity 2 (mm/sec)");
 		resultsPane.add(lblVelocitymmsec_1, "cell 0 4,alignx trailing");
 		
 		textField_63 = new JTextField("63");
