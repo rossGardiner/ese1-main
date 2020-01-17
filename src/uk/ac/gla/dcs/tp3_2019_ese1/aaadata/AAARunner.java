@@ -28,6 +28,7 @@ public class AAARunner {
     private final USB_1608FS _board;
     private final IGUI _gui;
     
+    
     public AAARunner(USB_1608FS board, IGUI gui) {
         _board = board;
         _gui = gui;
@@ -40,7 +41,7 @@ public class AAARunner {
      *            function a valid ActionListener
      */
     public void runTest(ActionEvent evt) {
-        try {
+    	try {
             _board.enableEvent(EventType.ON_END_OF_INPUT_SCAN, (b, t, d) -> {
                 double volts_per_g = GAIN_CALI / 10 * 5; /* V/G ? */
 
@@ -54,11 +55,12 @@ public class AAARunner {
             _board.analogueInStartAsync(ACCELEROMETER_IN, 1, ADCRange.BIP5VOLTS, SAMPLE_COUNT, SAMPLE_RATE, 0);
             System.out.println("Dropping...");
             _board.digitalOut(MAGNET_OUT, false);
-        } catch(LibcbwException ex) {
-            ex.printStackTrace();
+            } catch(LibcbwException ex) {
+            	ex.printStackTrace();
+            }
         }
-    }
-
+    
+    
     private static double GAIN_CALI = 604;
     
     /**

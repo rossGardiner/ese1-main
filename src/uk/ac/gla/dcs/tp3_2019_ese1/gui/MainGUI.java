@@ -375,7 +375,7 @@ public class MainGUI implements IGUI {
 		
 		JButton btnRunTest_1 = new JButton("Run Test");
         btnRunTest_1.addActionListener(_runner::runTest);
-
+        
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
@@ -711,8 +711,8 @@ public class MainGUI implements IGUI {
 
 		for(int i = 0; i < 1000; i++) {
 			series.add(new XYDataItem(i, i));
-			series2.add(new XYDataItem(i, 1000-i));
-			series3.add(new XYDataItem(i, 500));
+			series2.add(new XYDataItem(i, i + 100));
+			series3.add(new XYDataItem(i, i - 100));
 		}
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
@@ -826,6 +826,7 @@ public class MainGUI implements IGUI {
     public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
             double drop_dist, double spring, double material) {
         // TODO Auto-generated method stub
+    	
         
     }
 
