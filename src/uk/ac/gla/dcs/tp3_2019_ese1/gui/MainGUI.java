@@ -344,7 +344,7 @@ public class MainGUI implements IGUI {
 		
 		JPanel launchControlPanel = new JPanel();
 		launchControlPanel.setBorder(null);
-		frame.getContentPane().add(launchControlPanel, "cell 0 1,alignx left,aligny top");
+		frame.getContentPane().add(launchControlPanel, "cell 0 1,alignx left,growy");
 		launchControlPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		
 		JPanel testLaunchPanel = new JPanel();
@@ -775,7 +775,7 @@ public class MainGUI implements IGUI {
 		tabbedPane.addTab("Graph 3", null, panel_graph3, null);
 		
 		JPanel averageResultsPanel = new JPanel();
-		frame.getContentPane().add(averageResultsPanel, BorderLayout.SOUTH);
+        frame.getContentPane().add(averageResultsPanel, "cell 0 0, grow");
 		averageResultsPanel.setLayout(new MigLayout("", "[77px]", "[14px]"));
 		
 		JPanel panel_11 = new JPanel();
