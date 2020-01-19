@@ -105,7 +105,7 @@ public class MainGUI implements IGUI {
 	private JTextField textField_45;
 	private JTextField txtPeak;
 	private JTextField textField_46;
-	private JPanel panel_graph3;
+	private JPanel panel_displacement;
 	private JTextField textField_51;
 	private JTextField textField_52;
 	private JTextField textField_53;
@@ -122,6 +122,10 @@ public class MainGUI implements IGUI {
 	private JTextField textField_64;
 	private JTextField textField_65;
 	private JTextField textField_66;
+	
+	private XYSeriesCollection _accelerationData = new XYSeriesCollection();
+	private XYSeriesCollection _velocityData = new XYSeriesCollection();
+	private XYSeriesCollection _displacementData = new XYSeriesCollection();
 
 
 	/**
@@ -672,22 +676,30 @@ public class MainGUI implements IGUI {
 		gbl_dataViewPanel.columnWeights = new double[]{1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
 		gbl_dataViewPanel.rowWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		dataViewPanel.setLayout(gbl_dataViewPanel);
-		XYSeries series = new XYSeries("Series1");
-		XYSeries series2  = new XYSeries("Series2");
-		XYSeries series3 = new XYSeries("Series3");
+		XYSeries series = new XYSeries("Test 1");
+		XYSeries series2  = new XYSeries("Test 2");
+		XYSeries series3 = new XYSeries("Test 3");
 
 		for(int i = 0; i < 1000; i++) {
-			series.add(new XYDataItem(i, i));
-			series2.add(new XYDataItem(i, i + 100));
-			series3.add(new XYDataItem(i, i - 100));
+			series.add(new XYDataItem(i, 0));
+			series2.add(new XYDataItem(i, 0));
+			series3.add(new XYDataItem(i, 0));
 		}
-		XYSeriesCollection dataset = new XYSeriesCollection();
+		_accelerationData.addSeries(series);
+		_accelerationData.addSeries(series2);
+		_accelerationData.addSeries(series3);
+		JFreeChart accelerationChart = ChartFactory.createXYLineChart("Acceleration Vs Time","Time","Acceleration", _accelerationData);
 		
-		dataset.addSeries(series);
-		dataset.addSeries(series2);
-		dataset.addSeries(series3);
-		JFreeChart chart = ChartFactory.createXYLineChart("Acceleration Vs Time","Time","Acceleration", dataset);
+		_velocityData.addSeries(series);
+		_velocityData.addSeries(series2);
+		_velocityData.addSeries(series3);
+		JFreeChart velocityChart = ChartFactory.createXYLineChart("Velocity Vs Time","Time","Velocity", _velocityData);
 		
+		_displacementData.addSeries(series);
+		_displacementData.addSeries(series2);
+		_displacementData.addSeries(series3);
+		JFreeChart displacementChart = ChartFactory.createXYLineChart("Displacement Vs Time","Time","Displacement", _displacementData);
+
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
 		gbc_tabbedPane.gridheight = 5;
@@ -701,13 +713,13 @@ public class MainGUI implements IGUI {
 		
 		JPanel panel_acceleration = new JPanel();
 		tabbedPane.addTab("Acceleration Vs. Time", null, panel_acceleration, null);
-		ChartPanel chartPanelAcceleration = new ChartPanel(chart);
+		ChartPanel chartPanelAcceleration = new ChartPanel(accelerationChart);
 		chartPanelAcceleration.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount() == 2) {
 					//new ChartViewer(chart).setVisible(true);
-					new ChartViewerDialog(chart).setVisible(true);
+					new ChartViewerDialog(accelerationChart).setVisible(true);
 				}
 			}
 		});
@@ -715,32 +727,34 @@ public class MainGUI implements IGUI {
 		panel_acceleration.setLayout(new BorderLayout());
 		panel_acceleration.add(chartPanelAcceleration, BorderLayout.CENTER);
 		
-		JPanel panel_graph2 = new JPanel();
-		ChartPanel chartPanelGraph2 = new ChartPanel(chart);
-		chartPanelGraph2.addMouseListener(new MouseAdapter() {
+		JPanel panel_velocity = new JPanel();
+		ChartPanel chartPanelVelocity = new ChartPanel(velocityChart);
+		chartPanelVelocity.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(chart).setVisible(true);
+				new ChartViewerDialog(velocityChart).setVisible(true);
 			}
 		});
-		chartPanelGraph2.setDomainZoomable(true);
-		panel_graph2.setLayout(new BorderLayout());
-		panel_graph2.add(chartPanelGraph2, BorderLayout.CENTER);
-		tabbedPane.addTab("Graph 2", null, panel_graph2, null);
+		chartPanelVelocity.setDomainZoomable(true);
+		panel_velocity.setLayout(new BorderLayout());
+		panel_velocity.add(chartPanelVelocity, BorderLayout.CENTER);
+		tabbedPane.addTab("Velocity Vs. Time", null, panel_velocity, null);
 		
-		panel_graph3 = new JPanel();
-		ChartPanel chartPanelGraph3 = new ChartPanel(chart);
-		chartPanelGraph3.addMouseListener(new MouseAdapter() {
+		panel_displacement = new JPanel();
+		
+		ChartPanel chartPanelDisplacement = new ChartPanel(displacementChart);
+
+		chartPanelDisplacement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(chart).setVisible(true);
+				new ChartViewerDialog(displacementChart).setVisible(true);
 			}
 		});
-		chartPanelGraph3.setDomainZoomable(true);
+		chartPanelDisplacement.setDomainZoomable(true);
 
-		panel_graph3.setLayout(new BorderLayout());
-		panel_graph3.add(chartPanelGraph3, BorderLayout.CENTER);
-		tabbedPane.addTab("Graph 3", null, panel_graph3, null);
+		panel_displacement.setLayout(new BorderLayout());
+		panel_displacement.add(chartPanelDisplacement, BorderLayout.CENTER);
+		tabbedPane.addTab("Displacement Vs. Time", null, panel_displacement, null);
 		
 		JPanel averageResultsPanel = new JPanel();
         frame.getContentPane().add(averageResultsPanel, "cell 0 0 4 1,grow");
@@ -766,27 +780,37 @@ public class MainGUI implements IGUI {
     	
     	//make graphical datasets for:
     	//ACCELERATION
-    	XYSeries accelerationSeries = new XYSeries("acceleration");
+    	XYSeries accelerationSeries = new XYSeries("Test " + testNr);
     	int x = 0;
     	for (double accVal : acceleration) {
 			accelerationSeries.add(new XYDataItem(x, accVal));
 			x++;
 		}
     	//VELOCITY
-    	XYSeries velocitySeries = new XYSeries("velocity");
+    	XYSeries velocitySeries = new XYSeries("Test " + testNr);
     	x = 0;
     	for (double velVal : velocity) {
 			velocitySeries.add(new XYDataItem(x, velVal));
 			x++;
 		}
     	//DISPLACEMENT
-    	XYSeries displacementSeries = new XYSeries("displacement");
+    	XYSeries displacementSeries = new XYSeries("Test " + testNr);
     	x = 0;
     	for (double dispVal : disp) {
 			displacementSeries.add(new XYDataItem(x, dispVal));
 			x++;
 		}
     	
+    	//update chart datasets for:
+    	//ACCELERATION
+    	_accelerationData.removeSeries(testIdx);
+    	_accelerationData.addSeries(accelerationSeries);
+    	//VELOCITY
+    	_velocityData.removeSeries(testIdx);
+    	_velocityData.addSeries(velocitySeries);
+    	//DISPACEMENT
+    	_displacementData.removeSeries(testIdx);
+    	_displacementData.addSeries(displacementSeries);
     	
     		
     }
