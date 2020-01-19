@@ -682,6 +682,7 @@ public class MainGUI implements IGUI {
 			series3.add(new XYDataItem(i, i - 100));
 		}
 		XYSeriesCollection dataset = new XYSeriesCollection();
+		
 		dataset.addSeries(series);
 		dataset.addSeries(series2);
 		dataset.addSeries(series3);
@@ -759,26 +760,29 @@ public class MainGUI implements IGUI {
 	}
 
     @Override
-    public void makeGraphs(double[] acceleration, double[] velocity, double[] disp, int drop_touch2) {
-        // TODO Auto-generated method stub
-        
+    public void makeGraphs(double[] acceleration, double[] velocity, double[] disp, int drop_touch2, int testNr) {
+    	//first, work out the test index (0-2 inclusive)
+    	int testIdx = testNr%3;
+    	
+    	//make graphical datasets for:
+    	//ACCELERATION
+    	
+    		
     }
 
     @Override
     public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
-            double drop_dist, double spring, double material) {
-    System.out.print("outputing results...");
-   	 textField_10.setText(Double.toString(peakG));
-	 textField_55.setText(Double.toString(fmax));
-	 textField_59.setText(Double.toString(v1));
-	 textField_63.setText(Double.toString(v2));
-	 textField_16.setText(Double.toString(drop_dist));
-	 textField_20.setText(Double.toString(spring));
-	 textField_24.setText(Double.toString(fred));
-	 textField_51.setText(Double.toString(energy));
-
-
-        // TODO Auto-generated method stub
+            double drop_dist, double spring, double material, int testNr) {
+    	//first work out test index (0-2 inclusive)
+    	int testIdx = testNr%3;
+   	 	textField_10.setText(Double.toString(peakG));
+   	 	textField_55.setText(Double.toString(fmax));
+   	 	textField_59.setText(Double.toString(v1));
+   	 	textField_63.setText(Double.toString(v2));
+   	 	textField_16.setText(Double.toString(drop_dist));
+   	 	textField_20.setText(Double.toString(spring));
+   	 	textField_24.setText(Double.toString(fred));
+   	 	textField_51.setText(Double.toString(energy));
     	
         
     }

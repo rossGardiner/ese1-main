@@ -26,7 +26,8 @@ public class AAARunner {
     private static final double SPRINGCAL = 2043.36; /* XXX not this */
 
     private final USB_1608FS _board;
-    private final IGUI _gui;
+    private final IGUI _gui;]
+    private int _testNr = 0; //added 19/01/2020 by RG
     
     
     public AAARunner(USB_1608FS board, IGUI gui) {
@@ -48,6 +49,7 @@ public class AAARunner {
                 int[] raw = _board.analogueInStopAsync()[0];
                 int offset = Arrays.stream(raw).limit(PRE_DROP_CNT).sum() / PRE_DROP_CNT;
                 double[] acceleration = Arrays.stream(raw).mapToDouble(r -> SCALING_5V * (r - offset) / volts_per_g).toArray();
+                _testNr++;
 
                 analyseResults(applyLegacyFilter(acceleration));
             });
@@ -135,7 +137,7 @@ public class AAARunner {
             }
         }
 
-        _gui.makeGraphs(acceleration, velocity, disp,drop_touch2);
+        _gui.makeGraphs(acceleration, velocity, disp,drop_touch2, _testNr);
 
         double drop_dist = disp[drop_touch];
         double drop_total = Arrays.stream(disp).limit(drop_touch2).skip(drop_touch).max().orElse(0.0);
@@ -146,6 +148,6 @@ public class AAARunner {
         double spring = -fmax / SPRINGCAL;
         double material = drop_total - drop_dist - spring;
 
-        _gui.outputResults(peakG, fmax, fred, v1, v2, energy, drop_dist, spring, material);
+        _gui.outputResults(peakG, fmax, fred, v1, v2, energy, drop_dist, spring, material, _testNr);
     }
 }
