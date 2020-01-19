@@ -20,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Random;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
@@ -127,7 +128,7 @@ public class MainGUI implements IGUI {
 	private XYSeriesCollection _velocityData = new XYSeriesCollection();
 	private XYSeriesCollection _displacementData = new XYSeriesCollection();
 
-
+	private int _n = 0;
 	/**
 	 * Launch the application.
 	 */
@@ -563,8 +564,15 @@ public class MainGUI implements IGUI {
 		btnRunTest_1 = new JButton("Run Test");
 		btnRunTest_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				Random r = new Random();
+				double[] array = new double[1000];
+				for(int i = 0; i < 1000; i++) {
+					array[i] = (double)i * r.nextFloat();
+				}
+				makeGraphs(array, array, array, 0, _n);
+				_n++;
 			}
+			
 		});
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,grow");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -780,21 +788,21 @@ public class MainGUI implements IGUI {
     	
     	//make graphical datasets for:
     	//ACCELERATION
-    	XYSeries accelerationSeries = new XYSeries("Test " + testNr);
+    	XYSeries accelerationSeries = new XYSeries("Test " + (testNr + 1));
     	int x = 0;
     	for (double accVal : acceleration) {
 			accelerationSeries.add(new XYDataItem(x, accVal));
 			x++;
 		}
     	//VELOCITY
-    	XYSeries velocitySeries = new XYSeries("Test " + testNr);
+    	XYSeries velocitySeries = new XYSeries("Test " + (testNr + 1));
     	x = 0;
     	for (double velVal : velocity) {
 			velocitySeries.add(new XYDataItem(x, velVal));
 			x++;
 		}
     	//DISPLACEMENT
-    	XYSeries displacementSeries = new XYSeries("Test " + testNr);
+    	XYSeries displacementSeries = new XYSeries("Test " + (testNr + 1));
     	x = 0;
     	for (double dispVal : disp) {
 			displacementSeries.add(new XYDataItem(x, dispVal));
