@@ -7,73 +7,52 @@
  */
 
 package uk.ac.gla.dcs.tp3_2019_ese1.gui;
- 
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JTabbedPane;
 import java.awt.BorderLayout;
-import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import net.miginfocom.swing.MigLayout;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
-import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
-
-import javax.swing.JTextField;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import java.awt.GridLayout;
-import java.awt.Font;
-import java.awt.Graphics2D;
-
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.BoxLayout;
-import javax.swing.SwingConstants;
-import javax.swing.JTextPane;
-import javax.swing.JLabel;
-import java.awt.Component;
-import javax.swing.Box;
-import javax.swing.border.TitledBorder;
-import javax.swing.plaf.synth.Region;
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.Plot;
-import org.jfree.chart.plot.PlotRenderingInfo;
-import org.jfree.chart.plot.PlotState;
-import org.jfree.data.xy.XYDataItem;
-import org.jfree.data.xy.XYDataset;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 //import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 
 import javax.swing.JTextArea;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import java.awt.FlowLayout;
-import javax.swing.JRadioButton;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
-import javax.swing.JMenu;
-import javax.swing.AbstractAction;
-import java.awt.event.ActionEvent;
-import javax.swing.Action;
-import java.awt.event.ActionListener;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.border.BevelBorder;
+import javax.swing.border.TitledBorder;
 
-public class MainGUI {
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.xy.XYDataItem;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
+import net.miginfocom.swing.MigLayout;
+import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
+import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
+import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
+import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
+
+public class MainGUI implements IGUI {
 	private JFrame frame;
 	private final JPanel timerPanel = new JPanel();
 	private JTextField textField_2;
@@ -100,6 +79,8 @@ public class MainGUI {
 	private JTextField textField_50;
 	private final Action action = new SwingAction();
 	private LibcbwBoard.USB_1608FS board;
+	private AAARunner _runner;
+	private boolean _magnetStatus;
 	private JTextField textField_14;
 	private JTextField textField_15;
 	private JTextField textField_16;
@@ -173,6 +154,7 @@ public class MainGUI {
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+
 		board = null;
 		try {
 			DaqDeviceDescriptor[] daqArray = DaqDeviceDescriptor.getDaqDeviceInventory(DaqDeviceDescriptor.USB_IFC, 5);
@@ -184,6 +166,9 @@ public class MainGUI {
 		catch (Exception e) {
 			// TODO: handle exception
 		}
+		
+        _runner = new AAARunner(board, this);
+		
 		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][]", "[23px][825px]"));
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
 		settingsPane.setToolTipText("SESTTING\r\n");
@@ -359,7 +344,7 @@ public class MainGUI {
 		
 		JPanel launchControlPanel = new JPanel();
 		launchControlPanel.setBorder(null);
-		frame.getContentPane().add(launchControlPanel, "cell 0 1,alignx left,aligny top");
+		frame.getContentPane().add(launchControlPanel, "cell 0 1,alignx left,growy");
 		launchControlPanel.setLayout(new GridLayout(4, 0, 0, 0));
 		
 		JPanel testLaunchPanel = new JPanel();
@@ -368,11 +353,18 @@ public class MainGUI {
 		testLaunchPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
 		
 		JButton btnMagnetStatus_1 = new JButton("Magnet status");
+		_magnetStatus = false;
 		btnMagnetStatus_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				try {
-					board.digitalOut(0, true);
+					_magnetStatus = !_magnetStatus;
+					board.digitalOut(0, _magnetStatus);
+					if(_magnetStatus){
+						btnMagnetStatus_1.setBackground(new Color(0,71,137)); //SportsLabs Colors
+					}else{
+						btnMagnetStatus_1.setBackground(null);
+					}
 				}
 				catch (LibcbwException ex) {
 					ex.printStackTrace();
@@ -382,6 +374,8 @@ public class MainGUI {
 		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,aligny top");
 		
 		JButton btnRunTest_1 = new JButton("Run Test");
+        btnRunTest_1.addActionListener(_runner::runTest);
+        
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
@@ -502,7 +496,7 @@ public class MainGUI {
 		resultsPane.add(textField_62, "cell 4 3,growx");
 		textField_62.setColumns(10);
 		
-		JLabel lblVelocitymmsec_1 = new JLabel("Velocity2 (mm/sec)");
+		JLabel lblVelocitymmsec_1 = new JLabel("Velocity 2 (mm/sec)");
 		resultsPane.add(lblVelocitymmsec_1, "cell 0 4,alignx trailing");
 		
 		textField_63 = new JTextField("63");
@@ -717,8 +711,8 @@ public class MainGUI {
 
 		for(int i = 0; i < 1000; i++) {
 			series.add(new XYDataItem(i, i));
-			series2.add(new XYDataItem(i, 1000-i));
-			series3.add(new XYDataItem(i, 500));
+			series2.add(new XYDataItem(i, i + 100));
+			series3.add(new XYDataItem(i, i - 100));
 		}
 		XYSeriesCollection dataset = new XYSeriesCollection();
 		dataset.addSeries(series);
@@ -781,7 +775,7 @@ public class MainGUI {
 		tabbedPane.addTab("Graph 3", null, panel_graph3, null);
 		
 		JPanel averageResultsPanel = new JPanel();
-		frame.getContentPane().add(averageResultsPanel, BorderLayout.SOUTH);
+        frame.getContentPane().add(averageResultsPanel, "cell 0 0, grow");
 		averageResultsPanel.setLayout(new MigLayout("", "[77px]", "[14px]"));
 		
 		JPanel panel_11 = new JPanel();
@@ -822,5 +816,35 @@ public class MainGUI {
 		}
 	}
 
-	
+    @Override
+    public void makeGraphs(double[] acceleration, double[] velocity, double[] disp, int drop_touch2) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
+            double drop_dist, double spring, double material) {
+    System.out.print("outputing results...");
+   	 textField_10.setText(Double.toString(peakG));
+	 textField_55.setText(Double.toString(fmax));
+	 textField_59.setText(Double.toString(v1));
+	 textField_63.setText(Double.toString(v2));
+	 textField_16.setText(Double.toString(drop_dist));
+	 textField_20.setText(Double.toString(spring));
+	 textField_24.setText(Double.toString(fred));
+	 textField_51.setText(Double.toString(energy));
+
+
+        // TODO Auto-generated method stub
+    	
+        
+    }
+
+    @Override
+    public void displayErrorMessage(String msg) {
+        // TODO Auto-generated method stub
+        
+    }
+
 }
