@@ -169,10 +169,10 @@ public class MainGUI implements IGUI {
 		
         _runner = new AAARunner(board, this);
 		
-		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][]", "[23px][825px]"));
+		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][][]", "[23px][825px]"));
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
 		settingsPane.setToolTipText("SESTTING\r\n");
-		frame.getContentPane().add(settingsPane, "cell 3 1,alignx right,aligny top");
+		frame.getContentPane().add(settingsPane, "cell 3 1,alignx right,growy");
 		
 		JPanel calibrateTab = new JPanel();
 		settingsPane.addTab("Results", null, calibrateTab, null);
@@ -629,7 +629,7 @@ public class MainGUI implements IGUI {
 		textField_54.setColumns(10);
 		
 		JMenuBar menuBar = new JMenuBar();
-		frame.getContentPane().add(menuBar, "cell 0 0 4 1,growx,aligny top");
+		frame.getContentPane().add(menuBar, "cell 0 0 4 1,alignx center,growy");
 		
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
@@ -670,41 +670,8 @@ public class MainGUI implements IGUI {
 		gbl_dataViewPanel.columnWidths = new int[]{159, 157, 149, 75, 0};
 		gbl_dataViewPanel.rowHeights = new int[]{225, 0, 224, 0, 230, 0, 0};
 		gbl_dataViewPanel.columnWeights = new double[]{1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_dataViewPanel.rowWeights = new double[]{0.0, 0.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_dataViewPanel.rowWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
 		dataViewPanel.setLayout(gbl_dataViewPanel);
-		JPanel panel_10 = new JPanel();
-		panel_10.setBorder(new TitledBorder(null, "Current test", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		GridBagConstraints gbc_panel_10 = new GridBagConstraints();
-		gbc_panel_10.fill = GridBagConstraints.BOTH;
-		gbc_panel_10.gridwidth = 4;
-		gbc_panel_10.insets = new Insets(0, 0, 5, 0);
-		gbc_panel_10.gridx = 0;
-		gbc_panel_10.gridy = 0;
-		dataViewPanel.add(panel_10, gbc_panel_10);
-		GridBagLayout gbl_panel_10 = new GridBagLayout();
-		gbl_panel_10.columnWidths = new int[]{159, 157, 149, 75, 0};
-		gbl_panel_10.rowHeights = new int[]{225, 0};
-		gbl_panel_10.columnWeights = new double[]{0.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_panel_10.rowWeights = new double[]{0.0, Double.MIN_VALUE};
-		panel_10.setLayout(gbl_panel_10);
-		
-		JTextArea txtrSecondGraphTest = new JTextArea();
-		GridBagConstraints gbc_txtrSecondGraphTest = new GridBagConstraints();
-		gbc_txtrSecondGraphTest.fill = GridBagConstraints.BOTH;
-		gbc_txtrSecondGraphTest.insets = new Insets(0, 0, 0, 5);
-		gbc_txtrSecondGraphTest.gridx = 1;
-		gbc_txtrSecondGraphTest.gridy = 0;
-		panel_10.add(txtrSecondGraphTest, gbc_txtrSecondGraphTest);
-		txtrSecondGraphTest.setText("Second graph test 1");
-		
-		JTextArea txtrThirdGraphTest = new JTextArea();
-		GridBagConstraints gbc_txtrThirdGraphTest = new GridBagConstraints();
-		gbc_txtrThirdGraphTest.fill = GridBagConstraints.BOTH;
-		gbc_txtrThirdGraphTest.insets = new Insets(0, 0, 0, 5);
-		gbc_txtrThirdGraphTest.gridx = 2;
-		gbc_txtrThirdGraphTest.gridy = 0;
-		panel_10.add(txtrThirdGraphTest, gbc_txtrThirdGraphTest);
-		txtrThirdGraphTest.setText("Third graph test 1");
 		XYSeries series = new XYSeries("Series1");
 		XYSeries series2  = new XYSeries("Series2");
 		XYSeries series3 = new XYSeries("Series3");
@@ -720,9 +687,9 @@ public class MainGUI implements IGUI {
 		dataset.addSeries(series3);
 		JFreeChart chart = ChartFactory.createXYLineChart("Acceleration Vs Time","Time","Acceleration", dataset);
 		
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
-		gbc_tabbedPane.gridheight = 6;
+		gbc_tabbedPane.gridheight = 5;
 		gbc_tabbedPane.gridwidth = 4;
 		gbc_tabbedPane.insets = new Insets(0, 0, 5, 5);
 		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
@@ -775,33 +742,8 @@ public class MainGUI implements IGUI {
 		tabbedPane.addTab("Graph 3", null, panel_graph3, null);
 		
 		JPanel averageResultsPanel = new JPanel();
-        frame.getContentPane().add(averageResultsPanel, "cell 0 0, grow");
+        frame.getContentPane().add(averageResultsPanel, "cell 0 0 4 1,grow");
 		averageResultsPanel.setLayout(new MigLayout("", "[77px]", "[14px]"));
-		
-		JPanel panel_11 = new JPanel();
-		panel_11.setBorder(new TitledBorder(null, "Results (3 test average)", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		averageResultsPanel.add(panel_11, "cell 0 0,grow");
-		panel_11.setLayout(new GridLayout(0, 3, 0, 0));
-		
-		JLabel lblFmaxaverage = new JLabel("Fmax (average)");
-		panel_11.add(lblFmaxaverage);
-		
-		textField_10 = new JTextField();
-		panel_11.add(textField_10);
-		textField_10.setColumns(10);
-		
-		JLabel label = new JLabel("");
-		panel_11.add(label);
-		
-		JLabel lblForceReductionaverage = new JLabel("Force reduction (average)");
-		panel_11.add(lblForceReductionaverage);
-		
-		textField_11 = new JTextField();
-		panel_11.add(textField_11);
-		textField_11.setColumns(10);
-		
-		JLabel label_1 = new JLabel("");
-		panel_11.add(label_1);
 		//panel_13.setLayout(new BorderLayout());
 		//panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
 		//tabbedPane.addTab("Graph 3", null, panel_13, null);
