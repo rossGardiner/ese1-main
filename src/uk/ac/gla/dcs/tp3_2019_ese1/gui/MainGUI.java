@@ -766,6 +766,27 @@ public class MainGUI implements IGUI {
     	
     	//make graphical datasets for:
     	//ACCELERATION
+    	XYSeries accelerationSeries = new XYSeries("acceleration");
+    	int x = 0;
+    	for (double accVal : acceleration) {
+			accelerationSeries.add(new XYDataItem(x, accVal));
+			x++;
+		}
+    	//VELOCITY
+    	XYSeries velocitySeries = new XYSeries("velocity");
+    	x = 0;
+    	for (double velVal : velocity) {
+			velocitySeries.add(new XYDataItem(x, velVal));
+			x++;
+		}
+    	//DISPLACEMENT
+    	XYSeries displacementSeries = new XYSeries("displacement");
+    	x = 0;
+    	for (double dispVal : disp) {
+			displacementSeries.add(new XYDataItem(x, dispVal));
+			x++;
+		}
+    	
     	
     		
     }

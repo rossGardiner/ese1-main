@@ -26,7 +26,7 @@ public class AAARunner {
     private static final double SPRINGCAL = 2043.36; /* XXX not this */
 
     private final USB_1608FS _board;
-    private final IGUI _gui;]
+    private final IGUI _gui;
     private int _testNr = 0; //added 19/01/2020 by RG
     
     
