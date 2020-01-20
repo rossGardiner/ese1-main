@@ -77,6 +77,7 @@ import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.general.Dataset;
 
 import org.jfree.data.xy.XYDataItem;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -99,7 +100,9 @@ import java.awt.geom.Rectangle2D;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import org.apache.commons.io.FilenameUtils;
 import java.io.IOException;
+import java.security.ProtectionDomain;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import net.miginfocom.swing.MigLayout;
@@ -616,12 +619,14 @@ public class MainGUI implements IGUI {
 		resultsPane.add(textField_23, "cell 4 6,growx");
 		textField_23.setColumns(10);
 		
-		btnRunTest_1 = new JButton("Run Test");
+		/*
+		 * btnRunTest_1 = new JButton("Run Test");
 		btnRunTest_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
 			}
 		});
+		 */
 
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,grow");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -660,33 +665,38 @@ public class MainGUI implements IGUI {
 		 *  repeating too many tests
 		 */
 		
-		Timer timer = new Timer(delay, new ActionListener() {
-		    public void actionPerformed(ActionEvent evt) {
-		    	btnStart_1.setEnabled(true);
-		    }
-		});
-		timer.setRepeats(false);
+		
 		
 		btnStart_1.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				JButton button = (JButton)(ae.getSource());
+				JButton button = btnRunTest_1;
 				button.setEnabled(false);
 				System.out.printf("Timer running");
 				int getTime = getTime();
+				Timer timer = new Timer(getTime, new ActionListener() {
+				    public void actionPerformed(ActionEvent evt) {
+				    	btnRunTest_1.setEnabled(true);
+				    }
+				});
+				
+				timer.setRepeats(false);
 				timer.start();
 				}
 
 			private int getTime() {
-				int minutes = Integer.parseInt(textField_2.getText());
-				int seconds = Integer.parseInt(textField_3.getText());
-				minutes = minutes * 10000;
+				int minutes = Integer.parseInt(textField_3.getText());
+				int seconds = Integer.parseInt(textField_2.getText());
+				minutes = minutes * 60000;
 				seconds = seconds * 1000;
 				delay = minutes + seconds;
+				System.out.println(delay);
 				return delay;
 			}
+			
 		});
+		
 		
 		textField_28 = new JTextField();
 		resultsPane.add(textField_28, "cell 1 8,growx");
@@ -797,19 +807,16 @@ public class MainGUI implements IGUI {
 		gbc_tabbedPane.gridy = 0;
 		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
 		
-		/*
-		 * GENERATING XML REPORT
-		 */
-		/*
+		
 		btnSaveFile.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JFileChooser saveFile = new JFileChooser();
-				saveFile.setDialogTitle("Choose where to save the file");
+				saveFile.setDialogTitle("Choose where to save the file, the file will be saved into an xml format");
 				int userSelection = saveFile.showSaveDialog(frame);
 				if (userSelection == JFileChooser.APPROVE_OPTION) {
 					File file = saveFile.getSelectedFile();
 					//Save file into xml format
-					file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".xml");
+					file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".csv");
 					ArrayList<String> csv = new ArrayList<>();
 				    if (chart.getPlot() instanceof XYPlot) {
 				    	Dataset dataset = chart.getXYPlot().getDataset();
@@ -838,7 +845,7 @@ public class MainGUI implements IGUI {
 				
 			}
 		});
-		*/
+		
 		JPanel panel_9 = new JPanel();
 		tabbedPane.addTab("Acceleration Vs. Time", null, panel_9, null);
 
