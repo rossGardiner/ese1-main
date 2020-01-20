@@ -20,6 +20,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import javax.swing.AbstractAction;
@@ -811,15 +813,26 @@ public class MainGUI implements IGUI {
     	
     	//update chart datasets for:
     	//ACCELERATION
-    	_accelerationData.removeSeries(testIdx);
-    	_accelerationData.addSeries(accelerationSeries);
+		List<Object> accData = Arrays.asList(_accelerationData.getSeries().toArray());
+    	accData.set(testIdx, accelerationSeries);
+    	_accelerationData.removeAllSeries();
+    	for(Object series : accData) {
+    		_accelerationData.addSeries((XYSeries)series);
+    	}
     	//VELOCITY
-    	_velocityData.removeSeries(testIdx);
-    	_velocityData.addSeries(velocitySeries);
+    	List<Object> velData = Arrays.asList(_velocityData.getSeries().toArray());
+    	velData.set(testIdx, velocitySeries);
+    	_velocityData.removeAllSeries();
+    	for(Object series : velData) {
+    		_velocityData.addSeries((XYSeries)series);
+    	}
     	//DISPACEMENT
-    	_displacementData.removeSeries(testIdx);
-    	_displacementData.addSeries(displacementSeries);
-    	
+    	List<Object> dispData = Arrays.asList(_displacementData.getSeries().toArray());
+    	dispData.set(testIdx, velocitySeries);
+    	_displacementData.removeAllSeries();
+    	for(Object series : dispData) {
+    		_displacementData.addSeries((XYSeries)series);
+    	}
     		
     }
 
