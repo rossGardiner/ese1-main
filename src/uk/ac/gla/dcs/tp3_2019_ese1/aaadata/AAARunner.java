@@ -50,7 +50,7 @@ public class AAARunner {
                 int offset = Arrays.stream(raw).limit(PRE_DROP_CNT).sum() / PRE_DROP_CNT;
                 double[] acceleration = Arrays.stream(raw).mapToDouble(r -> SCALING_5V * (r - offset) / volts_per_g).toArray();
                 _testNr++;
-
+                //analyseResults(acceleration);
                 analyseResults(applyLegacyFilter(acceleration));
             });
             System.out.println("Reading...");
@@ -74,7 +74,7 @@ public class AAARunner {
      */
     private static double[] applyLegacyFilter(double[] acc) {
         double x = 0.0, prevx = 0.0, y = 0.0, prevy = 0.0;
-        for(int i = 0; i < acc.length; i++) {
+        for(int i = 0; i < acc.length - 1; i++) {
             x = acc[i];
             acc[i] = (acc[i+1] + 2*x + prevx) / 1.777837895e+04F
                     + 1.9786749573F*y - 0.9788999497F*prevy;
