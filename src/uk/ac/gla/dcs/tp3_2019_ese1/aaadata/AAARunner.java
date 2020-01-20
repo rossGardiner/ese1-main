@@ -64,7 +64,7 @@ public class AAARunner {
     	
     
     
-    private static double GAIN_CALI = 604;
+    private static double GAIN_CALI = 0.208; //modified 20/01/2020 - (calibration * gain) / 2
     
     /**
      *  Hack -- in-place digital filter functionally identical to the legacy code but
