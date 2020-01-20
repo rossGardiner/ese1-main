@@ -20,13 +20,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -34,23 +37,24 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
-
-//import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
-
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYDataItem;
+import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 import net.miginfocom.swing.MigLayout;
 import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
+//import sun.security.provider.CtrDrbg;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
@@ -76,11 +80,6 @@ public class MainGUI implements IGUI {
 	private JTextField textField_42;
 	private JTextField textField_43;
 	private JTextField textField_44;
-	private JTextField textField_47;
-	private JTextField textField_48;
-	private JTextField textField_49;
-	private JTextField textField_50;
-	private final Action action = new SwingAction();
 	private LibcbwBoard.USB_1608FS board;
 	private AAARunner _runner;
 	private boolean _magnetStatus;
@@ -109,6 +108,13 @@ public class MainGUI implements IGUI {
 	private JTextField txtPeak;
 	private JTextField textField_46;
 	private JPanel panel_displacement;
+	private JTextField textField_47;
+	private JTextField textField_48;
+	private JTextField textField_49;
+	private JTextField textField_50;
+	private static int delay;
+
+	private JPanel panel_graph3;
 	private JTextField textField_51;
 	private JTextField textField_52;
 	private JTextField textField_53;
@@ -153,6 +159,8 @@ public class MainGUI implements IGUI {
 	public MainGUI() {
 		initialize();
 	}
+	
+	
 
 	/**
 	 * Initialize the contents of the frame.
@@ -346,8 +354,6 @@ public class MainGUI implements IGUI {
 		
 		JLabel lblSaved = new JLabel("Saved!");
 		calibrateTab.add(lblSaved, "cell 1 5");
-		
-		JPanel panel_4 = new JPanel();
 		
 		JPanel launchControlPanel = new JPanel();
 		launchControlPanel.setBorder(null);
@@ -563,7 +569,8 @@ public class MainGUI implements IGUI {
 		resultsPane.add(textField_23, "cell 4 6,growx");
 		textField_23.setColumns(10);
 		
-		btnRunTest_1 = new JButton("Run Test");
+		/*
+		 * btnRunTest_1 = new JButton("Run Test");
 		btnRunTest_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Random r = new Random();
@@ -576,6 +583,8 @@ public class MainGUI implements IGUI {
 			}
 			
 		});
+		 */
+
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,grow");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
@@ -605,10 +614,35 @@ public class MainGUI implements IGUI {
 		JLabel lblVerticalDeformation = new JLabel("Vertical deformation");
 		resultsPane.add(lblVerticalDeformation, "cell 0 8,alignx trailing");
 		lblVerticalDeformation.setFont(new Font("SansSerif", Font.BOLD, 12));
+	
+		/*
+		 *  Pausing the Button For given seconds to avoid 
+		 *  repeating too many tests
+		 */
+		btnStart_1.addActionListener((ae) -> {
+				JButton button = btnRunTest_1;
+				button.setEnabled(false);
+				System.out.printf("Timer running");
+  
+				int minutes = Integer.parseInt(textField_3.getText());
+				int seconds = Integer.parseInt(textField_2.getText());
+				minutes = minutes * 60000;
+				seconds = seconds * 1000;
+				delay = minutes + seconds;
+				System.out.println(delay);
+				
+				Timer timer = new Timer(delay, (evt) -> btnRunTest_1.setEnabled(true));
+				
+				timer.setRepeats(false);
+				timer.start();
+			
+		});
+		
 		
 		textField_28 = new JTextField();
 		resultsPane.add(textField_28, "cell 1 8,growx");
 		textField_28.setColumns(10);
+
 		
 		textField_29 = new JTextField();
 		resultsPane.add(textField_29, "cell 2 8,growx");
@@ -617,7 +651,7 @@ public class MainGUI implements IGUI {
 		textField_30 = new JTextField();
 		resultsPane.add(textField_30, "cell 3 8,growx");
 		textField_30.setColumns(10);
-		
+
 		textField_31 = new JTextField();
 		resultsPane.add(textField_31, "cell 4 8,growx");
 		textField_31.setColumns(10);
@@ -695,6 +729,7 @@ public class MainGUI implements IGUI {
 			series2.add(new XYDataItem(i, 0));
 			series3.add(new XYDataItem(i, 0));
 		}
+
 		_accelerationData.addSeries(series);
 		_accelerationData.addSeries(series2);
 		_accelerationData.addSeries(series3);
@@ -721,6 +756,40 @@ public class MainGUI implements IGUI {
 		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
 		
 		
+		btnSaveFile.addActionListener((evt) -> {
+		    JFileChooser saveFile = new JFileChooser();
+		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into an xml format");
+		    int userSelection = saveFile.showSaveDialog(frame);
+		    if (userSelection == JFileChooser.APPROVE_OPTION) {
+		        File file = saveFile.getSelectedFile();
+		        //Save file into xml format
+		        file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".csv");
+		        ArrayList<String> csv = new ArrayList<>();
+		        if (accelerationChart.getPlot() instanceof XYPlot) {
+		            XYDataset xyDataset = accelerationChart.getXYPlot().getDataset();
+		            int seriesCount = xyDataset.getSeriesCount();
+		            for (int i = 0; i < seriesCount; i++) {
+		                int itemCount = xyDataset.getItemCount(i);
+		                for (int j = 0; j < itemCount; j++) {
+		                    Comparable<?> key = xyDataset.getSeriesKey(i);
+		                    Number x = xyDataset.getX(i, j);
+		                    Number y = xyDataset.getY(i, j);
+		                    csv.add(String.format("%s, %s, %s", key, x, y));
+		                }
+		            }
+		        }
+		        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file));)
+		        {
+		            for (String line : csv) {
+		                writer.append(line);
+		                writer.newLine();
+		            }
+		        } catch (IOException e) {
+		            throw new IllegalStateException("Cannot write dataset",e);
+		        }
+		    }		
+		});
+
 		JPanel panel_acceleration = new JPanel();
 		tabbedPane.addTab("Acceleration Vs. Time", null, panel_acceleration, null);
 		ChartPanel chartPanelAcceleration = new ChartPanel(accelerationChart);
@@ -772,15 +841,6 @@ public class MainGUI implements IGUI {
 		//panel_13.setLayout(new BorderLayout());
 		//panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
 		//tabbedPane.addTab("Graph 3", null, panel_13, null);
-	}
-
-	private class SwingAction extends AbstractAction {
-		public SwingAction() {
-			putValue(NAME, "");
-			putValue(SHORT_DESCRIPTION, "");
-		}
-		public void actionPerformed(ActionEvent e) {
-		}
 	}
 
     @Override
