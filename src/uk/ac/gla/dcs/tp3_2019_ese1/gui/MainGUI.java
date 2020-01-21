@@ -877,7 +877,7 @@ public class MainGUI implements IGUI {
     	//update chart datasets for:
     	//ACCELERATION
 		List<Object> accData = Arrays.asList(_accelerationData.getSeries().toArray());
-    	accData.set(testIdx, accelerationSeries);
+    	accData.set(testIdx , accelerationSeries);
     	_accelerationData.removeAllSeries();
     	for(Object series : accData) {
     		_accelerationData.addSeries((XYSeries)series);
@@ -891,7 +891,7 @@ public class MainGUI implements IGUI {
     	}
     	//DISPACEMENT
     	List<Object> dispData = Arrays.asList(_displacementData.getSeries().toArray());
-    	dispData.set(testIdx, velocitySeries);
+    	dispData.set(testIdx, displacementSeries);
     	_displacementData.removeAllSeries();
     	for(Object series : dispData) {
     		_displacementData.addSeries((XYSeries)series);
@@ -905,7 +905,7 @@ public class MainGUI implements IGUI {
     	
     	//first work out test index (0-2 inclusive)
     	int testIdx = testNr%3;
-    	if(testIdx == 0) {
+    	if(testIdx == 1) {
    	 		textField_tst1PkG.setText(Double.toString(peakG));
    	 		textField_tst1Fmx.setText(Double.toString(fmax));
    	 		textField_tst1V1.setText(Double.toString(v1));
@@ -915,7 +915,7 @@ public class MainGUI implements IGUI {
    	 		textField_tst1Fred.setText(Double.toString(fred));
    	 		textField_tst1EnrgRes.setText(Double.toString(energy));
     	}
-    	if(testIdx == 1) {
+    	if(testIdx == 2) {
     		textField_tst2PkG.setText(Double.toString(peakG));
    	 		textField_tst2Fmx.setText(Double.toString(fmax));
    	 		textField_tst2V1.setText(Double.toString(v1));
@@ -925,7 +925,7 @@ public class MainGUI implements IGUI {
    	 		textField_tst2Fred.setText(Double.toString(fred));
    	 		textField_tst2EnrgRes.setText(Double.toString(energy));
     	}
-    	if(testIdx == 2) {
+    	if(testIdx == 0) {
     		textField_tst3PkG.setText(Double.toString(peakG));
 	 		textField_tst3Fmx.setText(Double.toString(fmax));
 	 		textField_tst3V1.setText(Double.toString(v1));
