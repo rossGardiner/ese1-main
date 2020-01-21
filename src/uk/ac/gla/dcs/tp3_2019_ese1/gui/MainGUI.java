@@ -905,15 +905,37 @@ public class MainGUI implements IGUI {
     	
     	//first work out test index (0-2 inclusive)
     	int testIdx = testNr%3;
-   	 	textField_tst1PkG.setText(Double.toString(peakG));
-   	 	textField_tst1Fmx.setText(Double.toString(fmax));
-   	 	textField_tst1V1.setText(Double.toString(v1));
-   	 	textField_tst1V2.setText(Double.toString(v2));
-   	 	textField_tst1DrpHt.setText(Double.toString(drop_dist));
-   	 	textField_tst1SpngDef.setText(Double.toString(spring));
-   	 	textField_tst1Fred.setText(Double.toString(fred));
-   	 	textField_tst1EnrgRes.setText(Double.toString(energy));
-    	
+    	if(testIdx == 0) {
+   	 		textField_tst1PkG.setText(Double.toString(peakG));
+   	 		textField_tst1Fmx.setText(Double.toString(fmax));
+   	 		textField_tst1V1.setText(Double.toString(v1));
+   	 		textField_tst1V2.setText(Double.toString(v2));
+   	 		textField_tst1DrpHt.setText(Double.toString(drop_dist));
+   	 		textField_tst1SpngDef.setText(Double.toString(spring));
+   	 		textField_tst1Fred.setText(Double.toString(fred));
+   	 		textField_tst1EnrgRes.setText(Double.toString(energy));
+    	}
+    	if(testIdx == 1) {
+    		textField_tst2PkG.setText(Double.toString(peakG));
+   	 		textField_tst2Fmx.setText(Double.toString(fmax));
+   	 		textField_tst2V1.setText(Double.toString(v1));
+   	 		textField_tst2V2.setText(Double.toString(v2));
+   	 		textField_tst2DrpHt.setText(Double.toString(drop_dist));
+   	 		textField_tst2SpngDef.setText(Double.toString(spring));
+   	 		textField_tst2Fred.setText(Double.toString(fred));
+   	 		textField_tst2EnrgRes.setText(Double.toString(energy));
+    	}
+    	if(testIdx == 2) {
+    		textField_tst3PkG.setText(Double.toString(peakG));
+	 		textField_tst3Fmx.setText(Double.toString(fmax));
+	 		textField_tst3V1.setText(Double.toString(v1));
+	 		textField_tst3V2.setText(Double.toString(v2));
+	 		textField_tst3DrpHt.setText(Double.toString(drop_dist));
+	 		textField_tst3SpngDef.setText(Double.toString(spring));
+	 		textField_tst3Fred.setText(Double.toString(fred));
+	 		textField_tst3EnrgRes.setText(Double.toString(energy));
+    	}
+    	//make averages
         
     }
 
