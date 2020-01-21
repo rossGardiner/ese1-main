@@ -67,7 +67,7 @@ public class MainGUI implements IGUI {
 	private final JPanel timerPanel = new JPanel();
 	private JTextField textField_2;
 	private JTextField textField_3;
-	private JTextField textField_10;
+	private JTextField textField_tst1PkG;
 	private JTextField textField_11;
 	private JTextField textField_4;
 	private JTextField textField_5;
@@ -88,19 +88,19 @@ public class MainGUI implements IGUI {
 	private boolean _magnetStatus;
 	private JTextField textField_14;
 	private JTextField textField_15;
-	private JTextField textField_16;
+	private JTextField textField_tst1DrpHt;
 	private JTextField textField_17;
 	private JTextField textField_18;
 	private JTextField textField_19;
-	private JTextField textField_20;
+	private JTextField textField_tst1SpngDef;
 	private JTextField textField_21;
 	private JTextField textField_22;
 	private JTextField textField_23;
-	private JTextField textField_24;
+	private JTextField textField_tst1Fred;
 	private JTextField textField_25;
 	private JTextField textField_26;
 	private JTextField textField_27;
-	private JTextField textField_28;
+	private JTextField textField_tst1Vdef;
 	private JTextField textField_29;
 	private JTextField textField_30;
 	private JTextField textField_31;
@@ -118,19 +118,19 @@ public class MainGUI implements IGUI {
 	private static int delay;
 
 	private JPanel panel_graph3;
-	private JTextField textField_51;
+	private JTextField textField_tst1EnrgRes;
 	private JTextField textField_52;
 	private JTextField textField_53;
 	private JTextField textField_54;
-	private JTextField textField_55;
+	private JTextField textField_tst1Fmx;
 	private JTextField textField_56;
 	private JTextField textField_57;
 	private JTextField textField_58;
-	private JTextField textField_59;
+	private JTextField textField_tst1V1;
 	private JTextField textField_60;
 	private JTextField textField_61;
 	private JTextField textField_62;
-	private JTextField textField_63;
+	private JTextField textField_tst1V2;
 	private JTextField textField_64;
 	private JTextField textField_65;
 	private JTextField textField_66;
@@ -447,10 +447,10 @@ public class MainGUI implements IGUI {
 		JLabel lblPeakG = new JLabel("Peak G");
 		resultsPane.add(lblPeakG, "cell 0 1,alignx trailing");
 		
-		textField_10 = new JTextField();
-		resultsPane.add(textField_10, "cell 1 1,growx");
-		textField_10.setText("10");
-		textField_10.setColumns(10);
+		textField_tst1PkG = new JTextField();
+		resultsPane.add(textField_tst1PkG, "cell 1 1,growx");
+		textField_tst1PkG.setText("10");
+		textField_tst1PkG.setColumns(10);
 		
 		textField_11 = new JTextField();
 		resultsPane.add(textField_11, "cell 2 1,growx");
@@ -470,10 +470,10 @@ public class MainGUI implements IGUI {
 		JLabel lblFmax_3 = new JLabel("Fmax");
 		resultsPane.add(lblFmax_3, "cell 0 2,alignx trailing");
 		
-		textField_55 = new JTextField();
-		resultsPane.add(textField_55, "cell 1 2,growx");
-		textField_55.setText("55");
-		textField_55.setColumns(10);
+		textField_tst1Fmx = new JTextField();
+		resultsPane.add(textField_tst1Fmx, "cell 1 2,growx");
+		textField_tst1Fmx.setText("55");
+		textField_tst1Fmx.setColumns(10);
 		
 		textField_56 = new JTextField();
 		resultsPane.add(textField_56, "cell 2 2,growx");
@@ -493,10 +493,10 @@ public class MainGUI implements IGUI {
 		JLabel lblVelocitymmsec = new JLabel("Velocity 1 (mm/sec)");
 		resultsPane.add(lblVelocitymmsec, "cell 0 3,alignx trailing");
 		
-		textField_59 = new JTextField();
-		resultsPane.add(textField_59, "cell 1 3,growx");
-		textField_59.setText("59");
-		textField_59.setColumns(10);
+		textField_tst1V1 = new JTextField();
+		resultsPane.add(textField_tst1V1, "cell 1 3,growx");
+		textField_tst1V1.setText("59");
+		textField_tst1V1.setColumns(10);
 		
 		textField_60 = new JTextField();
 		resultsPane.add(textField_60, "cell 2 3,growx");
@@ -515,9 +515,9 @@ public class MainGUI implements IGUI {
 		JLabel lblVelocitymmsec_1 = new JLabel("Velocity 2 (mm/sec)");
 		resultsPane.add(lblVelocitymmsec_1, "cell 0 4,alignx trailing");
 		
-		textField_63 = new JTextField("63");
-		resultsPane.add(textField_63, "cell 1 4,growx");
-		textField_63.setColumns(10);
+		textField_tst1V2 = new JTextField("63");
+		resultsPane.add(textField_tst1V2, "cell 1 4,growx");
+		textField_tst1V2.setColumns(10);
 		
 		textField_64 = new JTextField("64");
 		resultsPane.add(textField_64, "cell 2 4,growx");
@@ -534,10 +534,10 @@ public class MainGUI implements IGUI {
 		JLabel lblDropHt = new JLabel("Drop HT");
 		resultsPane.add(lblDropHt, "cell 0 5,alignx trailing");
 		
-		textField_16 = new JTextField();
-		resultsPane.add(textField_16, "cell 1 5,growx");
-		textField_16.setText("16");
-		textField_16.setColumns(10);
+		textField_tst1DrpHt = new JTextField();
+		resultsPane.add(textField_tst1DrpHt, "cell 1 5,growx");
+		textField_tst1DrpHt.setText("16");
+		textField_tst1DrpHt.setColumns(10);
 		
 		textField_17 = new JTextField();
 		resultsPane.add(textField_17, "cell 2 5,growx");
@@ -556,9 +556,9 @@ public class MainGUI implements IGUI {
 		JLabel lblSpringDeformation = new JLabel("Spring deformation");
 		resultsPane.add(lblSpringDeformation, "cell 0 6,alignx trailing");
 		
-		textField_20 = new JTextField();
-		resultsPane.add(textField_20, "cell 1 6,growx");
-		textField_20.setColumns(10);
+		textField_tst1SpngDef = new JTextField();
+		resultsPane.add(textField_tst1SpngDef, "cell 1 6,growx");
+		textField_tst1SpngDef.setColumns(10);
 		
 		textField_21 = new JTextField();
 		resultsPane.add(textField_21, "cell 2 6,growx");
@@ -598,9 +598,9 @@ public class MainGUI implements IGUI {
 		lblForceReduction_3.setFont(new Font("SansSerif", Font.BOLD, 12));
 
 		
-		textField_24 = new JTextField();
-		resultsPane.add(textField_24, "cell 1 7,growx");
-		textField_24.setColumns(10);
+		textField_tst1Fred = new JTextField();
+		resultsPane.add(textField_tst1Fred, "cell 1 7,growx");
+		textField_tst1Fred.setColumns(10);
 		
 		textField_25 = new JTextField();
 		resultsPane.add(textField_25, "cell 2 7,growx");
@@ -642,9 +642,9 @@ public class MainGUI implements IGUI {
 		});
 		
 		
-		textField_28 = new JTextField();
-		resultsPane.add(textField_28, "cell 1 8,growx");
-		textField_28.setColumns(10);
+		textField_tst1Vdef = new JTextField();
+		resultsPane.add(textField_tst1Vdef, "cell 1 8,growx");
+		textField_tst1Vdef.setColumns(10);
 
 		
 		textField_29 = new JTextField();
@@ -663,9 +663,9 @@ public class MainGUI implements IGUI {
 		resultsPane.add(lblEnergyRestitution, "cell 0 9,alignx trailing");
 		lblEnergyRestitution.setFont(new Font("SansSerif", Font.BOLD, 12));
 		
-		textField_51 = new JTextField();
-		resultsPane.add(textField_51, "cell 1 9,growx");
-		textField_51.setColumns(10);
+		textField_tst1EnrgRes = new JTextField();
+		resultsPane.add(textField_tst1EnrgRes, "cell 1 9,growx");
+		textField_tst1EnrgRes.setColumns(10);
 		
 		textField_52 = new JTextField();
 		resultsPane.add(textField_52, "cell 2 9,growx");
@@ -905,14 +905,14 @@ public class MainGUI implements IGUI {
     	
     	//first work out test index (0-2 inclusive)
     	int testIdx = testNr%3;
-   	 	textField_10.setText(Double.toString(peakG));
-   	 	textField_55.setText(Double.toString(fmax));
-   	 	textField_59.setText(Double.toString(v1));
-   	 	textField_63.setText(Double.toString(v2));
-   	 	textField_16.setText(Double.toString(drop_dist));
-   	 	textField_20.setText(Double.toString(spring));
-   	 	textField_24.setText(Double.toString(fred));
-   	 	textField_51.setText(Double.toString(energy));
+   	 	textField_tst1PkG.setText(Double.toString(peakG));
+   	 	textField_tst1Fmx.setText(Double.toString(fmax));
+   	 	textField_tst1V1.setText(Double.toString(v1));
+   	 	textField_tst1V2.setText(Double.toString(v2));
+   	 	textField_tst1DrpHt.setText(Double.toString(drop_dist));
+   	 	textField_tst1SpngDef.setText(Double.toString(spring));
+   	 	textField_tst1Fred.setText(Double.toString(fred));
+   	 	textField_tst1EnrgRes.setText(Double.toString(energy));
     	
         
     }
