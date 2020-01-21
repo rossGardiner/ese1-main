@@ -30,9 +30,25 @@ public class AAARunner {
     private int _testNr = 0; //added 19/01/2020 by RG
     
     
-    public AAARunner(USB_1608FS board, IGUI gui) {
+    public AAARunner(USB_1608FS board, IGUI gui) throws LibcbwException {
         _board = board;
         _gui = gui;
+        _board.enableEvent(EventType.ON_END_OF_INPUT_SCAN, (b, t, d) -> {
+            double volts_per_g = GAIN_CALI / 10 * 5; /* V/G ? */
+
+            int[] raw = _board.analogueInStopAsync()[0];
+            int offset = Arrays.stream(raw).limit(PRE_DROP_CNT).sum() / PRE_DROP_CNT;
+            double[] acceleration = Arrays.stream(raw).mapToDouble(r -> SCALING_5V * (r - offset) / volts_per_g).toArray();
+            _testNr++;
+            
+            analyseResults(applyLegacyFilter(acceleration));
+
+            try {
+                _board.digitalOut(MAGNET_OUT, true);
+            } catch(LibcbwException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
     
     /**
@@ -42,25 +58,15 @@ public class AAARunner {
      *            function a valid ActionListener
      */
     public void runTest(ActionEvent evt) {
-    	try {
-            _board.enableEvent(EventType.ON_END_OF_INPUT_SCAN, (b, t, d) -> {
-                double volts_per_g = GAIN_CALI / 10 * 5; /* V/G ? */
-
-                int[] raw = _board.analogueInStopAsync()[0];
-                int offset = Arrays.stream(raw).limit(PRE_DROP_CNT).sum() / PRE_DROP_CNT;
-                double[] acceleration = Arrays.stream(raw).mapToDouble(r -> SCALING_5V * (r - offset) / volts_per_g).toArray();
-                _testNr++;
-                //analyseResults(acceleration);
-                analyseResults(applyLegacyFilter(acceleration));
-            });
+    	try {        
             System.out.println("Reading...");
             _board.analogueInStartAsync(ACCELEROMETER_IN, 1, ADCRange.BIP5VOLTS, SAMPLE_COUNT, SAMPLE_RATE, 0);
             System.out.println("Dropping...");
             _board.digitalOut(MAGNET_OUT, false);
-            } catch(LibcbwException ex) {
-            	ex.printStackTrace();
-            }
-        }
+    	} catch(LibcbwException ex) {
+    	    ex.printStackTrace();
+    	}
+    }
     	
     
     
