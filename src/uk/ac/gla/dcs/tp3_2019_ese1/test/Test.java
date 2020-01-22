@@ -13,12 +13,14 @@ import static org.junit.Assert.*;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.EventType;
 
 public class Test {
-
+	
     private static final int ACCELEROMETER_IN = 1;
     private static final int MAGNET_OUT = 0;
 
     public static void main(String[] args) throws LibcbwException {
-        System.setProperty("jna.library.path", "D:/Measurement Computing/DAQ/");
+    	testGUI();
+    
+    	/*System.setProperty("jna.library.path", "D:/Measurement Computing/DAQ/");
 
         try(Scanner scanner = new Scanner(System.in)) {
             DaqDeviceDescriptor dev;
@@ -51,13 +53,19 @@ public class Test {
                 } catch(InterruptedException ignore) {}
             }
         }
+    
+        */
     }
 
-    public void testGUI()
-    {
-    	boolean assertionBool = true;
+	private static void testGUI() {
+		// TODO Auto-generated method stub
+		boolean assertionBool = true;
     	MainGUI gui = new MainGUI();
     	boolean guiBOOl = gui.getInitSucc();
     	assertEquals(assertionBool,guiBOOl);
-    }
+    	System.out.print("GUI initialization test passed\n");
+		
+	}
+
+    
 }

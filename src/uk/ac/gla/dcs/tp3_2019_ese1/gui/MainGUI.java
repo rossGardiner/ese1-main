@@ -52,12 +52,11 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-<<<<<<< Updated upstream
-=======
+
 import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
 import com.sun.org.omg.CORBA._IDLTypeStub;
 
->>>>>>> Stashed changes
+
 import net.miginfocom.swing.MigLayout;
 import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 //import sun.security.provider.CtrDrbg;
@@ -926,13 +925,11 @@ public class MainGUI implements IGUI {
         // TODO Auto-generated method stub
         
     }
-<<<<<<< Updated upstream
 
-=======
     public boolean getInitSucc() {
     	boolean temp = _initSuccess;
     	return temp;
     }
     
->>>>>>> Stashed changes
+
 }
