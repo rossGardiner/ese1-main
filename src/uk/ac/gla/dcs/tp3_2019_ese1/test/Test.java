@@ -1,4 +1,4 @@
-package src.uk.ac.gla.dcs.tp3_2019_ese1.test;
+package uk.ac.gla.dcs.tp3_2019_ese1.test;
 
 //import java.util.Scanner;
 
