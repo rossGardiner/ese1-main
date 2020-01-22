@@ -573,9 +573,9 @@ public class MainGUI implements IGUI {
 		
 		JPanel testLaunchPanel = new JPanel();
 		launchControlPanel.add(testLaunchPanel);
-		testLaunchPanel.setPreferredSize(new Dimension(480, 64));
+	//	testLaunchPanel.setPreferredSize(new Dimension(480, 64));
 		testLaunchPanel.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		testLaunchPanel.setLayout(new MigLayout("", "[]", "[][]"));
+		testLaunchPanel.setLayout(new MigLayout("", "[]", "[][][][]"));
 		
 		JButton btnMagnetStatus_1 = new JButton("Magnet status");
 		_magnetStatus = false;
@@ -606,9 +606,30 @@ public class MainGUI implements IGUI {
 		launchControlPanel.add(timerPanel);
 		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][][]"));
 		
+		JButton btnSaveFile = new JButton("Save file");
+		timerPanel.add(btnSaveFile, "cell 0 3");
+		
+		/*
+		 * btnRunTest_1 = new JButton("Run Test");
+		btnRunTest_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Random r = new Random();
+				double[] array = new double[1000];
+				for(int i = 0; i < 1000; i++) {
+					array[i] = (double)i * r.nextFloat();
+				}
+				makeGraphs(array, array, array, 0, _n);
+				_n++;
+			}
+			
+		});
+		 */
+
+		testLaunchPanel.add(btnRunTest_1, "cell 0 1");
+		
 		JPanel panel_8 = new JPanel();
+		testLaunchPanel.add(panel_8, "cell 0 3");
 		panel_8.setBorder(new TitledBorder(null, "Timer", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		timerPanel.add(panel_8, "cell 0 1,grow");
 		panel_8.setLayout(new MigLayout("", "[left][]", "[][][][]"));
 		
 		JLabel lblMin = new JLabel("Min");
@@ -632,35 +653,6 @@ public class MainGUI implements IGUI {
 		
 		JButton btnReset_1 = new JButton("Reset");
 		panel_8.add(btnReset_1, "cell 1 3");
-		
-		JButton btnSaveFile = new JButton("Save file");
-		timerPanel.add(btnSaveFile, "cell 0 3");
-		
-		/*
-		 * btnRunTest_1 = new JButton("Run Test");
-		btnRunTest_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Random r = new Random();
-				double[] array = new double[1000];
-				for(int i = 0; i < 1000; i++) {
-					array[i] = (double)i * r.nextFloat();
-				}
-				makeGraphs(array, array, array, 0, _n);
-				_n++;
-			}
-			
-		});
-		 */
-
-		testLaunchPanel.add(btnRunTest_1, "cell 0 1");
-		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		launchControlPanel.add(timerPanel);
-		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
-	
-		/*
-		 *  Pausing the Button For given seconds to avoid 
-		 *  repeating too many tests
-		 */
 		btnStart_1.addActionListener((ae) -> {
 				JButton button = btnRunTest_1;
 				button.setEnabled(false);
@@ -679,6 +671,14 @@ public class MainGUI implements IGUI {
 				timer.start();
 			
 		});
+		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		launchControlPanel.add(timerPanel);
+		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
+	
+		/*
+		 *  Pausing the Button For given seconds to avoid 
+		 *  repeating too many tests
+		 */
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.getContentPane().add(menuBar, "cell 0 0 4 1,alignx center,growy");
