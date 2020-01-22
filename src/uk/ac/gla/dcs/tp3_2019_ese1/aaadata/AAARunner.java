@@ -27,10 +27,28 @@ public class AAARunner {
 
     private final USB_1608FS _board;
     private final IGUI _gui;
+    private int _testNr = 0; //added 19/01/2020 by RG
     
-    public AAARunner(USB_1608FS board, IGUI gui) {
+    
+    public AAARunner(USB_1608FS board, IGUI gui) throws LibcbwException {
         _board = board;
         _gui = gui;
+        _board.enableEvent(EventType.ON_END_OF_INPUT_SCAN, (b, t, d) -> {
+            double volts_per_g = GAIN_CALI / 10 * 5; /* V/G ? */
+
+            int[] raw = _board.analogueInStopAsync()[0];
+            int offset = Arrays.stream(raw).limit(PRE_DROP_CNT).sum() / PRE_DROP_CNT;
+            double[] acceleration = Arrays.stream(raw).mapToDouble(r -> SCALING_5V * (r - offset) / volts_per_g).toArray();
+            _testNr++;
+            
+            analyseResults(applyLegacyFilter(acceleration));
+
+            try {
+                _board.digitalOut(MAGNET_OUT, true);
+            } catch(LibcbwException ex) {
+                ex.printStackTrace();
+            }
+        });
     }
     
     /**
@@ -40,26 +58,19 @@ public class AAARunner {
      *            function a valid ActionListener
      */
     public void runTest(ActionEvent evt) {
-        try {
-            _board.enableEvent(EventType.ON_END_OF_INPUT_SCAN, (b, t, d) -> {
-                double volts_per_g = GAIN_CALI / 10 * 5; /* V/G ? */
-
-                int[] raw = _board.analogueInStopAsync()[0];
-                int offset = Arrays.stream(raw).limit(PRE_DROP_CNT).sum() / PRE_DROP_CNT;
-                double[] acceleration = Arrays.stream(raw).mapToDouble(r -> SCALING_5V * (r - offset) / volts_per_g).toArray();
-
-                analyseResults(applyLegacyFilter(acceleration));
-            });
+    	try {        
             System.out.println("Reading...");
             _board.analogueInStartAsync(ACCELEROMETER_IN, 1, ADCRange.BIP5VOLTS, SAMPLE_COUNT, SAMPLE_RATE, 0);
             System.out.println("Dropping...");
             _board.digitalOut(MAGNET_OUT, false);
-        } catch(LibcbwException ex) {
-            ex.printStackTrace();
-        }
+    	} catch(LibcbwException ex) {
+    	    ex.printStackTrace();
+    	}
     }
-
-    private static double GAIN_CALI = 604;
+    	
+    
+    
+    private static double GAIN_CALI = 0.208; //modified 20/01/2020 - (calibration * gain) / 2
     
     /**
      *  Hack -- in-place digital filter functionally identical to the legacy code but
@@ -69,7 +80,7 @@ public class AAARunner {
      */
     private static double[] applyLegacyFilter(double[] acc) {
         double x = 0.0, prevx = 0.0, y = 0.0, prevy = 0.0;
-        for(int i = 0; i < acc.length; i++) {
+        for(int i = 0; i < acc.length - 1; i++) {
             x = acc[i];
             acc[i] = (acc[i+1] + 2*x + prevx) / 1.777837895e+04F
                     + 1.9786749573F*y - 0.9788999497F*prevy;
@@ -132,7 +143,7 @@ public class AAARunner {
             }
         }
 
-        _gui.makeGraphs(acceleration, velocity, disp,drop_touch2);
+        _gui.makeGraphs(acceleration, velocity, disp,drop_touch2, _testNr);
 
         double drop_dist = disp[drop_touch];
         double drop_total = Arrays.stream(disp).limit(drop_touch2).skip(drop_touch).max().orElse(0.0);
@@ -143,6 +154,6 @@ public class AAARunner {
         double spring = -fmax / SPRINGCAL;
         double material = drop_total - drop_dist - spring;
 
-        _gui.outputResults(peakG, fmax, fred, v1, v2, energy, drop_dist, spring, material);
+        _gui.outputResults(peakG, fmax, fred, v1, v2, energy, drop_dist, spring, material, _testNr);
     }
 }
