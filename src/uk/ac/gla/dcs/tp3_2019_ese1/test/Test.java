@@ -2,11 +2,14 @@ package uk.ac.gla.dcs.tp3_2019_ese1.test;
 
 import java.util.Scanner;
 
+import uk.ac.gla.dcs.tp3_2019_ese1.gui.MainGUI;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard.USB_1608FS;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.ADCRange;
+import static org.junit.Assert.*;
+//import org.junit.Test;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwJNA.EventType;
 
 public class Test {
@@ -50,4 +53,11 @@ public class Test {
         }
     }
 
+    public void testGUI()
+    {
+    	boolean assertionBool = true;
+    	MainGUI gui = new MainGUI();
+    	boolean guiBOOl = gui.getInitSucc();
+    	assertEquals(assertionBool,guiBOOl);
+    }
 }

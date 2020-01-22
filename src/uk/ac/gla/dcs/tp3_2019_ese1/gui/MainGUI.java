@@ -52,6 +52,12 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+<<<<<<< Updated upstream
+=======
+import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
+import com.sun.org.omg.CORBA._IDLTypeStub;
+
+>>>>>>> Stashed changes
 import net.miginfocom.swing.MigLayout;
 import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 //import sun.security.provider.CtrDrbg;
@@ -137,6 +143,7 @@ public class MainGUI implements IGUI {
 	private XYSeriesCollection _displacementData = new XYSeriesCollection();
 
 	private int _n = 0;
+	private boolean _initSuccess = false;
 	/**
 	 * Launch the application.
 	 */
@@ -841,6 +848,7 @@ public class MainGUI implements IGUI {
 		//panel_13.setLayout(new BorderLayout());
 		//panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
 		//tabbedPane.addTab("Graph 3", null, panel_13, null);
+		_initSuccess = true;
 	}
 
     @Override
@@ -918,5 +926,13 @@ public class MainGUI implements IGUI {
         // TODO Auto-generated method stub
         
     }
+<<<<<<< Updated upstream
 
+=======
+    public boolean getInitSucc() {
+    	boolean temp = _initSuccess;
+    	return temp;
+    }
+    
+>>>>>>> Stashed changes
 }
