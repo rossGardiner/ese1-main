@@ -53,8 +53,8 @@ import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
 
-import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
-import com.sun.org.omg.CORBA._IDLTypeStub;
+//import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
+//import com.sun.org.omg.CORBA._IDLTypeStub;
 
 
 import net.miginfocom.swing.MigLayout;
