@@ -89,8 +89,8 @@ public class MainGUI implements IGUI {
 	private final JPanel timerPanel = new JPanel();
 	private JTextField textField_2;
 	private JTextField textField_3;
-	private JTextField textField_10;
-	private JTextField textField_11;
+	private JTextField cellTest1_PeakG;
+	private JTextField cellTest2_PeakG;
 	private JTextField textField_4;
 	private JTextField textField_5;
 	private JTextField textField_12;
@@ -109,10 +109,10 @@ public class MainGUI implements IGUI {
 	private AAARunner _runner;
 	private boolean _magnetStatus;
 	private JTextField textField_14;
-	private JTextField textField_15;
-	private JTextField textField_16;
-	private JTextField textField_17;
-	private JTextField textField_18;
+	private JTextField cellAvg_PeakG;
+	private JTextField cellTest1_DropHT;
+	private JTextField cellTest2_DropHT;
+	private JTextField cellTest3_DropHT;
 	private JTextField textField_19;
 	private JTextField textField_20;
 	private JTextField textField_21;
@@ -144,18 +144,18 @@ public class MainGUI implements IGUI {
 	private JTextField textField_52;
 	private JTextField textField_53;
 	private JTextField textField_54;
-	private JTextField textField_55;
-	private JTextField textField_56;
-	private JTextField textField_57;
-	private JTextField textField_58;
-	private JTextField textField_59;
-	private JTextField textField_60;
-	private JTextField textField_61;
-	private JTextField textField_62;
-	private JTextField textField_63;
-	private JTextField textField_64;
-	private JTextField textField_65;
-	private JTextField textField_66;
+	private JTextField cellTest1_Fmax;
+	private JTextField cellTest2_Fmax;
+	private JTextField cellTest3_Fmax;
+	private JTextField cellAvg_Fmax;
+	private JTextField cellTest1_Velocity1;
+	private JTextField cellTest2_Velocity1;
+	private JTextField cellTest3_Velocity1;
+	private JTextField cellAvg_Velocity1;
+	private JTextField cellTest1_Velocity2;
+	private JTextField cellTest2_Velocity2;
+	private JTextField cellTest3_Velocity2;
+	private JTextField cellAvg_Velocity2;
 	
 	private XYSeriesCollection _accelerationData = new XYSeriesCollection();
 	private XYSeriesCollection _velocityData = new XYSeriesCollection();
@@ -211,7 +211,7 @@ public class MainGUI implements IGUI {
 		
 		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][][]", "[23px][][825px]"));
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
-		settingsPane.setToolTipText("SETTINGS\r\n");
+		settingsPane.setToolTipText("SESTTING\r\n");
 		frame.getContentPane().add(settingsPane, "cell 3 2,alignx right,growy");
 		
 		JPanel calibrateTab = new JPanel();
@@ -237,107 +237,93 @@ public class MainGUI implements IGUI {
 		JLabel lblPeakG = new JLabel("Peak G");
 		resultsPane.add(lblPeakG, "cell 0 1,alignx trailing");
 		
-		textField_10 = new JTextField();
-		resultsPane.add(textField_10, "cell 1 1,growx");
-		textField_10.setText("10");
-		textField_10.setColumns(10);
+		cellTest1_PeakG = new JTextField();
+		resultsPane.add(cellTest1_PeakG, "cell 1 1,growx");
+		cellTest1_PeakG.setColumns(10);
 		
-		textField_11 = new JTextField();
-		resultsPane.add(textField_11, "cell 2 1,growx");
-		textField_11.setText("11");
-		textField_11.setColumns(10);
+		cellTest2_PeakG = new JTextField();
+		resultsPane.add(cellTest2_PeakG, "cell 2 1,growx");
+		cellTest2_PeakG.setColumns(10);
 		
 		textField_14 = new JTextField();
 		resultsPane.add(textField_14, "cell 3 1,growx");
-		textField_14.setText("14");
 		textField_14.setColumns(10);
 		
-		textField_15 = new JTextField();
-		resultsPane.add(textField_15, "cell 4 1,growx");
-		textField_15.setText("15");
-		textField_15.setColumns(10);
+		cellAvg_PeakG = new JTextField();
+		resultsPane.add(cellAvg_PeakG, "cell 4 1,growx");
+		cellAvg_PeakG.setColumns(10);
 		
 		JLabel lblFmax_3 = new JLabel("Fmax");
 		resultsPane.add(lblFmax_3, "cell 0 2,alignx trailing");
 		
-		textField_55 = new JTextField();
-		resultsPane.add(textField_55, "cell 1 2,growx");
-		textField_55.setText("55");
-		textField_55.setColumns(10);
+		cellTest1_Fmax = new JTextField();
+		resultsPane.add(cellTest1_Fmax, "cell 1 2,growx");
+		cellTest1_Fmax.setColumns(10);
 		
-		textField_56 = new JTextField();
-		resultsPane.add(textField_56, "cell 2 2,growx");
-		textField_56.setText("56");
-		textField_56.setColumns(10);
+		cellTest2_Fmax = new JTextField();
+		resultsPane.add(cellTest2_Fmax, "cell 2 2,growx");
+		cellTest2_Fmax.setColumns(10);
 		
-		textField_57 = new JTextField();
-		resultsPane.add(textField_57, "cell 3 2,growx");
-		textField_57.setText("57");
-		textField_57.setColumns(10);
+		cellTest3_Fmax = new JTextField();
+		resultsPane.add(cellTest3_Fmax, "cell 3 2,growx");
+		cellTest3_Fmax.setColumns(10);
 		
-		textField_58 = new JTextField();
-		resultsPane.add(textField_58, "cell 4 2,growx");
-		textField_58.setText("58");
-		textField_58.setColumns(10);
+		cellAvg_Fmax = new JTextField();
+		resultsPane.add(cellAvg_Fmax, "cell 4 2,growx");
+		cellAvg_Fmax.setColumns(10);
 		
 		JLabel lblVelocitymmsec = new JLabel("Velocity 1 (mm/sec)");
 		resultsPane.add(lblVelocitymmsec, "cell 0 3,alignx trailing");
 		
-		textField_59 = new JTextField();
-		resultsPane.add(textField_59, "cell 1 3,growx");
-		textField_59.setText("59");
-		textField_59.setColumns(10);
+		cellTest1_Velocity1 = new JTextField();
+		resultsPane.add(cellTest1_Velocity1, "cell 1 3,growx");
+		cellTest1_Velocity1.setColumns(10);
 		
-		textField_60 = new JTextField();
-		resultsPane.add(textField_60, "cell 2 3,growx");
-		textField_60.setText("60");
-		textField_60.setColumns(10);
+		cellTest2_Velocity1 = new JTextField();
+		resultsPane.add(cellTest2_Velocity1, "cell 2 3,growx");
+		cellTest2_Velocity1.setColumns(10);
 		
-		textField_61 = new JTextField();
-		resultsPane.add(textField_61, "cell 3 3,growx");
-		textField_61.setText("61");
-		textField_61.setColumns(10);
+		cellTest3_Velocity1 = new JTextField();
+		resultsPane.add(cellTest3_Velocity1, "cell 3 3,growx");
+		cellTest3_Velocity1.setColumns(10);
 		
-		textField_62 = new JTextField("62");
-		resultsPane.add(textField_62, "cell 4 3,growx");
-		textField_62.setColumns(10);
+		cellAvg_Velocity1 = new JTextField("");
+		resultsPane.add(cellAvg_Velocity1, "cell 4 3,growx");
+		cellAvg_Velocity1.setColumns(10);
 		
 		JLabel lblVelocitymmsec_1 = new JLabel("Velocity 2 (mm/sec)");
 		resultsPane.add(lblVelocitymmsec_1, "cell 0 4,alignx trailing");
 		
-		textField_63 = new JTextField("63");
-		resultsPane.add(textField_63, "cell 1 4,growx");
-		textField_63.setColumns(10);
+		cellTest1_Velocity2 = new JTextField("");
+		resultsPane.add(cellTest1_Velocity2, "cell 1 4,growx");
+		cellTest1_Velocity2.setColumns(10);
 		
-		textField_64 = new JTextField("64");
-		resultsPane.add(textField_64, "cell 2 4,growx");
-		textField_64.setColumns(10);
+		cellTest2_Velocity2 = new JTextField("");
+		resultsPane.add(cellTest2_Velocity2, "cell 2 4,growx");
+		cellTest2_Velocity2.setColumns(10);
 		
-		textField_65 = new JTextField("65");
-		resultsPane.add(textField_65, "cell 3 4,growx");
-		textField_65.setColumns(10);
+		cellTest3_Velocity2 = new JTextField("");
+		resultsPane.add(cellTest3_Velocity2, "cell 3 4,growx");
+		cellTest3_Velocity2.setColumns(10);
 		
-		textField_66 = new JTextField("66");
-		resultsPane.add(textField_66, "cell 4 4,growx");
-		textField_66.setColumns(10);
+		cellAvg_Velocity2 = new JTextField("");
+		resultsPane.add(cellAvg_Velocity2, "cell 4 4,growx");
+		cellAvg_Velocity2.setColumns(10);
 		
 		JLabel lblDropHt = new JLabel("Drop HT");
 		resultsPane.add(lblDropHt, "cell 0 5,alignx trailing");
 		
-		textField_16 = new JTextField();
-		resultsPane.add(textField_16, "cell 1 5,growx");
-		textField_16.setText("16");
-		textField_16.setColumns(10);
+		cellTest1_DropHT = new JTextField();
+		resultsPane.add(cellTest1_DropHT, "cell 1 5,growx");
+		cellTest1_DropHT.setColumns(10);
 		
-		textField_17 = new JTextField();
-		resultsPane.add(textField_17, "cell 2 5,growx");
-		textField_17.setText("17");
-		textField_17.setColumns(10);
+		cellTest2_DropHT = new JTextField();
+		resultsPane.add(cellTest2_DropHT, "cell 2 5,growx");
+		cellTest2_DropHT.setColumns(10);
 		
-		textField_18 = new JTextField();
-		resultsPane.add(textField_18, "cell 3 5,growx");
-		textField_18.setText("18");
-		textField_18.setColumns(10);
+		cellTest3_DropHT = new JTextField();
+		resultsPane.add(cellTest3_DropHT, "cell 3 5,growx");
+		cellTest3_DropHT.setColumns(10);
 		
 		textField_19 = new JTextField();
 		resultsPane.add(textField_19, "cell 4 5,growx");
@@ -782,7 +768,7 @@ public class MainGUI implements IGUI {
 		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
 		
 		
-		mntmSaveData.addActionListener((evt) -> {
+		btnSaveFile.addActionListener((evt) -> {
 		    JFileChooser saveFile = new JFileChooser();
 		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into an xml format");
 		    int userSelection = saveFile.showSaveDialog(frame);
@@ -927,11 +913,11 @@ public class MainGUI implements IGUI {
             double drop_dist, double spring, double material, int testNr) {
     	//first work out test index (0-2 inclusive)
     	int testIdx = testNr%3;
-   	 	textField_10.setText(Double.toString(peakG));
-   	 	textField_55.setText(Double.toString(fmax));
-   	 	textField_59.setText(Double.toString(v1));
-   	 	textField_63.setText(Double.toString(v2));
-   	 	textField_16.setText(Double.toString(drop_dist));
+   	 	cellTest1_PeakG.setText(Double.toString(peakG));
+   	 	cellTest1_Fmax.setText(Double.toString(fmax));
+   	 	cellTest1_Velocity1.setText(Double.toString(v1));
+   	 	cellTest1_Velocity2.setText(Double.toString(v2));
+   	 	cellTest1_DropHT.setText(Double.toString(drop_dist));
    	 	textField_20.setText(Double.toString(spring));
    	 	textField_24.setText(Double.toString(fred));
    	 	textField_51.setText(Double.toString(energy));
