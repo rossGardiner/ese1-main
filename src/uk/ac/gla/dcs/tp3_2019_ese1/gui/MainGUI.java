@@ -577,19 +577,28 @@ public class MainGUI implements IGUI {
 		testLaunchPanel.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		testLaunchPanel.setLayout(new MigLayout("", "[]", "[][][][]"));
 		
-		JButton btnMagnetStatus_1 = new JButton("Magnet status");
+		JButton btnMagnetStatus_1 = new JButton("Magnet toggle");
 		_magnetStatus = false;
+		
 		btnMagnetStatus_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
 				try {
-					_magnetStatus = !_magnetStatus;
-					board.digitalOut(0, _magnetStatus);
-					if(_magnetStatus){
+					if (_magnetStatus == false) {
+						_magnetStatus = !_magnetStatus;
+						board.digitalOut(0, true);						
+						btnMagnetStatus_1.setLabel("Magnet is ON");
 						btnMagnetStatus_1.setBackground(new Color(0,71,137)); //SportsLabs Colors
-					}else{
-						btnMagnetStatus_1.setBackground(null);
+
 					}
+					else {
+						_magnetStatus = !_magnetStatus;
+						board.digitalOut(0, false);						
+						btnMagnetStatus_1.setLabel("Magnet is OFF");
+						btnMagnetStatus_1.setBackground(new Color(255,255,255)); //SportsLabs Colors
+					}
+
 				}
 				catch (LibcbwException ex) {
 					ex.printStackTrace();
@@ -905,16 +914,41 @@ public class MainGUI implements IGUI {
             double drop_dist, double spring, double material, int testNr) {
     	//first work out test index (0-2 inclusive)
     	int testIdx = testNr%3;
-   	 	cellTest1_PeakG.setText(Double.toString(peakG));
-   	 	cellTest1_Fmax.setText(Double.toString(fmax));
-   	 	cellTest1_Velocity1.setText(Double.toString(v1));
-   	 	cellTest1_Velocity2.setText(Double.toString(v2));
-   	 	cellTest1_DropHT.setText(Double.toString(drop_dist));
-   	 	textField_20.setText(Double.toString(spring));
-   	 	textField_24.setText(Double.toString(fred));
-   	 	textField_51.setText(Double.toString(energy));
-    	
-        
+    	if(testIdx == 1) {
+   	 	  cellTest1_PeakG.setText(Double.toString(peakG));
+   	 	  cellTest1_Fmax.setText(Double.toString(fmax));
+   	 	  cellTest1_Velocity1.setText(Double.toString(v1));
+   	 	  cellTest1_Velocity2.setText(Double.toString(v2));
+   	 	  cellTest1_DropHT.setText(Double.toString(drop_dist));
+   	 	  textField_20.setText(Double.toString(spring));
+   	 	  textField_24.setText(Double.toString(fred));
+   	 	  textField_51.setText(Double.toString(energy));
+    	}
+    	if(testIdx == 2) {
+     	 	  cellTest2_PeakG.setText(Double.toString(peakG));
+       	 	  cellTest2_Fmax.setText(Double.toString(fmax));
+       	 	  cellTest2_Velocity1.setText(Double.toString(v1));
+       	 	  cellTest2_Velocity2.setText(Double.toString(v2));
+       	 	  cellTest2_DropHT.setText(Double.toString(drop_dist));
+       	 	  textField_21.setText(Double.toString(spring));
+       	 	  textField_25.setText(Double.toString(fred));
+       	 	  textField_52.setText(Double.toString(energy));
+        }
+    	if(testIdx == 0) {
+    		textField_14.setText(Double.toString(peakG));
+     	 	  cellTest3_Fmax.setText(Double.toString(fmax));
+     	 	  cellTest3_Velocity1.setText(Double.toString(v1));
+     	 	  cellTest3_Velocity2.setText(Double.toString(v2));
+     	 	  cellTest3_DropHT.setText(Double.toString(drop_dist));
+     	 	  textField_22.setText(Double.toString(spring));
+     	 	  textField_26.setText(Double.toString(fred));
+     	 	  textField_53.setText(Double.toString(energy));
+     	 	    	 	  
+     	 	  
+
+     	 	  
+    	}
+    		
     }
 
     @Override
