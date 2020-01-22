@@ -211,177 +211,14 @@ public class MainGUI implements IGUI {
 		
 		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][][]", "[23px][][825px]"));
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
-		settingsPane.setToolTipText("SESTTING\r\n");
+		settingsPane.setToolTipText("SETTINGS\r\n");
 		frame.getContentPane().add(settingsPane, "cell 3 2,alignx right,growy");
 		
 		JPanel calibrateTab = new JPanel();
 		settingsPane.addTab("Results", null, calibrateTab, null);
 		
-		JPanel setupTab = new JPanel();
-		settingsPane.addTab("Setup", null, setupTab, null);
-		setupTab.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][][][][][][][]"));
-		
-		JPanel panel = new JPanel();;
-		panel.setBorder(new TitledBorder(null, "Set gain", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		setupTab.add(panel, "cell 0 2 2 2,grow");
-		panel.setLayout(new MigLayout("", "[grow][grow]", "[][][][][][][][][]"));
-		
-		JLabel lblChanNo = new JLabel("Chan no");
-		panel.add(lblChanNo, "cell 0 0");
-		
-		JLabel lblGain = new JLabel("Gain");
-		panel.add(lblGain, "cell 1 0");
-		
-		JLabel label_2 = new JLabel("1");
-		panel.add(label_2, "cell 0 1,alignx trailing");
-		
-		textField_37 = new JTextField();
-		panel.add(textField_37, "cell 1 1,growx");
-		textField_37.setColumns(10);
-		
-		JLabel label_3 = new JLabel("2");
-		panel.add(label_3, "cell 0 2,alignx trailing");
-		
-		textField_38 = new JTextField();
-		panel.add(textField_38, "cell 1 2,growx");
-		textField_38.setColumns(10);
-		
-		JLabel label_4 = new JLabel("3");
-		panel.add(label_4, "cell 0 3,alignx trailing");
-		
-		textField_39 = new JTextField();
-		panel.add(textField_39, "cell 1 3,growx");
-		textField_39.setColumns(10);
-		
-		JLabel label_5 = new JLabel("4");
-		panel.add(label_5, "cell 0 4,alignx trailing");
-		
-		textField_40 = new JTextField();
-		panel.add(textField_40, "cell 1 4,growx");
-		textField_40.setColumns(10);
-		
-		JLabel label_6 = new JLabel("5");
-		panel.add(label_6, "cell 0 5,alignx trailing");
-		
-		textField_41 = new JTextField();
-		panel.add(textField_41, "cell 1 5,growx");
-		textField_41.setColumns(10);
-		
-		JLabel label_7 = new JLabel("6");
-		panel.add(label_7, "cell 0 6,alignx trailing");
-		
-		textField_42 = new JTextField();
-		panel.add(textField_42, "cell 1 6,growx");
-		textField_42.setColumns(10);
-		
-		JLabel label_8 = new JLabel("7");
-		panel.add(label_8, "cell 0 7,alignx trailing");
-		
-		textField_43 = new JTextField();
-		panel.add(textField_43, "cell 1 7,growx");
-		textField_43.setColumns(10);
-		
-		JLabel label_9 = new JLabel("8");
-		panel.add(label_9, "cell 0 8,alignx trailing");
-		
-		textField_44 = new JTextField();
-		panel.add(textField_44, "cell 1 8,growx");
-		textField_44.setColumns(10);
-		
-		JLabel lblSamples = new JLabel("Samples");
-		setupTab.add(lblSamples, "cell 2 2");
-		
-		JLabel lblRange = new JLabel("Range");
-		setupTab.add(lblRange, "cell 3 2");
-		
-		textField_36 = new JTextField();
-		setupTab.add(textField_36, "cell 2 3,growx");
-		textField_36.setColumns(10);
-		
-		textField_35 = new JTextField();
-		setupTab.add(textField_35, "cell 3 3,growx");
-		textField_35.setColumns(10);
-		
-		JLabel lblFilter = new JLabel("Filter");
-		setupTab.add(lblFilter, "cell 0 4");
-		
-		JToggleButton tglbtnYesno = new JToggleButton("Yes/No");
-		setupTab.add(tglbtnYesno, "cell 1 4");
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(null, "Trigger", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		setupTab.add(panel_3, "cell 2 5 2 1,grow");
-		panel_3.setLayout(new MigLayout("", "[grow][grow]", "[][][][]"));
-		
-		JLabel lblType = new JLabel("Type");
-		panel_3.add(lblType, "cell 0 0");
-		
-		JLabel lblValue = new JLabel("Value");
-		panel_3.add(lblValue, "cell 1 0");
-		
-		textField_47 = new JTextField();
-		panel_3.add(textField_47, "cell 0 1,growx");
-		textField_47.setColumns(10);
-		
-		textField_48 = new JTextField();
-		panel_3.add(textField_48, "cell 1 1,growx");
-		textField_48.setColumns(10);
-		
-		JLabel lblPretrig = new JLabel("Pretrig");
-		panel_3.add(lblPretrig, "cell 0 2");
-		
-		JLabel lblDelay = new JLabel("Delay");
-		panel_3.add(lblDelay, "cell 1 2");
-		
-		textField_49 = new JTextField();
-		panel_3.add(textField_49, "cell 0 3,growx");
-		textField_49.setColumns(10);
-		
-		textField_50 = new JTextField();
-		panel_3.add(textField_50, "cell 1 3,growx");
-		textField_50.setColumns(10);
-		
-		JButton btnSaveSetup = new JButton("Save Setup");
-		setupTab.add(btnSaveSetup, "cell 1 6");
-		settingsPane.addTab("Calibrate", null, calibrateTab, null);
-		calibrateTab.setLayout(new MigLayout("", "[][grow]", "[][][][][][]"));
-		
-		JLabel lblCalibration = new JLabel("Calibration");
-		calibrateTab.add(lblCalibration, "cell 0 0,alignx trailing");
-		
-		textField_4 = new JTextField();
-		calibrateTab.add(textField_4, "cell 1 0,growx");
-		textField_4.setColumns(10);
-		
-		JLabel lblAmpGain = new JLabel("Amp gain");
-		calibrateTab.add(lblAmpGain, "cell 0 1,alignx trailing");
-		
-		textField_5 = new JTextField();
-		calibrateTab.add(textField_5, "cell 1 1,growx");
-		textField_5.setColumns(10);
-		
-		JLabel lblConcrete = new JLabel("Concrete");
-		calibrateTab.add(lblConcrete, "cell 0 2,alignx trailing");
-		
-		textField_12 = new JTextField();
-		calibrateTab.add(textField_12, "cell 1 2,growx");
-		textField_12.setColumns(10);
-		
-		JLabel lblVoltage = new JLabel("Voltage");
-		calibrateTab.add(lblVoltage, "cell 0 3,alignx trailing");
-		
-		textField_13 = new JTextField();
-		calibrateTab.add(textField_13, "cell 1 3,growx");
-		textField_13.setColumns(10);
-		
-		JButton btnSaveSettings = new JButton("Save settings");
-		calibrateTab.add(btnSaveSettings, "cell 0 5");
-		
-		JLabel lblSaved = new JLabel("Saved!");
-		calibrateTab.add(lblSaved, "cell 1 5");
-		
 		JPanel resultsPane = new JPanel();
-		settingsPane.addTab("New tab", null, resultsPane, null);
+		settingsPane.addTab("Results", null, resultsPane, null);
 		resultsPane.setBorder(new TitledBorder(null, "Results", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		resultsPane.setLayout(new MigLayout("", "[77px][grow][grow][grow][grow]", "[][][14px][][][][][][][]"));
 		
@@ -588,6 +425,169 @@ public class MainGUI implements IGUI {
 										resultsPane.add(textField_54, "cell 4 9,growx");
 										textField_54.setColumns(10);
 		
+		JPanel setupTab = new JPanel();
+		settingsPane.addTab("Setup", null, setupTab, null);
+		setupTab.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][][][][][][][]"));
+		
+		JPanel panel = new JPanel();;
+		panel.setBorder(new TitledBorder(null, "Set gain", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setupTab.add(panel, "cell 0 2 2 2,grow");
+		panel.setLayout(new MigLayout("", "[grow][grow]", "[][][][][][][][][]"));
+		
+		JLabel lblChanNo = new JLabel("Chan no");
+		panel.add(lblChanNo, "cell 0 0");
+		
+		JLabel lblGain = new JLabel("Gain");
+		panel.add(lblGain, "cell 1 0");
+		
+		JLabel label_2 = new JLabel("1");
+		panel.add(label_2, "cell 0 1,alignx trailing");
+		
+		textField_37 = new JTextField();
+		panel.add(textField_37, "cell 1 1,growx");
+		textField_37.setColumns(10);
+		
+		JLabel label_3 = new JLabel("2");
+		panel.add(label_3, "cell 0 2,alignx trailing");
+		
+		textField_38 = new JTextField();
+		panel.add(textField_38, "cell 1 2,growx");
+		textField_38.setColumns(10);
+		
+		JLabel label_4 = new JLabel("3");
+		panel.add(label_4, "cell 0 3,alignx trailing");
+		
+		textField_39 = new JTextField();
+		panel.add(textField_39, "cell 1 3,growx");
+		textField_39.setColumns(10);
+		
+		JLabel label_5 = new JLabel("4");
+		panel.add(label_5, "cell 0 4,alignx trailing");
+		
+		textField_40 = new JTextField();
+		panel.add(textField_40, "cell 1 4,growx");
+		textField_40.setColumns(10);
+		
+		JLabel label_6 = new JLabel("5");
+		panel.add(label_6, "cell 0 5,alignx trailing");
+		
+		textField_41 = new JTextField();
+		panel.add(textField_41, "cell 1 5,growx");
+		textField_41.setColumns(10);
+		
+		JLabel label_7 = new JLabel("6");
+		panel.add(label_7, "cell 0 6,alignx trailing");
+		
+		textField_42 = new JTextField();
+		panel.add(textField_42, "cell 1 6,growx");
+		textField_42.setColumns(10);
+		
+		JLabel label_8 = new JLabel("7");
+		panel.add(label_8, "cell 0 7,alignx trailing");
+		
+		textField_43 = new JTextField();
+		panel.add(textField_43, "cell 1 7,growx");
+		textField_43.setColumns(10);
+		
+		JLabel label_9 = new JLabel("8");
+		panel.add(label_9, "cell 0 8,alignx trailing");
+		
+		textField_44 = new JTextField();
+		panel.add(textField_44, "cell 1 8,growx");
+		textField_44.setColumns(10);
+		
+		JLabel lblSamples = new JLabel("Samples");
+		setupTab.add(lblSamples, "cell 2 2");
+		
+		JLabel lblRange = new JLabel("Range");
+		setupTab.add(lblRange, "cell 3 2");
+		
+		textField_36 = new JTextField();
+		setupTab.add(textField_36, "cell 2 3,growx");
+		textField_36.setColumns(10);
+		
+		textField_35 = new JTextField();
+		setupTab.add(textField_35, "cell 3 3,growx");
+		textField_35.setColumns(10);
+		
+		JLabel lblFilter = new JLabel("Filter");
+		setupTab.add(lblFilter, "cell 0 4");
+		
+		JToggleButton tglbtnYesno = new JToggleButton("Yes/No");
+		setupTab.add(tglbtnYesno, "cell 1 4");
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new TitledBorder(null, "Trigger", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		setupTab.add(panel_3, "cell 2 5 2 1,grow");
+		panel_3.setLayout(new MigLayout("", "[grow][grow]", "[][][][]"));
+		
+		JLabel lblType = new JLabel("Type");
+		panel_3.add(lblType, "cell 0 0");
+		
+		JLabel lblValue = new JLabel("Value");
+		panel_3.add(lblValue, "cell 1 0");
+		
+		textField_47 = new JTextField();
+		panel_3.add(textField_47, "cell 0 1,growx");
+		textField_47.setColumns(10);
+		
+		textField_48 = new JTextField();
+		panel_3.add(textField_48, "cell 1 1,growx");
+		textField_48.setColumns(10);
+		
+		JLabel lblPretrig = new JLabel("Pretrig");
+		panel_3.add(lblPretrig, "cell 0 2");
+		
+		JLabel lblDelay = new JLabel("Delay");
+		panel_3.add(lblDelay, "cell 1 2");
+		
+		textField_49 = new JTextField();
+		panel_3.add(textField_49, "cell 0 3,growx");
+		textField_49.setColumns(10);
+		
+		textField_50 = new JTextField();
+		panel_3.add(textField_50, "cell 1 3,growx");
+		textField_50.setColumns(10);
+		
+		JButton btnSaveSetup = new JButton("Save Setup");
+		setupTab.add(btnSaveSetup, "cell 1 6");
+		settingsPane.addTab("Calibrate", null, calibrateTab, null);
+		calibrateTab.setLayout(new MigLayout("", "[][grow]", "[][][][][][]"));
+		
+		JLabel lblCalibration = new JLabel("Calibration");
+		calibrateTab.add(lblCalibration, "cell 0 0,alignx trailing");
+		
+		textField_4 = new JTextField();
+		calibrateTab.add(textField_4, "cell 1 0,growx");
+		textField_4.setColumns(10);
+		
+		JLabel lblAmpGain = new JLabel("Amp gain");
+		calibrateTab.add(lblAmpGain, "cell 0 1,alignx trailing");
+		
+		textField_5 = new JTextField();
+		calibrateTab.add(textField_5, "cell 1 1,growx");
+		textField_5.setColumns(10);
+		
+		JLabel lblConcrete = new JLabel("Concrete");
+		calibrateTab.add(lblConcrete, "cell 0 2,alignx trailing");
+		
+		textField_12 = new JTextField();
+		calibrateTab.add(textField_12, "cell 1 2,growx");
+		textField_12.setColumns(10);
+		
+		JLabel lblVoltage = new JLabel("Voltage");
+		calibrateTab.add(lblVoltage, "cell 0 3,alignx trailing");
+		
+		textField_13 = new JTextField();
+		calibrateTab.add(textField_13, "cell 1 3,growx");
+		textField_13.setColumns(10);
+		
+		JButton btnSaveSettings = new JButton("Save settings");
+		calibrateTab.add(btnSaveSettings, "cell 0 5");
+		
+		JLabel lblSaved = new JLabel("Saved!");
+		calibrateTab.add(lblSaved, "cell 1 5");
+		
 		JPanel launchControlPanel = new JPanel();
 		launchControlPanel.setBorder(null);
 		frame.getContentPane().add(launchControlPanel, "cell 0 2,alignx left,growy");
@@ -782,7 +782,7 @@ public class MainGUI implements IGUI {
 		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
 		
 		
-		btnSaveFile.addActionListener((evt) -> {
+		mntmSaveData.addActionListener((evt) -> {
 		    JFileChooser saveFile = new JFileChooser();
 		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into an xml format");
 		    int userSelection = saveFile.showSaveDialog(frame);
