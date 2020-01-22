@@ -52,6 +52,12 @@ public class AAARunner {
                 _testNr++;
                 //analyseResults(acceleration);
                 analyseResults(applyLegacyFilter(acceleration));
+                try {
+                    _board.disableEvent(EventType.ON_END_OF_INPUT_SCAN);
+                    _board.digitalOut(MAGNET_OUT, true);
+                } catch(LibcbwException ex) {
+                    ex.printStackTrace();
+                }
             });
             System.out.println("Reading...");
             _board.analogueInStartAsync(ACCELEROMETER_IN, 1, ADCRange.BIP5VOLTS, SAMPLE_COUNT, SAMPLE_RATE, 0);
