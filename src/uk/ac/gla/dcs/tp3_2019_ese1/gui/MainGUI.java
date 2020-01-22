@@ -41,6 +41,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
+import javax.swing.UIManager; 
 
 import org.apache.commons.io.FilenameUtils;
 import org.jfree.chart.ChartFactory;
@@ -58,9 +59,32 @@ import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
+ 
 
 public class MainGUI implements IGUI {
+
+
+	{ 
+	try {
+	//	UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+		//Dark
+	//	UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
+		// Basic
+	//	UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+	//	UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+		//Promising but grey
+		//UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		//UIManager.setLookAndFeel( "com.seaglasslookandfeel.SeaGlassLookAndFeel" );
+		com.jtattoo.plaf.acryl.AcrylLookAndFeel.setTheme("Red","" ,"");
+		 UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+		
+	} catch (Exception e) {
+		e.printStackTrace();
+	}}
+	
 	private JFrame frame;
+	
+
 	private final JPanel timerPanel = new JPanel();
 	private JTextField textField_2;
 	private JTextField textField_3;
@@ -920,3 +944,4 @@ public class MainGUI implements IGUI {
     }
 
 }
+
