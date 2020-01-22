@@ -60,6 +60,7 @@ import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
+import com.jtattoo.plaf.acryl.*;
  
 
 public class MainGUI implements IGUI {
@@ -67,17 +68,8 @@ public class MainGUI implements IGUI {
 
 	{ 
 	try {
-	//	UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-		//Dark
-	//	UIManager.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-		// Basic
-	//	UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-	//	UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-		//Promising but grey
-		//UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		//UIManager.setLookAndFeel( "com.seaglasslookandfeel.SeaGlassLookAndFeel" );
-		com.jtattoo.plaf.acryl.AcrylLookAndFeel.setTheme("Green-Giant-Font","" ,"");
-		 UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+		AcrylLookAndFeel.setTheme("Green-Giant-Font","" ,"");
+		UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 		
 	} catch (Exception e) {
 		e.printStackTrace();
