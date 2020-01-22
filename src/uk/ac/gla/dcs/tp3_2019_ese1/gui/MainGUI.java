@@ -10,6 +10,7 @@ package uk.ac.gla.dcs.tp3_2019_ese1.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -75,7 +76,7 @@ public class MainGUI implements IGUI {
 		//Promising but grey
 		//UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
 		//UIManager.setLookAndFeel( "com.seaglasslookandfeel.SeaGlassLookAndFeel" );
-		com.jtattoo.plaf.acryl.AcrylLookAndFeel.setTheme("Red","" ,"");
+		com.jtattoo.plaf.acryl.AcrylLookAndFeel.setTheme("Green-Giant-Font","" ,"");
 		 UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 		
 	} catch (Exception e) {
@@ -208,10 +209,10 @@ public class MainGUI implements IGUI {
 		
         _runner = new AAARunner(board, this);
 		
-		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][][]", "[23px][825px]"));
+		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][][]", "[23px][][825px]"));
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
 		settingsPane.setToolTipText("SESTTING\r\n");
-		frame.getContentPane().add(settingsPane, "cell 3 1,alignx right,growy");
+		frame.getContentPane().add(settingsPane, "cell 3 2,alignx right,growy");
 		
 		JPanel calibrateTab = new JPanel();
 		settingsPane.addTab("Results", null, calibrateTab, null);
@@ -379,77 +380,8 @@ public class MainGUI implements IGUI {
 		JLabel lblSaved = new JLabel("Saved!");
 		calibrateTab.add(lblSaved, "cell 1 5");
 		
-		JPanel launchControlPanel = new JPanel();
-		launchControlPanel.setBorder(null);
-		frame.getContentPane().add(launchControlPanel, "cell 0 1,alignx left,growy");
-		launchControlPanel.setLayout(new GridLayout(4, 0, 0, 0));
-		
-		JPanel testLaunchPanel = new JPanel();
-		launchControlPanel.add(testLaunchPanel);
-		testLaunchPanel.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		testLaunchPanel.setLayout(new MigLayout("", "[grow]", "[][]"));
-		
-		JButton btnMagnetStatus_1 = new JButton("Magnet status");
-		_magnetStatus = false;
-		btnMagnetStatus_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				try {
-					_magnetStatus = !_magnetStatus;
-					board.digitalOut(0, _magnetStatus);
-					if(_magnetStatus){
-						btnMagnetStatus_1.setBackground(new Color(0,71,137)); //SportsLabs Colors
-					}else{
-						btnMagnetStatus_1.setBackground(null);
-					}
-				}
-				catch (LibcbwException ex) {
-					ex.printStackTrace();
-				}
-			}
-		});
-		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,aligny top");
-		
-		JButton btnRunTest_1 = new JButton("Run Test");
-        btnRunTest_1.addActionListener(_runner::runTest);
-        
-		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
-		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		launchControlPanel.add(timerPanel);
-		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][][]"));
-		
-		JPanel panel_8 = new JPanel();
-		panel_8.setBorder(new TitledBorder(null, "Timer", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		timerPanel.add(panel_8, "cell 0 1,grow");
-		panel_8.setLayout(new MigLayout("", "[left][]", "[][][][]"));
-		
-		JLabel lblMin = new JLabel("Min");
-		panel_8.add(lblMin, "cell 0 0,alignx left");
-		
-		JLabel lblSec = new JLabel("Sec");
-		panel_8.add(lblSec, "cell 1 0");
-		
-		textField_3 = new JTextField();
-		panel_8.add(textField_3, "cell 0 1");
-		textField_3.setText("00");
-		textField_3.setColumns(10);
-		
-		textField_2 = new JTextField();
-		panel_8.add(textField_2, "cell 1 1,growx");
-		textField_2.setText("1");
-		textField_2.setColumns(10);
-		
-		JButton btnStart_1 = new JButton("Start");
-		panel_8.add(btnStart_1, "cell 0 3");
-		
-		JButton btnReset_1 = new JButton("Reset");
-		panel_8.add(btnReset_1, "cell 1 3");
-		
-		JButton btnSaveFile = new JButton("Save file");
-		timerPanel.add(btnSaveFile, "cell 0 3");
-		
 		JPanel resultsPane = new JPanel();
-		launchControlPanel.add(resultsPane);
+		settingsPane.addTab("New tab", null, resultsPane, null);
 		resultsPane.setBorder(new TitledBorder(null, "Results", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		resultsPane.setLayout(new MigLayout("", "[77px][grow][grow][grow][grow]", "[][][14px][][][][][][][]"));
 		
@@ -593,6 +525,139 @@ public class MainGUI implements IGUI {
 		resultsPane.add(textField_23, "cell 4 6,growx");
 		textField_23.setColumns(10);
 		
+				JLabel lblForceReduction_3 = new JLabel("Force reduction");
+				resultsPane.add(lblForceReduction_3, "cell 0 7,alignx trailing");
+				lblForceReduction_3.setFont(new Font("SansSerif", Font.BOLD, 12));
+				
+						
+						textField_24 = new JTextField();
+						resultsPane.add(textField_24, "cell 1 7,growx");
+						textField_24.setColumns(10);
+						
+						textField_25 = new JTextField();
+						resultsPane.add(textField_25, "cell 2 7,growx");
+						textField_25.setColumns(10);
+						
+						textField_26 = new JTextField();
+						resultsPane.add(textField_26, "cell 3 7,growx");
+						textField_26.setColumns(10);
+						
+						textField_27 = new JTextField();
+						resultsPane.add(textField_27, "cell 4 7,growx");
+						textField_27.setColumns(10);
+						
+						JLabel lblVerticalDeformation = new JLabel("Vertical deformation");
+						resultsPane.add(lblVerticalDeformation, "cell 0 8,alignx trailing");
+						lblVerticalDeformation.setFont(new Font("SansSerif", Font.BOLD, 12));
+						
+						
+						textField_28 = new JTextField();
+						resultsPane.add(textField_28, "cell 1 8,growx");
+						textField_28.setColumns(10);
+						
+								
+								textField_29 = new JTextField();
+								resultsPane.add(textField_29, "cell 2 8,growx");
+								textField_29.setColumns(10);
+								
+								textField_30 = new JTextField();
+								resultsPane.add(textField_30, "cell 3 8,growx");
+								textField_30.setColumns(10);
+								
+										textField_31 = new JTextField();
+										resultsPane.add(textField_31, "cell 4 8,growx");
+										textField_31.setColumns(10);
+										
+										JLabel lblEnergyRestitution = new JLabel("Energy restitution");
+										resultsPane.add(lblEnergyRestitution, "cell 0 9,alignx trailing");
+										lblEnergyRestitution.setFont(new Font("SansSerif", Font.BOLD, 12));
+										
+										textField_51 = new JTextField();
+										resultsPane.add(textField_51, "cell 1 9,growx");
+										textField_51.setColumns(10);
+										
+										textField_52 = new JTextField();
+										resultsPane.add(textField_52, "cell 2 9,growx");
+										textField_52.setColumns(10);
+										
+										textField_53 = new JTextField();
+										resultsPane.add(textField_53, "cell 3 9,growx");
+										textField_53.setColumns(10);
+										
+										textField_54 = new JTextField();
+										resultsPane.add(textField_54, "cell 4 9,growx");
+										textField_54.setColumns(10);
+		
+		JPanel launchControlPanel = new JPanel();
+		launchControlPanel.setBorder(null);
+		frame.getContentPane().add(launchControlPanel, "cell 0 2,alignx left,growy");
+		launchControlPanel.setLayout(new GridLayout(4, 0, 0, 0));
+		
+		JPanel testLaunchPanel = new JPanel();
+		launchControlPanel.add(testLaunchPanel);
+		testLaunchPanel.setPreferredSize(new Dimension(480, 64));
+		testLaunchPanel.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		testLaunchPanel.setLayout(new MigLayout("", "[]", "[][]"));
+		
+		JButton btnMagnetStatus_1 = new JButton("Magnet status");
+		_magnetStatus = false;
+		btnMagnetStatus_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				try {
+					_magnetStatus = !_magnetStatus;
+					board.digitalOut(0, _magnetStatus);
+					if(_magnetStatus){
+						btnMagnetStatus_1.setBackground(new Color(0,71,137)); //SportsLabs Colors
+					}else{
+						btnMagnetStatus_1.setBackground(null);
+					}
+				}
+				catch (LibcbwException ex) {
+					ex.printStackTrace();
+				}
+			}
+		});
+		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,aligny top");
+		
+		JButton btnRunTest_1 = new JButton("Run Test");
+        btnRunTest_1.addActionListener(_runner::runTest);
+        
+		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
+		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		launchControlPanel.add(timerPanel);
+		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][][]"));
+		
+		JPanel panel_8 = new JPanel();
+		panel_8.setBorder(new TitledBorder(null, "Timer", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		timerPanel.add(panel_8, "cell 0 1,grow");
+		panel_8.setLayout(new MigLayout("", "[left][]", "[][][][]"));
+		
+		JLabel lblMin = new JLabel("Min");
+		panel_8.add(lblMin, "cell 0 0,alignx left");
+		
+		JLabel lblSec = new JLabel("Sec");
+		panel_8.add(lblSec, "cell 1 0");
+		
+		textField_3 = new JTextField();
+		panel_8.add(textField_3, "cell 0 1");
+		textField_3.setText("00");
+		textField_3.setColumns(10);
+		
+		textField_2 = new JTextField();
+		panel_8.add(textField_2, "cell 1 1,growx");
+		textField_2.setText("1");
+		textField_2.setColumns(10);
+		
+		JButton btnStart_1 = new JButton("Start");
+		panel_8.add(btnStart_1, "cell 0 3");
+		
+		JButton btnReset_1 = new JButton("Reset");
+		panel_8.add(btnReset_1, "cell 1 3");
+		
+		JButton btnSaveFile = new JButton("Save file");
+		timerPanel.add(btnSaveFile, "cell 0 3");
+		
 		/*
 		 * btnRunTest_1 = new JButton("Run Test");
 		btnRunTest_1.addActionListener(new ActionListener() {
@@ -609,35 +674,10 @@ public class MainGUI implements IGUI {
 		});
 		 */
 
-		testLaunchPanel.add(btnRunTest_1, "cell 0 1,grow");
+		testLaunchPanel.add(btnRunTest_1, "cell 0 1");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
 		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
-
-		JLabel lblForceReduction_3 = new JLabel("Force reduction");
-		resultsPane.add(lblForceReduction_3, "cell 0 7,alignx trailing");
-		lblForceReduction_3.setFont(new Font("SansSerif", Font.BOLD, 12));
-
-		
-		textField_24 = new JTextField();
-		resultsPane.add(textField_24, "cell 1 7,growx");
-		textField_24.setColumns(10);
-		
-		textField_25 = new JTextField();
-		resultsPane.add(textField_25, "cell 2 7,growx");
-		textField_25.setColumns(10);
-		
-		textField_26 = new JTextField();
-		resultsPane.add(textField_26, "cell 3 7,growx");
-		textField_26.setColumns(10);
-		
-		textField_27 = new JTextField();
-		resultsPane.add(textField_27, "cell 4 7,growx");
-		textField_27.setColumns(10);
-		
-		JLabel lblVerticalDeformation = new JLabel("Vertical deformation");
-		resultsPane.add(lblVerticalDeformation, "cell 0 8,alignx trailing");
-		lblVerticalDeformation.setFont(new Font("SansSerif", Font.BOLD, 12));
 	
 		/*
 		 *  Pausing the Button For given seconds to avoid 
@@ -661,44 +701,6 @@ public class MainGUI implements IGUI {
 				timer.start();
 			
 		});
-		
-		
-		textField_28 = new JTextField();
-		resultsPane.add(textField_28, "cell 1 8,growx");
-		textField_28.setColumns(10);
-
-		
-		textField_29 = new JTextField();
-		resultsPane.add(textField_29, "cell 2 8,growx");
-		textField_29.setColumns(10);
-		
-		textField_30 = new JTextField();
-		resultsPane.add(textField_30, "cell 3 8,growx");
-		textField_30.setColumns(10);
-
-		textField_31 = new JTextField();
-		resultsPane.add(textField_31, "cell 4 8,growx");
-		textField_31.setColumns(10);
-		
-		JLabel lblEnergyRestitution = new JLabel("Energy restitution");
-		resultsPane.add(lblEnergyRestitution, "cell 0 9,alignx trailing");
-		lblEnergyRestitution.setFont(new Font("SansSerif", Font.BOLD, 12));
-		
-		textField_51 = new JTextField();
-		resultsPane.add(textField_51, "cell 1 9,growx");
-		textField_51.setColumns(10);
-		
-		textField_52 = new JTextField();
-		resultsPane.add(textField_52, "cell 2 9,growx");
-		textField_52.setColumns(10);
-		
-		textField_53 = new JTextField();
-		resultsPane.add(textField_53, "cell 3 9,growx");
-		textField_53.setColumns(10);
-		
-		textField_54 = new JTextField();
-		resultsPane.add(textField_54, "cell 4 9,growx");
-		textField_54.setColumns(10);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.getContentPane().add(menuBar, "cell 0 0 4 1,alignx center,growy");
@@ -737,7 +739,7 @@ public class MainGUI implements IGUI {
 		mnHelp.add(mntmAbout);
 		
 		JPanel dataViewPanel = new JPanel();
-		frame.getContentPane().add(dataViewPanel, "cell 1 1 2 1,grow");
+		frame.getContentPane().add(dataViewPanel, "cell 1 2 2 1,grow");
 		GridBagLayout gbl_dataViewPanel = new GridBagLayout();
 		gbl_dataViewPanel.columnWidths = new int[]{159, 157, 149, 75, 0};
 		gbl_dataViewPanel.rowHeights = new int[]{225, 0, 224, 0, 230, 0, 0};
