@@ -11,5 +11,6 @@ test:
   stage: test
   script: 
         - echo "Testing"
-#       - java src/uk/ac/gla/dcs/tp3_2019_ese1/test/Test
+        #- javac src/uk/ac/gla/dcs/tp3_2019_ese1/test/Test
+        #- java src/uk/ac/gla/dcs/tp3_2019_ese1/test/Test
 

@@ -54,8 +54,11 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
+
 import net.miginfocom.swing.MigLayout;
 import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
+
 //import sun.security.provider.CtrDrbg;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
@@ -194,12 +197,12 @@ public class MainGUI implements IGUI {
 			for(int i = 0; i< daqArray.length; i++) {
 				if(daqArray[i].ProductID == 125 || daqArray[i].ProductID == 234)  board = daqArray[i].createDaqDevice(LibcbwBoard.USB_1608FS::new);
 			}
+	        _runner = new AAARunner(board, this);
 		}
 		catch (Exception e) {
 			// TODO: handle exception
 		}
 		
-        _runner = new AAARunner(board, this);
 		
 		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][][]", "[23px][][825px]"));
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
@@ -605,7 +608,7 @@ public class MainGUI implements IGUI {
 				}
 			}
 		});
-		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,aligny top");
+		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,growx,aligny top");
 		
 		JButton btnRunTest_1 = new JButton("Run Test");
         btnRunTest_1.addActionListener(_runner::runTest);
@@ -887,7 +890,7 @@ public class MainGUI implements IGUI {
     	//update chart datasets for:
     	//ACCELERATION
 		List<Object> accData = Arrays.asList(_accelerationData.getSeries().toArray());
-    	accData.set(testIdx, accelerationSeries);
+    	accData.set(testIdx , accelerationSeries);
     	_accelerationData.removeAllSeries();
     	for(Object series : accData) {
     		_accelerationData.addSeries((XYSeries)series);
@@ -901,7 +904,7 @@ public class MainGUI implements IGUI {
     	}
     	//DISPACEMENT
     	List<Object> dispData = Arrays.asList(_displacementData.getSeries().toArray());
-    	dispData.set(testIdx, velocitySeries);
+    	dispData.set(testIdx, displacementSeries);
     	_displacementData.removeAllSeries();
     	for(Object series : dispData) {
     		_displacementData.addSeries((XYSeries)series);
@@ -912,6 +915,7 @@ public class MainGUI implements IGUI {
     @Override
     public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
             double drop_dist, double spring, double material, int testNr) {
+    	
     	//first work out test index (0-2 inclusive)
     	int testIdx = testNr%3;
     	if(testIdx == 1) {
@@ -956,6 +960,6 @@ public class MainGUI implements IGUI {
         // TODO Auto-generated method stub
         
     }
-
+    
 }
 
