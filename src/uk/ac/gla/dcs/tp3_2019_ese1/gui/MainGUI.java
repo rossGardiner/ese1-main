@@ -195,13 +195,13 @@ public class MainGUI implements IGUI {
 			for(int i = 0; i< daqArray.length; i++) {
 				if(daqArray[i].ProductID == 125 || daqArray[i].ProductID == 234)  board = daqArray[i].createDaqDevice(LibcbwBoard.USB_1608FS::new);
 			}
-	        _runner = new AAARunner(board, this);
 		}
 		catch (Exception e) {
 			// TODO: handle exception
 		}
 		
-		
+        _runner = new AAARunner(board, this);
+        
 		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][][]", "[23px][][825px]"));
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
 		settingsPane.setToolTipText("SESTTING\r\n");
@@ -888,7 +888,7 @@ public class MainGUI implements IGUI {
     	//update chart datasets for:
     	//ACCELERATION
 		List<Object> accData = Arrays.asList(_accelerationData.getSeries().toArray());
-    	accData.set(testIdx , accelerationSeries);
+    	accData.set(testIdx, accelerationSeries);
     	_accelerationData.removeAllSeries();
     	for(Object series : accData) {
     		_accelerationData.addSeries((XYSeries)series);
