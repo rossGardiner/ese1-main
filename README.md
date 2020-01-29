@@ -5,10 +5,9 @@ This project is done by team ESE1 (the better team) for the 3rd year Team Design
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install NextSteps.
-
+Download the App via... 
 ```bash
-pip install nextsteps
+ bash test test git push
 ```
 
 ## Usage
