@@ -155,6 +155,7 @@ public class MainGUI implements IGUI {
 	private XYSeriesCollection _displacementData = new XYSeriesCollection();
 
 	private int _n = 0;
+	private boolean _initSucc = false;
 	/**
 	 * Launch the application.
 	 */
@@ -855,6 +856,7 @@ public class MainGUI implements IGUI {
 		//panel_13.setLayout(new BorderLayout());
 		//panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
 		//tabbedPane.addTab("Graph 3", null, panel_13, null);
+		_initSucc = true;
 	}
 
     @Override
@@ -957,6 +959,9 @@ public class MainGUI implements IGUI {
     public void displayErrorMessage(String msg) {
         // TODO Auto-generated method stub
         
+    }
+    public boolean getInitSucc() {
+    	return _initSucc;
     }
     
 }
