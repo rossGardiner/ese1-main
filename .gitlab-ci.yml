@@ -6,7 +6,7 @@ build:
         - echo "Building"
         - java -version
         - mkdir bin
-        - javac --enable-preview -cp "lib/*" -d bin $(find ./src/* | grep .java)
+        - javac --enable-preview -source 12 -cp "lib/*" -d bin $(find ./src/* | grep .java)
 
 test:
   stage: test
