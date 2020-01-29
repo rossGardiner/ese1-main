@@ -5,6 +5,7 @@ build:
     script: 
         - echo "Building"
         - java -version
+        - mkdir bin 
         - javac -cp "bin;lib/*" -d bin -sourcepath src src/uk/ac/gla/dcs/tp3_2019_ese1/*/*.java
 
 test:
