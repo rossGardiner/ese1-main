@@ -24,7 +24,7 @@ public class Test {
     	   System.out.print("AAARunner initialization test passed\n");
     	}
     	catch(Exception ex){
-    		System.out.print("AAARunner initialization test failed\n")
+    		System.out.print("AAARunner initialization test failed\n");
     	}
 		
 	}
