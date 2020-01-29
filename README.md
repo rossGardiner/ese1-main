@@ -1,4 +1,3 @@
-README file for the main depository
-cool stuff, i made this to get the SSH key
-edit 2: ssh key didnt show up
-edit 3: test
+# ESE1 - NextSteps Runner for the Sports Test Equipment for SportsLabs
+
+This project is done by team ESE1 (the better team) for the 3rd year Team Design Project. 
