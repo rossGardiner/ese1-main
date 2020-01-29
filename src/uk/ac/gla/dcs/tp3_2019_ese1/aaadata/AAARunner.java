@@ -30,6 +30,7 @@ public class AAARunner {
     private int _testNr = 0; //added 19/01/2020 by RG
     
     
+    
     public AAARunner(USB_1608FS board, IGUI gui) {
         _board = board;
         _gui = gui;

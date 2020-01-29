@@ -2,6 +2,7 @@ package uk.ac.gla.dcs.tp3_2019_ese1.test;
 
 
 
+import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 import uk.ac.gla.dcs.tp3_2019_ese1.gui.MainGUI;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
 
@@ -16,15 +17,14 @@ public class Test {
     private static void testGUI() {
 		// TODO Auto-generated method stub
 		//boolean assertionBool = true;
-    	MainGUI gui = new MainGUI();
-    	boolean guiPassed = gui.getInitSucc();
-    	if(guiPassed) {
-    	//assertEquals(assertionBool,guiBOOl);
-    		System.out.print("GUI initialization test passed\n");
+    	//MainGUI gui = new MainGUI();
+    	try {
+    	   AAARunner runner = new AAARunner(null, null);
+    	   boolean guiPassed = true;
+    	   System.out.print("AAARunner initialization test passed\n");
     	}
-    	else {
-    		System.out.print("GUI initialization test failed\n");
-
+    	catch(Exception ex){
+    		System.out.print("AAARunner initialization test failed\n")
     	}
 		
 	}
