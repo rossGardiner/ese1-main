@@ -5,15 +5,14 @@ build:
     script: 
         - echo "Building"
         - java -version
-        - javac -cp "lib/*" src/uk/ac/gla/dcs/tp3_2019_ese1/*/*.java
+        - javac -cp "bin;lib/*" -d bin -sourcepath src src/uk/ac/gla/dcs/tp3_2019_ese1/*/*.java
 
 test:
   stage: test
   script: 
         - echo "Testing"
-	- cd src
-	- javac -cp ".;../lib/*" uk/ac/gla/dcs/tp3_2019_ese1/test/Test.java
-	- java -cp ".;../lib/*" uk/ac/gla/dcs/tp3_2019_ese1/test/Test
+	- javac -cp "bin;lib/*" -d bin -sourcepath src src/uk/ac/gla/dcs/tp3_2019_ese1/test/Test.java 
+	-  java -cp "bin;lib/*" uk/ac/gla/dcs/tp3_2019_ese1/test/Test
         #- javac src/uk/ac/gla/dcs/tp3_2019_ese1/test/Test
         #- java src/uk/ac/gla/dcs/tp3_2019_ese1/test/Test
 
