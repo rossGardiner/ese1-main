@@ -50,9 +50,9 @@ public class AAARunner {
                 int[] raw = _board.analogueInStopAsync()[0];
                 int offset = Arrays.stream(raw).limit(PRE_DROP_CNT).sum() / PRE_DROP_CNT;
                 double[] acceleration = Arrays.stream(raw).mapToDouble(r -> SCALING_5V * (r - offset) / volts_per_g).toArray();
-                _testNr++;
                 //analyseResults(acceleration);
                 analyseResults(applyLegacyFilter(acceleration));
+                _testNr++;
                 try {
                     _board.disableEvent(EventType.ON_END_OF_INPUT_SCAN);
                     _board.digitalOut(MAGNET_OUT, true);
