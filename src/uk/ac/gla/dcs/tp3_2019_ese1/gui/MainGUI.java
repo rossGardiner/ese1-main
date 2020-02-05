@@ -8,6 +8,7 @@
 
 package uk.ac.gla.dcs.tp3_2019_ese1.gui;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -17,6 +18,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -49,6 +51,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYDataItem;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -149,6 +152,10 @@ public class MainGUI implements IGUI {
 	private JTextField cellTest2_Velocity2;
 	private JTextField cellTest3_Velocity2;
 	private JTextField cellAvg_Velocity2;
+	
+	private JFreeChart _accelerationChart;
+	private JFreeChart _velocityChart;
+	private JFreeChart _displacementChart;
 	
 	private XYSeriesCollection _accelerationData = new XYSeriesCollection();
 	private XYSeriesCollection _velocityData = new XYSeriesCollection();
@@ -748,18 +755,22 @@ public class MainGUI implements IGUI {
 		_accelerationData.addSeries(series);
 		_accelerationData.addSeries(series2);
 		_accelerationData.addSeries(series3);
-		JFreeChart accelerationChart = ChartFactory.createXYLineChart("Acceleration Vs Time","Time","Acceleration", _accelerationData);
-		
+		_accelerationChart = ChartFactory.createXYLineChart("Acceleration Vs Time","Time","Acceleration", _accelerationData);
+		XYItemRenderer theRenderer = _accelerationChart.getXYPlot().getRenderer();
+		theRenderer.setSeriesStroke(0, new BasicStroke(2.5f));
+		theRenderer.setSeriesStroke(1, new BasicStroke(2.5f));
+		theRenderer.setSeriesStroke(2, new BasicStroke(2.5f));
+		_accelerationChart.getXYPlot().setRenderer(theRenderer);
 		_velocityData.addSeries(series);
 		_velocityData.addSeries(series2);
 		_velocityData.addSeries(series3);
-		JFreeChart velocityChart = ChartFactory.createXYLineChart("Velocity Vs Time","Time","Velocity", _velocityData);
-		
+		_velocityChart = ChartFactory.createXYLineChart("Velocity Vs Time","Time","Velocity", _velocityData);
+		_velocityChart.getXYPlot().setRenderer(theRenderer);
 		_displacementData.addSeries(series);
 		_displacementData.addSeries(series2);
 		_displacementData.addSeries(series3);
-		JFreeChart displacementChart = ChartFactory.createXYLineChart("Displacement Vs Time","Time","Displacement", _displacementData);
-
+		_displacementChart = ChartFactory.createXYLineChart("Displacement Vs Time","Time","Displacement", _displacementData);
+		_displacementChart.getXYPlot().setRenderer(theRenderer);
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
 		gbc_tabbedPane.gridheight = 5;
@@ -780,8 +791,8 @@ public class MainGUI implements IGUI {
 		        //Save file into xml format
 		        file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".csv");
 		        ArrayList<String> csv = new ArrayList<>();
-		        if (accelerationChart.getPlot() instanceof XYPlot) {
-		            XYDataset xyDataset = accelerationChart.getXYPlot().getDataset();
+		        if (_accelerationChart.getPlot() instanceof XYPlot) {
+		            XYDataset xyDataset = _accelerationChart.getXYPlot().getDataset();
 		            int seriesCount = xyDataset.getSeriesCount();
 		            for (int i = 0; i < seriesCount; i++) {
 		                int itemCount = xyDataset.getItemCount(i);
@@ -807,13 +818,13 @@ public class MainGUI implements IGUI {
 
 		JPanel panel_acceleration = new JPanel();
 		tabbedPane.addTab("Acceleration Vs. Time", null, panel_acceleration, null);
-		ChartPanel chartPanelAcceleration = new ChartPanel(accelerationChart);
+		ChartPanel chartPanelAcceleration = new ChartPanel(_accelerationChart);
 		chartPanelAcceleration.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if(e.getClickCount() == 2) {
 					//new ChartViewer(chart).setVisible(true);
-					new ChartViewerDialog(accelerationChart).setVisible(true);
+					new ChartViewerDialog(_accelerationChart).setVisible(true);
 				}
 			}
 		});
@@ -822,11 +833,11 @@ public class MainGUI implements IGUI {
 		panel_acceleration.add(chartPanelAcceleration, BorderLayout.CENTER);
 		
 		JPanel panel_velocity = new JPanel();
-		ChartPanel chartPanelVelocity = new ChartPanel(velocityChart);
+		ChartPanel chartPanelVelocity = new ChartPanel(_velocityChart);
 		chartPanelVelocity.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(velocityChart).setVisible(true);
+				new ChartViewerDialog(_velocityChart).setVisible(true);
 			}
 		});
 		chartPanelVelocity.setDomainZoomable(true);
@@ -836,12 +847,12 @@ public class MainGUI implements IGUI {
 		
 		panel_displacement = new JPanel();
 		
-		ChartPanel chartPanelDisplacement = new ChartPanel(displacementChart);
+		ChartPanel chartPanelDisplacement = new ChartPanel(_displacementChart);
 
 		chartPanelDisplacement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(displacementChart).setVisible(true);
+				new ChartViewerDialog(_displacementChart).setVisible(true);
 			}
 		});
 		chartPanelDisplacement.setDomainZoomable(true);
