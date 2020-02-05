@@ -27,6 +27,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -104,24 +107,26 @@ public class MainGUI implements IGUI {
 	private LibcbwBoard.USB_1608FS board;
 	private AAARunner _runner;
 	private boolean _magnetStatus;
-	private JTextField textField_14;
+	private JTextField cellTest3_PeakG;
 	private JTextField cellAvg_PeakG;
 	private JTextField cellTest1_DropHT;
 	private JTextField cellTest2_DropHT;
 	private JTextField cellTest3_DropHT;
-	private JTextField textField_19;
-	private JTextField textField_20;
-	private JTextField textField_21;
-	private JTextField textField_22;
-	private JTextField textField_23;
-	private JTextField textField_24;
-	private JTextField textField_25;
-	private JTextField textField_26;
-	private JTextField textField_27;
-	private JTextField textField_28;
-	private JTextField textField_29;
-	private JTextField textField_30;
-	private JTextField textField_31;
+	private JTextField cellTest2_SpngDef;
+	private JTextField cellTest1_SpngDef;
+	private JTextField cellTest3_SpngDef;
+	private JTextField cellTestAvg_SpngDef;
+	private JTextField cellTest1_fred;
+	private JTextField cellTest2_fred;
+	private JTextField cellTest3_fred;
+	private JTextField cellTestAvg_fred;
+	private JTextField cellTest1_vdef;
+	private JTextField cellTest2_vdef;
+	
+	
+	
+	private JTextField cellTest3_vdef;
+	private JTextField cellTestAvg_vdef;
 	private JTextField textField_32;
 	private JTextField textField_33;
 	private JTextField textField_34;
@@ -136,10 +141,10 @@ public class MainGUI implements IGUI {
 	private static int delay;
 
 	private JPanel panel_graph3;
-	private JTextField textField_51;
-	private JTextField textField_52;
-	private JTextField textField_53;
-	private JTextField textField_54;
+	private JTextField cellTest1_ergRest;
+	private JTextField cellTest2_ergRest;
+	private JTextField cellTest3_ergRest;
+	private JTextField cellTestAvg_ergRest;
 	private JTextField cellTest1_Fmax;
 	private JTextField cellTest2_Fmax;
 	private JTextField cellTest3_Fmax;
@@ -246,9 +251,9 @@ public class MainGUI implements IGUI {
 		resultsPane.add(cellTest2_PeakG, "cell 2 1,growx");
 		cellTest2_PeakG.setColumns(10);
 		
-		textField_14 = new JTextField();
-		resultsPane.add(textField_14, "cell 3 1,growx");
-		textField_14.setColumns(10);
+		cellTest3_PeakG = new JTextField();
+		resultsPane.add(cellTest3_PeakG, "cell 3 1,growx");
+		cellTest3_PeakG.setColumns(10);
 		
 		cellAvg_PeakG = new JTextField();
 		resultsPane.add(cellAvg_PeakG, "cell 4 1,growx");
@@ -326,91 +331,91 @@ public class MainGUI implements IGUI {
 		resultsPane.add(cellTest3_DropHT, "cell 3 5,growx");
 		cellTest3_DropHT.setColumns(10);
 		
-		textField_19 = new JTextField();
-		resultsPane.add(textField_19, "cell 4 5,growx");
-		textField_19.setColumns(10);
+		//textField_19 = new JTextField();
+		//resultsPane.add(textField_19, "cell 4 5,growx");
+		//textField_19.setColumns(10);
 		
 		JLabel lblSpringDeformation = new JLabel("Spring deformation");
 		resultsPane.add(lblSpringDeformation, "cell 0 6,alignx trailing");
 		
-		textField_20 = new JTextField();
-		resultsPane.add(textField_20, "cell 1 6,growx");
-		textField_20.setColumns(10);
+		cellTest1_SpngDef = new JTextField();
+		resultsPane.add(cellTest1_SpngDef, "cell 1 6,growx");
+		cellTest1_SpngDef.setColumns(10);
 		
-		textField_21 = new JTextField();
-		resultsPane.add(textField_21, "cell 2 6,growx");
-		textField_21.setColumns(10);
+		cellTest2_SpngDef = new JTextField();
+		resultsPane.add(cellTest2_SpngDef, "cell 2 6,growx");
+		cellTest2_SpngDef.setColumns(10);
 		
-		textField_22 = new JTextField();
-		resultsPane.add(textField_22, "cell 3 6,growx");
-		textField_22.setColumns(10);
+		cellTest3_SpngDef = new JTextField();
+		resultsPane.add(cellTest3_SpngDef, "cell 3 6,growx");
+		cellTest3_SpngDef.setColumns(10);
 		
-		textField_23 = new JTextField();
-		resultsPane.add(textField_23, "cell 4 6,growx");
-		textField_23.setColumns(10);
+		cellTestAvg_SpngDef = new JTextField();
+		resultsPane.add(cellTestAvg_SpngDef, "cell 4 6,growx");
+		cellTestAvg_SpngDef.setColumns(10);
 		
 				JLabel lblForceReduction_3 = new JLabel("Force reduction");
 				resultsPane.add(lblForceReduction_3, "cell 0 7,alignx trailing");
 				lblForceReduction_3.setFont(new Font("SansSerif", Font.BOLD, 12));
 				
 						
-						textField_24 = new JTextField();
-						resultsPane.add(textField_24, "cell 1 7,growx");
-						textField_24.setColumns(10);
+						cellTest1_fred = new JTextField();
+						resultsPane.add(cellTest1_fred, "cell 1 7,growx");
+						cellTest1_fred.setColumns(10);
 						
-						textField_25 = new JTextField();
-						resultsPane.add(textField_25, "cell 2 7,growx");
-						textField_25.setColumns(10);
+						cellTest2_fred = new JTextField();
+						resultsPane.add(cellTest2_fred, "cell 2 7,growx");
+						cellTest2_fred.setColumns(10);
 						
-						textField_26 = new JTextField();
-						resultsPane.add(textField_26, "cell 3 7,growx");
-						textField_26.setColumns(10);
+						cellTest3_fred = new JTextField();
+						resultsPane.add(cellTest3_fred, "cell 3 7,growx");
+						cellTest3_fred.setColumns(10);
 						
-						textField_27 = new JTextField();
-						resultsPane.add(textField_27, "cell 4 7,growx");
-						textField_27.setColumns(10);
+						cellTestAvg_fred = new JTextField();
+						resultsPane.add(cellTestAvg_fred, "cell 4 7,growx");
+						cellTestAvg_fred.setColumns(10);
 						
 						JLabel lblVerticalDeformation = new JLabel("Vertical deformation");
 						resultsPane.add(lblVerticalDeformation, "cell 0 8,alignx trailing");
 						lblVerticalDeformation.setFont(new Font("SansSerif", Font.BOLD, 12));
 						
 						
-						textField_28 = new JTextField();
-						resultsPane.add(textField_28, "cell 1 8,growx");
-						textField_28.setColumns(10);
+						cellTest1_vdef = new JTextField();
+						resultsPane.add(cellTest1_vdef, "cell 1 8,growx");
+						cellTest1_vdef.setColumns(10);
 						
 								
-								textField_29 = new JTextField();
-								resultsPane.add(textField_29, "cell 2 8,growx");
-								textField_29.setColumns(10);
+								cellTest2_vdef = new JTextField();
+								resultsPane.add(cellTest2_vdef, "cell 2 8,growx");
+								cellTest2_vdef.setColumns(10);
 								
-								textField_30 = new JTextField();
-								resultsPane.add(textField_30, "cell 3 8,growx");
-								textField_30.setColumns(10);
+								cellTest3_vdef = new JTextField();
+								resultsPane.add(cellTest3_vdef, "cell 3 8,growx");
+								cellTest3_vdef.setColumns(10);
 								
-										textField_31 = new JTextField();
-										resultsPane.add(textField_31, "cell 4 8,growx");
-										textField_31.setColumns(10);
+										cellTestAvg_vdef = new JTextField();
+										resultsPane.add(cellTestAvg_vdef, "cell 4 8,growx");
+										cellTestAvg_vdef.setColumns(10);
 										
 										JLabel lblEnergyRestitution = new JLabel("Energy restitution");
 										resultsPane.add(lblEnergyRestitution, "cell 0 9,alignx trailing");
 										lblEnergyRestitution.setFont(new Font("SansSerif", Font.BOLD, 12));
 										
-										textField_51 = new JTextField();
-										resultsPane.add(textField_51, "cell 1 9,growx");
-										textField_51.setColumns(10);
+										cellTest1_ergRest = new JTextField();
+										resultsPane.add(cellTest1_ergRest, "cell 1 9,growx");
+										cellTest1_ergRest.setColumns(10);
 										
-										textField_52 = new JTextField();
-										resultsPane.add(textField_52, "cell 2 9,growx");
-										textField_52.setColumns(10);
+										cellTest2_ergRest = new JTextField();
+										resultsPane.add(cellTest2_ergRest, "cell 2 9,growx");
+										cellTest2_ergRest.setColumns(10);
 										
-										textField_53 = new JTextField();
-										resultsPane.add(textField_53, "cell 3 9,growx");
-										textField_53.setColumns(10);
+										cellTest3_ergRest = new JTextField();
+										resultsPane.add(cellTest3_ergRest, "cell 3 9,growx");
+										cellTest3_ergRest.setColumns(10);
 										
-										textField_54 = new JTextField();
-										resultsPane.add(textField_54, "cell 4 9,growx");
-										textField_54.setColumns(10);
+										cellTestAvg_ergRest = new JTextField();
+										resultsPane.add(cellTestAvg_ergRest, "cell 4 9,growx");
+										cellTestAvg_ergRest.setColumns(10);
 		
 		JPanel setupTab = new JPanel();
 		settingsPane.addTab("Setup", null, setupTab, null);
@@ -929,38 +934,84 @@ public class MainGUI implements IGUI {
     	
     	//first work out test index (0-2 inclusive)
     	int testIdx = testNr%3;
+    	BigDecimal db;
+    	if(testIdx == 0) {
+    	  db = new BigDecimal(peakG);
+    	  db = db.round(new MathContext(4));
+   	 	  cellTest1_PeakG.setText(db.toString());
+   	 	  db = new BigDecimal(fmax);
+  	      db = db.round(new MathContext(4));
+   	 	  cellTest1_Fmax.setText(db.toString());
+   	 	  db = new BigDecimal(v1);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_Velocity1.setText(db.toString());
+   	 	  db = new BigDecimal(v2);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_Velocity2.setText(db.toString());
+   	 	  db = new BigDecimal(drop_dist);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_DropHT.setText(db.toString());
+   	 	  db = new BigDecimal(spring);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_SpngDef.setText(db.toString());
+   	 	  db = new BigDecimal(fred);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_fred.setText(db.toString());
+   	 	  db = new BigDecimal(energy);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_ergRest.setText(db.toString());
+    	}
     	if(testIdx == 1) {
-   	 	  cellTest1_PeakG.setText(Double.toString(peakG));
-   	 	  cellTest1_Fmax.setText(Double.toString(fmax));
-   	 	  cellTest1_Velocity1.setText(Double.toString(v1));
-   	 	  cellTest1_Velocity2.setText(Double.toString(v2));
-   	 	  cellTest1_DropHT.setText(Double.toString(drop_dist));
-   	 	  textField_20.setText(Double.toString(spring));
-   	 	  textField_24.setText(Double.toString(fred));
-   	 	  textField_51.setText(Double.toString(energy));
+    		db = new BigDecimal(peakG);
+      	  	db = db.round(new MathContext(4));
+     	 	cellTest2_PeakG.setText(db.toString());
+     	 	db = new BigDecimal(fmax);
+    	    db = db.round(new MathContext(4));
+     	 	cellTest2_Fmax.setText(db.toString());
+     	 	db = new BigDecimal(v1);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest2_Velocity1.setText(db.toString());
+     	 	db = new BigDecimal(v2);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest2_Velocity2.setText(db.toString());
+     	 	db = new BigDecimal(drop_dist);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest2_DropHT.setText(db.toString());
+     	 	db = new BigDecimal(spring);
+  	        db = db.round(new MathContext(4));
+  	        cellTest2_SpngDef.setText(db.toString());
+     	    db = new BigDecimal(fred);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest2_fred.setText(db.toString());
+     	 	db = new BigDecimal(energy);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest2_ergRest.setText(db.toString());
     	}
     	if(testIdx == 2) {
-     	 	  cellTest2_PeakG.setText(Double.toString(peakG));
-       	 	  cellTest2_Fmax.setText(Double.toString(fmax));
-       	 	  cellTest2_Velocity1.setText(Double.toString(v1));
-       	 	  cellTest2_Velocity2.setText(Double.toString(v2));
-       	 	  cellTest2_DropHT.setText(Double.toString(drop_dist));
-       	 	  textField_21.setText(Double.toString(spring));
-       	 	  textField_25.setText(Double.toString(fred));
-       	 	  textField_52.setText(Double.toString(energy));
-        }
-    	if(testIdx == 0) {
-    		textField_14.setText(Double.toString(peakG));
-     	 	  cellTest3_Fmax.setText(Double.toString(fmax));
-     	 	  cellTest3_Velocity1.setText(Double.toString(v1));
-     	 	  cellTest3_Velocity2.setText(Double.toString(v2));
-     	 	  cellTest3_DropHT.setText(Double.toString(drop_dist));
-     	 	  textField_22.setText(Double.toString(spring));
-     	 	  textField_26.setText(Double.toString(fred));
-     	 	  textField_53.setText(Double.toString(energy));
-     	 	    	 	  
-     	 	  
-
+    		db = new BigDecimal(peakG);
+      	  	db = db.round(new MathContext(4));
+     	 	cellTest3_PeakG.setText(db.toString());
+     	 	db = new BigDecimal(fmax);
+    	    db = db.round(new MathContext(4));
+     	 	cellTest3_Fmax.setText(db.toString());
+     	 	db = new BigDecimal(v1);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest3_Velocity1.setText(db.toString());
+     	 	db = new BigDecimal(v2);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest3_Velocity2.setText(db.toString());
+     	 	db = new BigDecimal(drop_dist);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest3_DropHT.setText(db.toString());
+     	 	db = new BigDecimal(spring);
+  	        db = db.round(new MathContext(4));
+     	    cellTest3_SpngDef.setText(db.toString());
+     	    db = new BigDecimal(fred);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest3_fred.setText(db.toString());
+     	 	db = new BigDecimal(energy);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest3_ergRest.setText(db.toString());
      	 	  
     	}
     		
