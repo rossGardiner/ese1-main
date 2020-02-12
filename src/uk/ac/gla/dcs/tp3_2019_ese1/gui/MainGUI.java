@@ -168,6 +168,7 @@ public class MainGUI implements IGUI {
 
 	private int _n = 0;
 	private boolean _initSucc = false;
+	private JTextField cellTestAvg_DropHT;
 	/**
 	 * Launch the application.
 	 */
@@ -330,6 +331,10 @@ public class MainGUI implements IGUI {
 		cellTest3_DropHT = new JTextField();
 		resultsPane.add(cellTest3_DropHT, "cell 3 5,growx");
 		cellTest3_DropHT.setColumns(10);
+		
+		cellTestAvg_DropHT = new JTextField();
+		cellTestAvg_DropHT.setColumns(10);
+		resultsPane.add(cellTestAvg_DropHT, "cell 4 5,growx");
 		
 		//textField_19 = new JTextField();
 		//resultsPane.add(textField_19, "cell 4 5,growx");
