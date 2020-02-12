@@ -165,6 +165,10 @@ public class MainGUI implements IGUI {
 	private XYSeriesCollection _accelerationData = new XYSeriesCollection();
 	private XYSeriesCollection _velocityData = new XYSeriesCollection();
 	private XYSeriesCollection _displacementData = new XYSeriesCollection();
+	
+	private ArrayList<Double> _test2Values = new ArrayList<Double>();
+	private ArrayList<Double> _test3Values = new ArrayList<Double>();
+	private ArrayList<Double> _avgValues = new ArrayList<Double>();
 
 	private int _n = 0;
 	private boolean _initSucc = false;
@@ -238,7 +242,7 @@ public class MainGUI implements IGUI {
 		JLabel lblTest_2 = new JLabel("Test 3");
 		resultsPane.add(lblTest_2, "cell 3 0");
 		
-		JLabel lblAvgTests = new JLabel("Avg tests 2&3");
+		JLabel lblAvgTests = new JLabel("Avg Tests 2&3");
 		resultsPane.add(lblAvgTests, "cell 4 0");
 		
 		JLabel lblPeakG = new JLabel("Peak G");
@@ -967,58 +971,105 @@ public class MainGUI implements IGUI {
    	 	  cellTest1_ergRest.setText(db.toString());
     	}
     	if(testIdx == 1) {
+    		_test2Values.add(peakG);
     		db = new BigDecimal(peakG);
       	  	db = db.round(new MathContext(4));
      	 	cellTest2_PeakG.setText(db.toString());
+     	 	_test2Values.add(fmax);
      	 	db = new BigDecimal(fmax);
     	    db = db.round(new MathContext(4));
      	 	cellTest2_Fmax.setText(db.toString());
+     	 	_test2Values.add(v1);
      	 	db = new BigDecimal(v1);
   	        db = db.round(new MathContext(4));
      	 	cellTest2_Velocity1.setText(db.toString());
+     	 	_test2Values.add(v2);
      	 	db = new BigDecimal(v2);
   	        db = db.round(new MathContext(4));
      	 	cellTest2_Velocity2.setText(db.toString());
+     	 	_test2Values.add(drop_dist);
      	 	db = new BigDecimal(drop_dist);
   	        db = db.round(new MathContext(4));
      	 	cellTest2_DropHT.setText(db.toString());
+     	 	_test2Values.add(spring);
      	 	db = new BigDecimal(spring);
   	        db = db.round(new MathContext(4));
   	        cellTest2_SpngDef.setText(db.toString());
+  	      _test2Values.add(fred);
      	    db = new BigDecimal(fred);
   	        db = db.round(new MathContext(4));
      	 	cellTest2_fred.setText(db.toString());
+     	 	_test2Values.add(energy);
      	 	db = new BigDecimal(energy);
   	        db = db.round(new MathContext(4));
      	 	cellTest2_ergRest.setText(db.toString());
     	}
     	if(testIdx == 2) {
+    		//System.out.println(_test2Values.toString());
+    		_test3Values.add(peakG);
     		db = new BigDecimal(peakG);
       	  	db = db.round(new MathContext(4));
      	 	cellTest3_PeakG.setText(db.toString());
+     	 	_test3Values.add(fmax);
      	 	db = new BigDecimal(fmax);
     	    db = db.round(new MathContext(4));
      	 	cellTest3_Fmax.setText(db.toString());
+     	 	_test3Values.add(v1);
      	 	db = new BigDecimal(v1);
   	        db = db.round(new MathContext(4));
      	 	cellTest3_Velocity1.setText(db.toString());
+     	 	_test3Values.add(v2);
      	 	db = new BigDecimal(v2);
   	        db = db.round(new MathContext(4));
      	 	cellTest3_Velocity2.setText(db.toString());
+     	 	_test3Values.add(drop_dist);
      	 	db = new BigDecimal(drop_dist);
   	        db = db.round(new MathContext(4));
      	 	cellTest3_DropHT.setText(db.toString());
+     	 	_test3Values.add(spring);
      	 	db = new BigDecimal(spring);
   	        db = db.round(new MathContext(4));
      	    cellTest3_SpngDef.setText(db.toString());
+     	   _test3Values.add(fred);
      	    db = new BigDecimal(fred);
   	        db = db.round(new MathContext(4));
      	 	cellTest3_fred.setText(db.toString());
+     	 	_test3Values.add(energy);
      	 	db = new BigDecimal(energy);
   	        db = db.round(new MathContext(4));
      	 	cellTest3_ergRest.setText(db.toString());
-     	 	  
+        	// Get averages into _avgValues array
+        	for(int i = 0; i < _test3Values.size(); i++){
+        		_avgValues.add(((_test3Values.get(i)+_test2Values.get(i))/2));
+        	}
+        	// Put them in the text fields and round
+      	  	db = new BigDecimal(_avgValues.get(0));
+      	  	db = db.round(new MathContext(4));
+     	 	cellAvg_PeakG.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(1));
+    	    db = db.round(new MathContext(4));
+     	 	cellAvg_Fmax.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(2));
+    	    db = db.round(new MathContext(4));
+     	 	cellAvg_Velocity1.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(3));
+    	    db = db.round(new MathContext(4));
+     	 	cellAvg_Velocity2.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(4));
+    	    db = db.round(new MathContext(4));
+     	 	/*cellAvg_DropHT.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(5));
+    	    db = db.round(new MathContext(4));
+     	 	cellAvg_SpngDef.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(6));
+    	    db = db.round(new MathContext(4));
+     	 	cellAvg_fred.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(7));
+    	    db = db.round(new MathContext(4));
+     	 	cellAvg_ergRest.setText(db.toString());*/
     	}
+
+
     		
     }
 
