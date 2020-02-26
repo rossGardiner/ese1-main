@@ -1,8 +1,8 @@
 package uk.ac.gla.dcs.tp3_2019_ese1.test;
 
 
-
-
+import javax.swing.event.TableModelEvent;
+import java.awt.event.*;
 import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 import uk.ac.gla.dcs.tp3_2019_ese1.gui.MainGUI;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
@@ -16,9 +16,18 @@ public class Test {
     public static void main(String[] args) throws LibcbwException {
 
         testGUI();
+        testMagnet();
 
     }
-    private static void testGUI() {
+    private static void testMagnet() {
+		// TODO Auto-generated method stub
+		MainGUI gui = new MainGUI();
+		boolean magnetStatus = gui.is_magnetStatus();	
+//		MockTableModelListener mockListener = new MockTableModelListener();
+		
+	}
+	
+	private static void testGUI() {
 		// TODO Auto-generated method stub
 		//boolean assertionBool = true;
     	//MainGUI gui = new MainGUI();
@@ -30,20 +39,6 @@ public class Test {
     	catch(Exception ex){
     		System.out.print("AAARunner initialization test failed\n");
     	}
-		
-	}
-
-	private static void testGUI() {
-		// TODO Auto-generated method stub
-		boolean assertionBool = true;
-    	MainGUI gui = new MainGUI();
-    	boolean guiBOOl = gui.getInitSucc();
-    	assertEquals(assertionBool,guiBOOl);
-    	System.out.print("GUI initialization test passed\n");
-		
-	}
-	private static void assertEquals(boolean assertionBool, boolean guiBOOl) {
-		// TODO Auto-generated method stub
 		
 	}
 	

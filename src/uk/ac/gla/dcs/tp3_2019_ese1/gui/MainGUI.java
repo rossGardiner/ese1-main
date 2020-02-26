@@ -1092,43 +1092,43 @@ public class MainGUI implements IGUI {
     	return _initSucc;
     }
 
-	protected boolean is_magnetStatus() {
+	public boolean is_magnetStatus() {
 		return _magnetStatus;
 	}
 
-	protected void set_magnetStatus(boolean _magnetStatus) {
+	public void set_magnetStatus(boolean _magnetStatus) {
 		this._magnetStatus = _magnetStatus;
 	}
 
-	protected JFreeChart get_accelerationChart() {
+	public JFreeChart get_accelerationChart() {
 		return _accelerationChart;
 	}
 
-	protected void set_accelerationChart(JFreeChart _accelerationChart) {
+	public void set_accelerationChart(JFreeChart _accelerationChart) {
 		this._accelerationChart = _accelerationChart;
 	}
 
-	protected XYSeriesCollection get_accelerationData() {
+	public XYSeriesCollection get_accelerationData() {
 		return _accelerationData;
 	}
 
-	protected void set_accelerationData(XYSeriesCollection _accelerationData) {
+	public void set_accelerationData(XYSeriesCollection _accelerationData) {
 		this._accelerationData = _accelerationData;
 	}
 
-	protected XYSeriesCollection get_displacementData() {
+	public XYSeriesCollection get_displacementData() {
 		return _displacementData;
 	}
 
-	protected void set_displacementData(XYSeriesCollection _displacementData) {
+	public void set_displacementData(XYSeriesCollection _displacementData) {
 		this._displacementData = _displacementData;
 	}
 
-	protected ArrayList<Double> get_avgValues() {
+	public ArrayList<Double> get_avgValues() {
 		return _avgValues;
 	}
 
-	protected void set_avgValues(ArrayList<Double> _avgValues) {
+	public void set_avgValues(ArrayList<Double> _avgValues) {
 		this._avgValues = _avgValues;
 	}
     
