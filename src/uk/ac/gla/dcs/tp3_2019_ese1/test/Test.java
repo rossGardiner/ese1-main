@@ -1,7 +1,15 @@
 package uk.ac.gla.dcs.tp3_2019_ese1.test;
 
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.*;
 
+import javax.swing.JButton;
 import javax.swing.event.TableModelEvent;
+import javax.swing.text.View;
+
 import java.awt.event.*;
 import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 import uk.ac.gla.dcs.tp3_2019_ese1.gui.MainGUI;
@@ -12,7 +20,6 @@ public class Test {
 	
     private static final int ACCELEROMETER_IN = 1;
     private static final int MAGNET_OUT = 0;
-
     public static void main(String[] args) throws LibcbwException {
 
         testGUI();
@@ -20,16 +27,7 @@ public class Test {
 
     }
     private static void testMagnet() {
-		// TODO Auto-generated method stub
-		MainGUI gui = new MainGUI();
-		boolean magnetStatus = gui.is_magnetStatus();	
-//		MockTableModelListener mockListener = new MockTableModelListener();
-		gui.set_magnetStatus(!magnetStatus);
-		if (gui.is_magnetStatus() != magnetStatus) {
-	    	  System.out.print("Magnet Status changing,Test passed\n");
-		}else {
-	    	  System.out.print("Magnet Status not changing,Test Failed\n");
-		}
+    	
 	}
 	
 	private static void testGUI() {
