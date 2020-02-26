@@ -24,7 +24,12 @@ public class Test {
 		MainGUI gui = new MainGUI();
 		boolean magnetStatus = gui.is_magnetStatus();	
 //		MockTableModelListener mockListener = new MockTableModelListener();
-		
+		gui.set_magnetStatus(!magnetStatus);
+		if (gui.is_magnetStatus() != magnetStatus) {
+	    	  System.out.print("Magnet Status changing,Test passed\n");
+		}else {
+	    	  System.out.print("Magnet Status not changing,Test Failed\n");
+		}
 	}
 	
 	private static void testGUI() {
