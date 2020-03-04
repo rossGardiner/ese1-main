@@ -804,6 +804,7 @@ public class MainGUI implements IGUI {
 		
 		
 		btnSaveFile.addActionListener((evt) -> {
+			int n = 0;
 		    JFileChooser saveFile = new JFileChooser();
 		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into an xml format");
 		    int userSelection = saveFile.showSaveDialog(frame);
@@ -830,10 +831,14 @@ public class MainGUI implements IGUI {
 		            for (String line : csv) {
 		                writer.append(line);
 		                writer.newLine();
+		            	//System.out.print(line + "\n");
 		            }
+		            
+		            
 		        } catch (IOException e) {
 		            throw new IllegalStateException("Cannot write dataset",e);
 		        }
+		        
 		    }		
 		});
 
@@ -1096,41 +1101,27 @@ public class MainGUI implements IGUI {
 		return _magnetStatus;
 	}
 
-	public void set_magnetStatus(boolean _magnetStatus) {
-		this._magnetStatus = _magnetStatus;
-	}
 
 	public JFreeChart get_accelerationChart() {
 		return _accelerationChart;
 	}
 
-	public void set_accelerationChart(JFreeChart _accelerationChart) {
-		this._accelerationChart = _accelerationChart;
-	}
+	
 
 	public XYSeriesCollection get_accelerationData() {
 		return _accelerationData;
 	}
 
-	public void set_accelerationData(XYSeriesCollection _accelerationData) {
-		this._accelerationData = _accelerationData;
-	}
 
 	public XYSeriesCollection get_displacementData() {
 		return _displacementData;
 	}
 
-	public void set_displacementData(XYSeriesCollection _displacementData) {
-		this._displacementData = _displacementData;
-	}
 
 	public ArrayList<Double> get_avgValues() {
 		return _avgValues;
 	}
 
-	public void set_avgValues(ArrayList<Double> _avgValues) {
-		this._avgValues = _avgValues;
-	}
     
 
 }
