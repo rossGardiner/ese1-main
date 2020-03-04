@@ -60,6 +60,11 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
+
+//import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
+//import com.sun.org.omg.CORBA._IDLTypeStub;
+
+
 import net.miginfocom.swing.MigLayout;
 import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 
@@ -171,8 +176,10 @@ public class MainGUI implements IGUI {
 	private ArrayList<Double> _avgValues = new ArrayList<Double>();
 
 	private int _n = 0;
+
 	private boolean _initSucc = false;
 	private JTextField cellTestAvg_DropHT;
+
 	/**
 	 * Launch the application.
 	 */
@@ -797,6 +804,7 @@ public class MainGUI implements IGUI {
 		
 		
 		btnSaveFile.addActionListener((evt) -> {
+			int n = 0;
 		    JFileChooser saveFile = new JFileChooser();
 		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into an xml format");
 		    int userSelection = saveFile.showSaveDialog(frame);
@@ -823,10 +831,14 @@ public class MainGUI implements IGUI {
 		            for (String line : csv) {
 		                writer.append(line);
 		                writer.newLine();
+		            	//System.out.print(line + "\n");
 		            }
+		            
+		            
 		        } catch (IOException e) {
 		            throw new IllegalStateException("Cannot write dataset",e);
 		        }
+		        
 		    }		
 		});
 
@@ -881,7 +893,9 @@ public class MainGUI implements IGUI {
 		//panel_13.setLayout(new BorderLayout());
 		//panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
 		//tabbedPane.addTab("Graph 3", null, panel_13, null);
+
 		_initSucc = true;
+
 	}
 
     @Override
@@ -1078,9 +1092,37 @@ public class MainGUI implements IGUI {
         // TODO Auto-generated method stub
         
     }
+
     public boolean getInitSucc() {
     	return _initSucc;
     }
+
+	public boolean is_magnetStatus() {
+		return _magnetStatus;
+	}
+
+
+	public JFreeChart get_accelerationChart() {
+		return _accelerationChart;
+	}
+
+	
+
+	public XYSeriesCollection get_accelerationData() {
+		return _accelerationData;
+	}
+
+
+	public XYSeriesCollection get_displacementData() {
+		return _displacementData;
+	}
+
+
+	public ArrayList<Double> get_avgValues() {
+		return _avgValues;
+	}
+
     
+
 }
 
