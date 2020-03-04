@@ -1057,16 +1057,16 @@ public class MainGUI implements IGUI {
      	 	cellAvg_Velocity2.setText(db.toString());
      	 	db = new BigDecimal(_avgValues.get(4));
     	    db = db.round(new MathContext(4));
-     	 	/*cellAvg_DropHT.setText(db.toString());
+     	 	cellTestAvg_DropHT.setText(db.toString());
      	 	db = new BigDecimal(_avgValues.get(5));
     	    db = db.round(new MathContext(4));
-     	 	cellAvg_SpngDef.setText(db.toString());
+     	 	cellTestAvg_SpngDef.setText(db.toString());
      	 	db = new BigDecimal(_avgValues.get(6));
     	    db = db.round(new MathContext(4));
-     	 	cellAvg_fred.setText(db.toString());
+     	 	cellTestAvg_fred.setText(db.toString());
      	 	db = new BigDecimal(_avgValues.get(7));
     	    db = db.round(new MathContext(4));
-     	 	cellAvg_ergRest.setText(db.toString());*/
+     	 	cellTestAvg_ergRest.setText(db.toString());
     	}
 
 
