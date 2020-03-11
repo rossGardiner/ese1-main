@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.DecimalFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -91,8 +93,8 @@ public class MainGUI implements IGUI {
 	
 
 	private final JPanel timerPanel = new JPanel();
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textField_secs;
+	private JTextField textField_mins;
 	private JTextField cellTest1_PeakG;
 	private JTextField cellTest2_PeakG;
 	private JTextField textField_4;
@@ -677,15 +679,15 @@ public class MainGUI implements IGUI {
 		JLabel lblSec = new JLabel("Sec");
 		panel_8.add(lblSec, "cell 1 0");
 		
-		textField_3 = new JTextField();
-		panel_8.add(textField_3, "cell 0 1");
-		textField_3.setText("00");
-		textField_3.setColumns(10);
+		textField_mins = new JTextField();
+		panel_8.add(textField_mins, "cell 0 1");
+		textField_mins.setText("00");
+		textField_mins.setColumns(10);
 		
-		textField_2 = new JTextField();
-		panel_8.add(textField_2, "cell 1 1,growx");
-		textField_2.setText("1");
-		textField_2.setColumns(10);
+		textField_secs = new JTextField();
+		panel_8.add(textField_secs, "cell 1 1,growx");
+		textField_secs.setText("1");
+		textField_secs.setColumns(10);
 		
 		JButton btnStart_1 = new JButton("Start");
 		panel_8.add(btnStart_1, "cell 0 3");
@@ -695,17 +697,23 @@ public class MainGUI implements IGUI {
 		btnStart_1.addActionListener((ae) -> {
 				JButton button = btnRunTest_1;
 				button.setEnabled(false);
-				System.out.printf("Timer running");
-  
-				int minutes = Integer.parseInt(textField_3.getText());
-				int seconds = Integer.parseInt(textField_2.getText());
+				int minutes = Integer.parseInt(textField_mins.getText());
+				int seconds = Integer.parseInt(textField_secs.getText());
 				minutes = minutes * 60000;
 				seconds = seconds * 1000;
 				delay = minutes + seconds;
-				System.out.println(delay);
-				
-				Timer timer = new Timer(delay, (evt) -> btnRunTest_1.setEnabled(true));
-				
+				if(delay < 0) delay = 0;
+				LocalDateTime startTime = LocalDateTime.now();
+				Timer timer = new Timer(delay, new ActionListener() {
+		            @Override
+		            public void actionPerformed(ActionEvent e) {
+
+		                LocalDateTime now = LocalDateTime.now();
+		                Duration runningTime = Duration.between(startTime, now);
+
+		                textField_secs.setText(Long.toString(runningTime.getSeconds()));
+		            }
+		        });;
 				timer.setRepeats(false);
 				timer.start();
 			
@@ -806,32 +814,34 @@ public class MainGUI implements IGUI {
 		btnSaveFile.addActionListener((evt) -> {
 			int n = 0;
 		    JFileChooser saveFile = new JFileChooser();
-		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into an xml format");
+		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into a csv format");
 		    int userSelection = saveFile.showSaveDialog(frame);
 		    if (userSelection == JFileChooser.APPROVE_OPTION) {
 		        File file = saveFile.getSelectedFile();
-		        //Save file into xml format
+		        //Save file into csv format
 		        file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".csv");
 		        ArrayList<String> csv = new ArrayList<>();
-		        if (_accelerationChart.getPlot() instanceof XYPlot) {
-		            XYDataset xyDataset = _accelerationChart.getXYPlot().getDataset();
-		            int seriesCount = xyDataset.getSeriesCount();
-		            for (int i = 0; i < seriesCount; i++) {
-		                int itemCount = xyDataset.getItemCount(i);
-		                for (int j = 0; j < itemCount; j++) {
-		                    Comparable<?> key = xyDataset.getSeriesKey(i);
-		                    Number x = xyDataset.getX(i, j);
-		                    Number y = xyDataset.getY(i, j);
-		                    csv.add(String.format("%s, %s, %s", key, x, y));
-		                }
-		            }
+		        csv.add(String.format("%s, %s,  %s, %s", "TIME", "ACCELERATION", "VELOCITY", "DISPLACEMENT"));
+		        if(_accelerationData != null) {
+		        	int itemCount = _accelerationData.getItemCount(0);
+		        	//ASSUMING THE ITEM COUNT IS THE SAME FOR EACH SERIES (IT IS)
+		        	if(_velocityData != null) {
+		        		if(_displacementData != null) {
+		        			for(int i = 0; i < itemCount; i++) {
+		        				Number timeNr = _accelerationData.getX(0, i);
+		        				Number accNr = _accelerationData.getY(0, i);
+		        				Number velNr = _velocityData.getY(0, i);
+		        				Number disNr = _displacementData.getY(0, i);
+		        				csv.add(String.format("%s, %s, %s, %s", timeNr, accNr, velNr, disNr));
+		        			}
+		        		}
+		        	}
 		        }
 		        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file));)
 		        {
 		            for (String line : csv) {
 		                writer.append(line);
 		                writer.newLine();
-		            	//System.out.print(line + "\n");
 		            }
 		            
 		            
