@@ -5,14 +5,12 @@ This project is done by team ESE1 (the better team) for the 3rd year Team Design
 
 ## Installation
 
-Download the App via... 
-```bash
- bash test test git push
-```
+Download the App by running the installer on the USB stick provided.
 
 ## Usage
 
-Its an app. Run and connect to the equipment. Press Magnet Toggle to turn the magnet on, and then run test to run the test. There is a small wait time between tests, and ...
+As it is an app, the equipment must be connected to the device before the program is run. Press Magnet Toggle to turn the magnet on, and then run test to run the first test. 
+There is a small wait time between tests, and the results will be output on the graph area. There are also a few text fields which will be filled with the desired information.
 
 ## Contributing
 
@@ -20,7 +18,7 @@ In the future, ...
 
 ## License
 
-Eveything is open source, so ...
+[GNU General Public License v3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 
 
