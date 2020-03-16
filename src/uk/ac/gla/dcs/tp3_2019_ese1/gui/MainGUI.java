@@ -703,18 +703,18 @@ public class MainGUI implements IGUI {
 				seconds = seconds * 1000;
 				delay = minutes + seconds;
 				if(delay < 0) delay = 0;
-				LocalDateTime startTime = LocalDateTime.now();
+				long startTime = System.currentTimeMillis();
 				Timer timer = new Timer(delay, new ActionListener() {
+					
 		            @Override
 		            public void actionPerformed(ActionEvent e) {
-
-		                LocalDateTime now = LocalDateTime.now();
-		                Duration runningTime = Duration.between(startTime, now);
-
-		                textField_secs.setText(Long.toString(runningTime.getSeconds()));
+		            	long now = System.currentTimeMillis();
+	                    long clockTime = now - startTime;
+		                textField_secs.setText(Long.toString(clockTime));
+		            	
 		            }
 		        });;
-				timer.setRepeats(false);
+				//timer.setRepeats(false);
 				timer.start();
 			
 		});
@@ -873,7 +873,9 @@ public class MainGUI implements IGUI {
 		chartPanelVelocity.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(_velocityChart).setVisible(true);
+				if(e.getClickCount() == 2) {
+				    new ChartViewerDialog(_velocityChart).setVisible(true);
+				}
 			}
 		});
 		chartPanelVelocity.setDomainZoomable(true);
@@ -888,7 +890,9 @@ public class MainGUI implements IGUI {
 		chartPanelDisplacement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(_displacementChart).setVisible(true);
+				if(e.getClickCount() == 2) {
+				    new ChartViewerDialog(_displacementChart).setVisible(true);
+				}
 			}
 		});
 		chartPanelDisplacement.setDomainZoomable(true);
