@@ -153,7 +153,7 @@ public class AAARunner {
 
         double energy = v2 * v2 / (v1 * v1) * 100.0D;
         double spring = -fmax / SPRINGCAL;
-        double material = drop_total - drop_dist - spring;
+        double material = -(drop_total - drop_dist - spring);
 
         _gui.outputResults(peakG, fmax, fred, v1, v2, energy, drop_dist, spring, material, _testNr);
     }
