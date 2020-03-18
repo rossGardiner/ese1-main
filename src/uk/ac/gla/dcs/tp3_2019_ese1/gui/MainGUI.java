@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -129,8 +130,8 @@ public class MainGUI implements IGUI {
 	private JTextField cellTestAvg_fred;
 	private JTextField cellTest1_vdef;
 	private JTextField cellTest2_vdef;
-	
-	
+	private static Timer timer;
+	private boolean _timerIsStarted = false;
 	
 	private JTextField cellTest3_vdef;
 	private JTextField cellTestAvg_vdef;
@@ -694,35 +695,46 @@ public class MainGUI implements IGUI {
 		
 		JButton btnReset_1 = new JButton("Reset");
 		panel_8.add(btnReset_1, "cell 1 3");
+		_timerIsStarted = false;
 		btnStart_1.addActionListener((ae) -> {
+				_timerIsStarted = !_timerIsStarted;
+				if(_timerIsStarted) btnStart_1.setText("Stop");
+				if(!_timerIsStarted) btnStart_1.setText("Start");
 				JButton button = btnRunTest_1;
 				button.setEnabled(false);
 				int minutes = Integer.parseInt(textField_mins.getText());
 				int seconds = Integer.parseInt(textField_secs.getText());
 				minutes = minutes * 60000;
 				seconds = seconds * 1000;
-				delay = minutes + seconds;
-				if(delay < 0) delay = 0;
-				LocalDateTime startTime = LocalDateTime.now();
-				Timer timer = new Timer(delay, new ActionListener() {
+				long duration = minutes + seconds;
+				long startTime = System.currentTimeMillis();
+				final Long startTimeInner = new Long(startTime);
+				timer = new Timer(0, new ActionListener() {
 		            @Override
 		            public void actionPerformed(ActionEvent e) {
-
-		                LocalDateTime now = LocalDateTime.now();
-		                Duration runningTime = Duration.between(startTime, now);
-		                System.out.print(Long.toString(runningTime.getSeconds()));
-		                textField_secs.setText(Long.toString(runningTime.getSeconds()));
-
+		                    long now = System.currentTimeMillis();
+		                    long clockTime = now - startTimeInner;
+		                    if (clockTime >= duration) {
+		                        clockTime = duration;
+		                        timer.stop();
+		                        button.setEnabled(true);
+		                        btnStart_1.setText("Start");
+		                    }
+		                    if(!_timerIsStarted) {
+		                    	timer.stop();
+		                    	button.setEnabled(true);
+		                    }
+		                    long mins = (duration - clockTime)/60000;
+		                    long secs = (duration - clockTime) % 60000;
+		                    secs = secs / 1000;
+		                    //SimpleDateFormat df = new SimpleDateFormat("mm:ss:SSS");
+		                    textField_secs.setText(String.valueOf(secs));
+		                    textField_mins.setText(String.valueOf(mins));
+		                    
 		            }
 		        });;
-				timer.setRepeats(false);
-				timer.start();
-				while(timer.isRunning()) {
-					System.out.print("timer is running \n");
-				}
-				button.setEnabled(true);
-				
-			
+				timer.setRepeats(true);
+				timer.start();			
 		});
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
