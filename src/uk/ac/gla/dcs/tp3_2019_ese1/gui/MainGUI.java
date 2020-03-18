@@ -710,12 +710,18 @@ public class MainGUI implements IGUI {
 
 		                LocalDateTime now = LocalDateTime.now();
 		                Duration runningTime = Duration.between(startTime, now);
-
+		                System.out.print(Long.toString(runningTime.getSeconds()));
 		                textField_secs.setText(Long.toString(runningTime.getSeconds()));
+
 		            }
 		        });;
 				timer.setRepeats(false);
 				timer.start();
+				while(timer.isRunning()) {
+					System.out.print("timer is running \n");
+				}
+				button.setEnabled(true);
+				
 			
 		});
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -775,11 +781,11 @@ public class MainGUI implements IGUI {
 		XYSeries series2  = new XYSeries("Test 2");
 		XYSeries series3 = new XYSeries("Test 3");
 
-		for(int i = 0; i < 1000; i++) {
-			series.add(new XYDataItem(i, 0));
-			series2.add(new XYDataItem(i, 0));
-			series3.add(new XYDataItem(i, 0));
-		}
+		//for(int i = 0; i < 1000; i++) {
+		//	series.add(new XYDataItem(i, 0));
+		//	series2.add(new XYDataItem(i, 0));
+		//	series3.add(new XYDataItem(i, 0));
+		//}
 
 		_accelerationData.addSeries(series);
 		_accelerationData.addSeries(series2);
@@ -900,9 +906,6 @@ public class MainGUI implements IGUI {
 		JPanel averageResultsPanel = new JPanel();
         frame.getContentPane().add(averageResultsPanel, "cell 0 0 4 1,grow");
 		averageResultsPanel.setLayout(new MigLayout("", "[77px]", "[14px]"));
-		//panel_13.setLayout(new BorderLayout());
-		//panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
-		//tabbedPane.addTab("Graph 3", null, panel_13, null);
 
 		_initSucc = true;
 
@@ -1103,9 +1106,6 @@ public class MainGUI implements IGUI {
         
     }
 
-    public boolean getInitSucc() {
-    	return _initSucc;
-    }
 
 	public boolean is_magnetStatus() {
 		return _magnetStatus;
