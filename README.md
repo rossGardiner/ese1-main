@@ -1,6 +1,8 @@
 # ESE1 - NextSteps Runner for the Sports Test Equipment for SportsLabs
 
-This project is done by team ESE1 for the 3rd year Team Design Project. 
+This project is done by team ESE1 for the 3rd year Team Design Project. It is NextSteps, 
+an application that uses the Advanced Artificial Athlete to gather data about the surface under the AAA and 
+calculates meaningful information for technicians.
 
 
 ## Installation
