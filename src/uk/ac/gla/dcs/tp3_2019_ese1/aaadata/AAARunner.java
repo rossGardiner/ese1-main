@@ -46,7 +46,6 @@ public class AAARunner {
      */
     public void runTest(ActionEvent evt) {
     	try {
-    		System.out.println("MASS: " + MASS);
             _board.enableEvent(EventType.ON_END_OF_INPUT_SCAN, (b, t, d) -> {
                 double volts_per_g = GAIN_CALI / 10 * 5; /* V/G ? */
 
