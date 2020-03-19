@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project ESE1">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <!--define folder properties-->
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.workspace" value="D:/workspace"/>
+    <property name="dir.jarfile" value="${dir.buildfile}"/>
+    <target name="create_run_jar">
+        <jar destfile="${dir.jarfile}/next-STEPS.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="uk.ac.gla.dcs.tp3_2019_ese1.gui.MainGUI"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${dir.jarfile}/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/jfreechart-1.6.0-snapshot.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/jna-5.5.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/jna-platform-5.5.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/miglayout15-swing.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/miglayout-src.zip"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/commons-io-2.6.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/commons-io-2.6-javadoc.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/commons-io-2.6-sources.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/JTattoo-1.6.13.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/junit5-1.26.125.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/mockito-all-1.10.19.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.jarfile}/lib/hamcrest-2.2.jar"/>
+        </jar>
+    </target>
+</project>
