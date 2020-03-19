@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -75,6 +76,7 @@ import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
 import com.jtattoo.plaf.acryl.*;
+import javax.swing.SwingConstants;
  
 
 public class MainGUI implements IGUI {
@@ -129,8 +131,10 @@ public class MainGUI implements IGUI {
 	private JTextField cellTestAvg_fred;
 	private JTextField cellTest1_vdef;
 	private JTextField cellTest2_vdef;
-	
-	
+	private static Timer timer;
+	private boolean _timerIsStarted = false;
+	private String _minString = "0";
+	private String _secString = "30";
 	
 	private JTextField cellTest3_vdef;
 	private JTextField cellTestAvg_vdef;
@@ -680,43 +684,80 @@ public class MainGUI implements IGUI {
 		panel_8.add(lblSec, "cell 1 0");
 		
 		textField_mins = new JTextField();
+		textField_mins.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_8.add(textField_mins, "cell 0 1");
 		textField_mins.setText("00");
 		textField_mins.setColumns(10);
 		
 		textField_secs = new JTextField();
+		textField_secs.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_8.add(textField_secs, "cell 1 1,growx");
-		textField_secs.setText("1");
+		textField_secs.setText("30");
 		textField_secs.setColumns(10);
-		
+		JButton button = btnRunTest_1;
 		JButton btnStart_1 = new JButton("Start");
 		panel_8.add(btnStart_1, "cell 0 3");
 		
 		JButton btnReset_1 = new JButton("Reset");
+		btnReset_1.addActionListener((ae) -> {
+			timer.stop();
+			btnRunTest_1.setEnabled(true);
+			textField_mins.setText("0");
+			textField_secs.setText("30.00");
+			btnStart_1.setText("Start");
+			_timerIsStarted = false;
+		});
 		panel_8.add(btnReset_1, "cell 1 3");
+		_timerIsStarted = false;
 		btnStart_1.addActionListener((ae) -> {
-				JButton button = btnRunTest_1;
+				_timerIsStarted = !_timerIsStarted;
+				if(_timerIsStarted) btnStart_1.setText("Stop");
+				if(!_timerIsStarted) btnStart_1.setText("Start");		
+				//disable the button
+				
 				button.setEnabled(false);
-				int minutes = Integer.parseInt(textField_mins.getText());
-				int seconds = Integer.parseInt(textField_secs.getText());
+				//remove all non integers from input field
+				String minString = textField_mins.getText();
+				minString = minString.replaceAll("[^\\d.]", "");
+				String secString = textField_secs.getText();
+				secString = secString.replaceAll("[^\\d.]", "");
+				//parse input data
+				float minutes = Float.parseFloat(minString);
+				float seconds = Float.parseFloat(secString);
+				//create duration (in milliseconds)
 				minutes = minutes * 60000;
 				seconds = seconds * 1000;
-				delay = minutes + seconds;
-				if(delay < 0) delay = 0;
-				LocalDateTime startTime = LocalDateTime.now();
-				Timer timer = new Timer(delay, new ActionListener() {
+				long duration = (int)minutes + (int)seconds;
+				long startTime = System.currentTimeMillis();
+				final Long startTimeInner = new Long(startTime);
+				timer = new Timer(0, new ActionListener() {
 		            @Override
 		            public void actionPerformed(ActionEvent e) {
-
-		                LocalDateTime now = LocalDateTime.now();
-		                Duration runningTime = Duration.between(startTime, now);
-
-		                textField_secs.setText(Long.toString(runningTime.getSeconds()));
+		                    long now = System.currentTimeMillis();
+		                    long clockTime = now - startTimeInner;
+		                    //if time is up, stop
+		                    if (clockTime >= duration) {
+		                        clockTime = duration;
+		                        ((Timer)e.getSource()).stop();
+		                        button.setEnabled(true);
+		                        btnStart_1.setText("Start");
+		                    }
+		                    //if stop button is pressed, stop
+		                    if(!_timerIsStarted) {
+		                    	((Timer)e.getSource()).stop();
+		                    	button.setEnabled(true);
+		                    }
+		                    //format timer output
+		                    long mins = (duration - clockTime)/60000;
+		                    float secs = (duration - clockTime)%60000;
+		                    secs = secs / 1000;
+		                    String secStr = String.format("%.2f", secs);
+		                    textField_secs.setText(secStr);
+		                    textField_mins.setText(String.valueOf(mins));
 		            }
 		        });;
-				timer.setRepeats(false);
-				timer.start();
-			
+				timer.start();	
+				
 		});
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
@@ -775,11 +816,11 @@ public class MainGUI implements IGUI {
 		XYSeries series2  = new XYSeries("Test 2");
 		XYSeries series3 = new XYSeries("Test 3");
 
-		for(int i = 0; i < 1000; i++) {
-			series.add(new XYDataItem(i, 0));
-			series2.add(new XYDataItem(i, 0));
-			series3.add(new XYDataItem(i, 0));
-		}
+		//for(int i = 0; i < 1000; i++) {
+		//	series.add(new XYDataItem(i, 0));
+		//	series2.add(new XYDataItem(i, 0));
+		//	series3.add(new XYDataItem(i, 0));
+		//}
 
 		_accelerationData.addSeries(series);
 		_accelerationData.addSeries(series2);
@@ -873,7 +914,9 @@ public class MainGUI implements IGUI {
 		chartPanelVelocity.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(_velocityChart).setVisible(true);
+				if(e.getClickCount() == 2) {
+				    new ChartViewerDialog(_velocityChart).setVisible(true);
+				}
 			}
 		});
 		chartPanelVelocity.setDomainZoomable(true);
@@ -888,7 +931,9 @@ public class MainGUI implements IGUI {
 		chartPanelDisplacement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(_displacementChart).setVisible(true);
+				if(e.getClickCount() == 2) {
+				    new ChartViewerDialog(_displacementChart).setVisible(true);
+				}
 			}
 		});
 		chartPanelDisplacement.setDomainZoomable(true);
@@ -900,9 +945,6 @@ public class MainGUI implements IGUI {
 		JPanel averageResultsPanel = new JPanel();
         frame.getContentPane().add(averageResultsPanel, "cell 0 0 4 1,grow");
 		averageResultsPanel.setLayout(new MigLayout("", "[77px]", "[14px]"));
-		//panel_13.setLayout(new BorderLayout());
-		//panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
-		//tabbedPane.addTab("Graph 3", null, panel_13, null);
 
 		_initSucc = true;
 
@@ -944,6 +986,7 @@ public class MainGUI implements IGUI {
     	for(Object series : accData) {
     		_accelerationData.addSeries((XYSeries)series);
     	}
+    	
     	//VELOCITY
     	List<Object> velData = Arrays.asList(_velocityData.getSeries().toArray());
     	velData.set(testIdx, velocitySeries);
@@ -990,6 +1033,9 @@ public class MainGUI implements IGUI {
    	 	  db = new BigDecimal(fred);
 	      db = db.round(new MathContext(4));
    	 	  cellTest1_fred.setText(db.toString());
+   	 	  db = new BigDecimal(material);
+ 	 	  db = db.round(new MathContext(4));
+ 	 	  cellTest1_vdef.setText(db.toString());
    	 	  db = new BigDecimal(energy);
 	      db = db.round(new MathContext(4));
    	 	  cellTest1_ergRest.setText(db.toString());
@@ -1023,6 +1069,10 @@ public class MainGUI implements IGUI {
      	    db = new BigDecimal(fred);
   	        db = db.round(new MathContext(4));
      	 	cellTest2_fred.setText(db.toString());
+     	 	_test2Values.add(material);
+     	 	db = new BigDecimal(material);
+     	 	db = db.round(new MathContext(4));
+     	 	cellTest2_vdef.setText(db.toString());
      	 	_test2Values.add(energy);
      	 	db = new BigDecimal(energy);
   	        db = db.round(new MathContext(4));
@@ -1058,6 +1108,10 @@ public class MainGUI implements IGUI {
      	    db = new BigDecimal(fred);
   	        db = db.round(new MathContext(4));
      	 	cellTest3_fred.setText(db.toString());
+     	 	_test3Values.add(material);
+     	 	db = new BigDecimal(material);
+     	 	db = db.round(new MathContext(4));
+     	 	cellTest3_vdef.setText(db.toString());
      	 	_test3Values.add(energy);
      	 	db = new BigDecimal(energy);
   	        db = db.round(new MathContext(4));
@@ -1090,6 +1144,9 @@ public class MainGUI implements IGUI {
      	 	cellTestAvg_fred.setText(db.toString());
      	 	db = new BigDecimal(_avgValues.get(7));
     	    db = db.round(new MathContext(4));
+     	 	cellTestAvg_vdef.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(8));
+    	    db = db.round(new MathContext(4));
      	 	cellTestAvg_ergRest.setText(db.toString());
     	}
 
@@ -1103,9 +1160,6 @@ public class MainGUI implements IGUI {
         
     }
 
-    public boolean getInitSucc() {
-    	return _initSucc;
-    }
 
 	public boolean is_magnetStatus() {
 		return _magnetStatus;
