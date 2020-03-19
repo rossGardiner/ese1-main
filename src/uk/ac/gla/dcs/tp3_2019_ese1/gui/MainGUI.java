@@ -216,7 +216,7 @@ public class MainGUI implements IGUI {
 		JPanel resultsPane = new JPanel();
 		settingsPane.addTab("Results", null, resultsPane, null);
 		resultsPane.setBorder(new TitledBorder(null, "Results", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		resultsPane.setLayout(new MigLayout("", "[77px][grow][grow][grow][grow]", "[][][14px][][][][][][][]"));
+		resultsPane.setLayout(new MigLayout("", "[77px][grow][grow][grow][grow]", "[][][14px][][][][][][][][][]"));
 
 		JLabel lblTest = new JLabel("Test 1");
 		resultsPane.add(lblTest, "cell 1 0");
@@ -407,6 +407,50 @@ public class MainGUI implements IGUI {
 		cellTestAvg_ergRest = new JTextField();
 		resultsPane.add(cellTestAvg_ergRest, "cell 4 9,growx");
 		cellTestAvg_ergRest.setColumns(10);
+								
+										JButton btnSaveFile = new JButton("Save file");
+										resultsPane.add(btnSaveFile, "cell 0 11,growx");
+				
+						btnSaveFile.addActionListener((evt) -> {
+							int n = 0;
+						    JFileChooser saveFile = new JFileChooser();
+						    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into a csv format");
+						    int userSelection = saveFile.showSaveDialog(frame);
+						    if (userSelection == JFileChooser.APPROVE_OPTION) {
+						        File file = saveFile.getSelectedFile();
+						        //Save file into csv format
+						        file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".csv");
+						        ArrayList<String> csv = new ArrayList<>();
+						        csv.add(String.format("%s, %s,  %s, %s", "TIME", "ACCELERATION", "VELOCITY", "DISPLACEMENT"));
+						        if(_accelerationData != null) {
+						        	int itemCount = _accelerationData.getItemCount(0);
+						        	//ASSUMING THE ITEM COUNT IS THE SAME FOR EACH SERIES (IT IS)
+						        	if(_velocityData != null) {
+						        		if(_displacementData != null) {
+						        			for(int i = 0; i < itemCount; i++) {
+						        				Number timeNr = _accelerationData.getX(0, i);
+						        				Number accNr = _accelerationData.getY(0, i);
+						        				Number velNr = _velocityData.getY(0, i);
+						        				Number disNr = _displacementData.getY(0, i);
+						        				csv.add(String.format("%s, %s, %s, %s", timeNr, accNr, velNr, disNr));
+						        			}
+						        		}
+						        	}
+						        }
+						        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file));)
+						        {
+						            for (String line : csv) {
+						                writer.append(line);
+						                writer.newLine();
+						            }
+						            
+						            
+						        } catch (IOException e) {
+						            throw new IllegalStateException("Cannot write dataset",e);
+						        }
+						        
+						    }		
+						});
 		;
 
 		JPanel launchControlPanel = new JPanel();
@@ -451,9 +495,6 @@ public class MainGUI implements IGUI {
 
 		JButton btnRunTest_1 = new JButton("Run Test");
 		btnRunTest_1.addActionListener(_runner::runTest);
-
-		JButton btnSaveFile = new JButton("Save file");
-		timerPanel.add(btnSaveFile, "cell 0 3");
 
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -758,47 +799,6 @@ public class MainGUI implements IGUI {
 		gbc_tabbedPane.gridx = 0;
 		gbc_tabbedPane.gridy = 0;
 		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
-
-		btnSaveFile.addActionListener((evt) -> {
-			int n = 0;
-		    JFileChooser saveFile = new JFileChooser();
-		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into a csv format");
-		    int userSelection = saveFile.showSaveDialog(frame);
-		    if (userSelection == JFileChooser.APPROVE_OPTION) {
-		        File file = saveFile.getSelectedFile();
-		        //Save file into csv format
-		        file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".csv");
-		        ArrayList<String> csv = new ArrayList<>();
-		        csv.add(String.format("%s, %s,  %s, %s", "TIME", "ACCELERATION", "VELOCITY", "DISPLACEMENT"));
-		        if(_accelerationData != null) {
-		        	int itemCount = _accelerationData.getItemCount(0);
-		        	//ASSUMING THE ITEM COUNT IS THE SAME FOR EACH SERIES (IT IS)
-		        	if(_velocityData != null) {
-		        		if(_displacementData != null) {
-		        			for(int i = 0; i < itemCount; i++) {
-		        				Number timeNr = _accelerationData.getX(0, i);
-		        				Number accNr = _accelerationData.getY(0, i);
-		        				Number velNr = _velocityData.getY(0, i);
-		        				Number disNr = _displacementData.getY(0, i);
-		        				csv.add(String.format("%s, %s, %s, %s", timeNr, accNr, velNr, disNr));
-		        			}
-		        		}
-		        	}
-		        }
-		        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file));)
-		        {
-		            for (String line : csv) {
-		                writer.append(line);
-		                writer.newLine();
-		            }
-		            
-		            
-		        } catch (IOException e) {
-		            throw new IllegalStateException("Cannot write dataset",e);
-		        }
-		        
-		    }		
-		});
 
 
 		JPanel panel_acceleration = new JPanel();
