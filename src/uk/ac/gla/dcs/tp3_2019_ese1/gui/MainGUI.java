@@ -746,8 +746,6 @@ public class MainGUI implements IGUI {
 
 		});
 		
-		JMenu mnInfo = new JMenu("Info");
-		menuBar.add(mnInfo);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
