@@ -133,6 +133,8 @@ public class MainGUI implements IGUI {
 	private JTextField cellTest2_vdef;
 	private static Timer timer;
 	private boolean _timerIsStarted = false;
+	private String _minString = "0";
+	private String _secString = "30";
 	
 	private JTextField cellTest3_vdef;
 	private JTextField cellTestAvg_vdef;
@@ -692,11 +694,19 @@ public class MainGUI implements IGUI {
 		panel_8.add(textField_secs, "cell 1 1,growx");
 		textField_secs.setText("30");
 		textField_secs.setColumns(10);
-		
+		JButton button = btnRunTest_1;
 		JButton btnStart_1 = new JButton("Start");
 		panel_8.add(btnStart_1, "cell 0 3");
 		
 		JButton btnReset_1 = new JButton("Reset");
+		btnReset_1.addActionListener((ae) -> {
+			timer.stop();
+			btnRunTest_1.setEnabled(true);
+			textField_mins.setText("0");
+			textField_secs.setText("30.00");
+			btnStart_1.setText("Start");
+			_timerIsStarted = false;
+		});
 		panel_8.add(btnReset_1, "cell 1 3");
 		_timerIsStarted = false;
 		btnStart_1.addActionListener((ae) -> {
@@ -704,7 +714,7 @@ public class MainGUI implements IGUI {
 				if(_timerIsStarted) btnStart_1.setText("Stop");
 				if(!_timerIsStarted) btnStart_1.setText("Start");		
 				//disable the button
-				JButton button = btnRunTest_1;
+				
 				button.setEnabled(false);
 				//remove all non integers from input field
 				String minString = textField_mins.getText();
