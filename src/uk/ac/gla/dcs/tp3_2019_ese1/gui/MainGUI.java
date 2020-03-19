@@ -698,8 +698,7 @@ public class MainGUI implements IGUI {
 		_timerIsStarted = false;
 		btnStart_1.addActionListener((ae) -> {
 				_timerIsStarted = !_timerIsStarted;
-				if(_timerIsStarted) btnStart_1.setText("Stop");
-				if(!_timerIsStarted) btnStart_1.setText("Start");
+				
 				JButton button = btnRunTest_1;
 				button.setEnabled(false);
 				int minutes = Integer.parseInt(textField_mins.getText());
@@ -716,12 +715,12 @@ public class MainGUI implements IGUI {
 		                    long clockTime = now - startTimeInner;
 		                    if (clockTime >= duration) {
 		                        clockTime = duration;
-		                        timer.stop();
+		                        ((Timer)e.getSource()).stop();
 		                        button.setEnabled(true);
 		                        btnStart_1.setText("Start");
 		                    }
 		                    if(!_timerIsStarted) {
-		                    	timer.stop();
+		                    	((Timer)e.getSource()).stop();
 		                    	button.setEnabled(true);
 		                    }
 		                    long mins = (duration - clockTime)/60000;
@@ -730,11 +729,15 @@ public class MainGUI implements IGUI {
 		                    //SimpleDateFormat df = new SimpleDateFormat("mm:ss:SSS");
 		                    textField_secs.setText(String.valueOf(secs));
 		                    textField_mins.setText(String.valueOf(mins));
-		                    
 		            }
 		        });;
-				timer.setRepeats(true);
-				timer.start();			
+				timer.start();	
+				if(_timerIsStarted) btnStart_1.setText("Stop");
+				if(!_timerIsStarted) {
+					btnStart_1.setText("Start");
+					timer.stop();
+					
+				}
 		});
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
