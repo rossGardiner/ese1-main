@@ -24,7 +24,7 @@ public class configReader {
 		     * Parse numbers
 		     */
 		    Double[] values = new Double[7];
-		    for (int i = 1; i<7; i++) {
+		    for (int i = 1; i<=7; i++) {
 		    	values[i-1] = Double.valueOf(data[i]);
 		    }
 		    

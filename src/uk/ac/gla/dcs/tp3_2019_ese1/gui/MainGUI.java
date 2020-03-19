@@ -577,62 +577,107 @@ public class MainGUI implements IGUI {
 		JComboBox selectRig = new JComboBox();
 		timerPanel.add(selectRig, "cell 0 0");
 		
-		JLabel lbldisplayMass = new JLabel("Mass");
-		timerPanel.add(lbldisplayMass, "cell 0 2,");
-		
-		textField = new JTextField();
-		textField.setEditable(false);
-		timerPanel.add(textField, "cell 1 2,growx");
-		
-		JLabel lbldisplaySpring = new JLabel("Spring deformation");
-		timerPanel.add(lbldisplaySpring, "cell 0 3");
-		
-		textField = new JTextField();
-		textField.setEditable(false);
-		timerPanel.add(textField, "cell 1 3,growx");
-		
-		JLabel lblDisplayGain = new JLabel("Gain");
-		timerPanel.add(lblDisplayGain, "cell 0 4");
-		
-		textField = new JTextField();
-		textField.setEditable(false);
-		timerPanel.add(textField, "cell 1 4,growx");
-		
-		JLabel lblDisplayFreq = new JLabel("Frequency");
-		timerPanel.add(lblDisplayFreq, "cell 0 5");
-		
-		textField = new JTextField();
-		textField.setEditable(false);
-		timerPanel.add(textField, "cell 1 5,growx");
-		
-		JLabel lblDisplayCnt = new JLabel("Cnt");
-		timerPanel.add(lblDisplayCnt, "cell 0 6");
-		
-		textField = new JTextField();
-		textField.setEditable(false);
-		timerPanel.add(textField, "cell 1 6,growx");
-		
-		JLabel lblDisplayPre = new JLabel("Pre");
-		timerPanel.add(lblDisplayPre, "cell 0 7");
-		
-		textField = new JTextField();
-		textField.setEditable(false);
-		timerPanel.add(textField, "cell 1 7,growx");
-		
-		JLabel lblDisplaySafe = new JLabel("Safe");
-		timerPanel.add(lblDisplaySafe, "cell 0 8");
-		
-		textField = new JTextField();
-		textField.setEditable(false);
-		timerPanel.add(textField, "cell 1 8,growx");
-		
 		selectRig.removeAllItems();
-		
+
 		//Add rig titles as dropdown options
 		  for (String key : RigMap.keySet()) {
 		        selectRig.addItem(key);
 		    }
+		  
+		/*
+		 * Listen for new selection  
+		 */
+		  
+
+
+
+		  
+		    
+//		  String selectedRig = (String) selectRig.getSelectedItem();
+//	    Double[] calibrationValues = RigMap.get(selectedRig);
 		
+		JLabel lbldisplayMass = new JLabel("Mass");
+		timerPanel.add(lbldisplayMass, "cell 0 2,");
+		
+	   	   JTextField txtMassField = new JTextField();
+  		txtMassField.setText(" ");
+ 		txtMassField.setEditable(false);
+ 		timerPanel.add(txtMassField, "cell 1 2,growx");
+		
+		JLabel lbldisplaySpring = new JLabel("Spring deformation");
+		timerPanel.add(lbldisplaySpring, "cell 0 3");
+		
+	   	JTextField txtSpringField = new JTextField();
+		txtSpringField.setText(" ");
+		txtSpringField.setEditable(false);
+		timerPanel.add(txtSpringField, "cell 1 3,growx");
+		
+		JLabel lblDisplayGain = new JLabel("Gain");
+		timerPanel.add(lblDisplayGain, "cell 0 4");
+		
+	   	JTextField txtGainField = new JTextField();
+		txtGainField.setText(" ");
+		txtGainField.setEditable(false);
+		timerPanel.add(txtGainField, "cell 1 4,growx");
+		
+		JLabel lblDisplayFreq = new JLabel("Frequency");
+		timerPanel.add(lblDisplayFreq, "cell 0 5");
+		
+	   	JTextField txtFreqField = new JTextField();
+		txtFreqField.setText(" ");
+		txtFreqField.setEditable(false);
+		timerPanel.add(txtFreqField, "cell 1 5,growx");
+		
+		JLabel lblDisplayCnt = new JLabel("Cnt");
+		timerPanel.add(lblDisplayCnt, "cell 0 6");
+		
+	   	JTextField txtCntField = new JTextField();
+		txtCntField.setText(" ");
+		txtCntField.setEditable(false);
+		timerPanel.add(txtCntField, "cell 1 6,growx");
+		
+		JLabel lblDisplayPre = new JLabel("Pre");
+		timerPanel.add(lblDisplayPre, "cell 0 7");
+		
+	   	JTextField txtPreField = new JTextField();
+		txtPreField.setText(" ");
+		txtPreField.setEditable(false);
+		timerPanel.add(txtPreField, "cell 1 7,growx");
+		
+		JLabel lblDisplaySafe = new JLabel("Safe");
+		timerPanel.add(lblDisplaySafe, "cell 0 8");
+		
+	   	JTextField txtSafeField = new JTextField();
+		txtSafeField.setText(" ");
+		txtSafeField.setEditable(false);
+		timerPanel.add(txtSafeField, "cell 1 8,growx");
+		
+        ActionListener cbActionListener = new ActionListener() {//add actionlistner to listen for change
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+      		 String selectedRig = (String) selectRig.getSelectedItem();
+      		
+      	     Double[] calibrationValues = RigMap.get(selectedRig);
+      	     String mass = Double.toString(calibrationValues[0]);
+      	     String spring = Double.toString(calibrationValues[1]);
+      	     String gain = Double.toString(calibrationValues[2]);
+      	     String freq = Double.toString(calibrationValues[3]);
+      	     String cnt = Double.toString(calibrationValues[4]);
+      	     String pre = Double.toString(calibrationValues[5]);
+      	     String safe = Double.toString(calibrationValues[6]);
+      	     
+      	   txtMassField.setText(Double.toString(calibrationValues[0]));
+      	 txtSpringField.setText(Double.toString(calibrationValues[1]));
+      	txtGainField.setText(Double.toString(calibrationValues[2]));
+      	txtFreqField.setText(Double.toString(calibrationValues[3]));
+      	txtCntField.setText(Double.toString(calibrationValues[4]));
+      	txtPreField.setText(Double.toString(calibrationValues[5]));
+      	txtSafeField.setText(Double.toString(calibrationValues[6]));
+                }
+            };
+
+            selectRig.addActionListener(cbActionListener);
 	
 		/*
 		 *  Pausing the Button For given seconds to avoid 
