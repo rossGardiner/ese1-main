@@ -711,8 +711,10 @@ public class MainGUI implements IGUI {
 				minString = minString.replaceAll("[^\\d.]", "");
 				String secString = textField_secs.getText();
 				secString = secString.replaceAll("[^\\d.]", "");
+				//parse input data
 				float minutes = Float.parseFloat(minString);
 				float seconds = Float.parseFloat(secString);
+				//create duration (in milliseconds)
 				minutes = minutes * 60000;
 				seconds = seconds * 1000;
 				long duration = (int)minutes + (int)seconds;
@@ -723,20 +725,24 @@ public class MainGUI implements IGUI {
 		            public void actionPerformed(ActionEvent e) {
 		                    long now = System.currentTimeMillis();
 		                    long clockTime = now - startTimeInner;
+		                    //if time is up, stop
 		                    if (clockTime >= duration) {
 		                        clockTime = duration;
 		                        ((Timer)e.getSource()).stop();
 		                        button.setEnabled(true);
 		                        btnStart_1.setText("Start");
 		                    }
+		                    //if stop button is pressed, stop
 		                    if(!_timerIsStarted) {
 		                    	((Timer)e.getSource()).stop();
 		                    	button.setEnabled(true);
 		                    }
+		                    //format timer output
 		                    long mins = (duration - clockTime)/60000;
-		                    long secs = (duration - clockTime) % 60000;
+		                    float secs = (duration - clockTime)%60000;
 		                    secs = secs / 1000;
-		                    textField_secs.setText(String.valueOf(secs));
+		                    String secStr = String.format("%.2f", secs);
+		                    textField_secs.setText(secStr);
 		                    textField_mins.setText(String.valueOf(mins));
 		            }
 		        });;
