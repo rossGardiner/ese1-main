@@ -22,6 +22,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -54,18 +57,15 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-//import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
-//import com.sun.org.omg.CORBA._IDLTypeStub;
-
 import net.miginfocom.swing.MigLayout;
 import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 
-//import sun.security.provider.CtrDrbg;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
 import com.jtattoo.plaf.acryl.*;
 import javax.swing.JComboBox;
+import javax.swing.SwingConstants;
 
 public class MainGUI implements IGUI {
 
@@ -83,8 +83,8 @@ public class MainGUI implements IGUI {
 	private JFrame frame;
 
 	private final JPanel timerPanel = new JPanel();
-	private JTextField textField_2;
-	private JTextField textField_3;
+	private JTextField textField_secs;
+	private JTextField textField_mins;
 	private JTextField cellTest1_PeakG;
 	private JTextField cellTest2_PeakG;
 	private LibcbwBoard.USB_1608FS board;
@@ -105,6 +105,10 @@ public class MainGUI implements IGUI {
 	private JTextField cellTestAvg_fred;
 	private JTextField cellTest1_vdef;
 	private JTextField cellTest2_vdef;
+	private static Timer timer;
+	private boolean _timerIsStarted = false;
+	private String _minString = "0";
+	private String _secString = "30";
 
 	private JTextField cellTest3_vdef;
 	private JTextField cellTestAvg_vdef;
@@ -448,6 +452,9 @@ public class MainGUI implements IGUI {
 		JButton btnRunTest_1 = new JButton("Run Test");
 		btnRunTest_1.addActionListener(_runner::runTest);
 
+		JButton btnSaveFile = new JButton("Save file");
+		timerPanel.add(btnSaveFile, "cell 0 3");
+
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
@@ -476,77 +483,85 @@ public class MainGUI implements IGUI {
 		JLabel lblSec = new JLabel("Sec");
 		panel_8.add(lblSec, "cell 1 0");
 
-		textField_3 = new JTextField();
-		panel_8.add(textField_3, "cell 0 1");
-		textField_3.setText("00");
-		textField_3.setColumns(10);
-
-		textField_2 = new JTextField();
-		panel_8.add(textField_2, "cell 1 1,growx");
-		textField_2.setText("1");
-		textField_2.setColumns(10);
+		textField_mins = new JTextField();
+		textField_mins.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_8.add(textField_mins, "cell 0 1");
+		textField_mins.setText("00");
+		textField_mins.setColumns(10);
+		
+		textField_secs = new JTextField();
+		textField_secs.setHorizontalAlignment(SwingConstants.CENTER);
+		panel_8.add(textField_secs, "cell 1 1,growx");
+		textField_secs.setText("30");
+		textField_secs.setColumns(10);
+		JButton button = btnRunTest_1;
 
 		JButton btnStart_1 = new JButton("Start");
 		panel_8.add(btnStart_1, "cell 0 3");
 
 		JButton btnReset_1 = new JButton("Reset");
+		btnReset_1.addActionListener((ae) -> {
+			timer.stop();
+			btnRunTest_1.setEnabled(true);
+			textField_mins.setText("0");
+			textField_secs.setText("30.00");
+			btnStart_1.setText("Start");
+			_timerIsStarted = false;
+		});
 		panel_8.add(btnReset_1, "cell 1 3");
 
-		JButton btnSaveFile = new JButton("Save file");
-		testLaunchPanel.add(btnSaveFile, "cell 0 1");
+		_timerIsStarted = false;
 
-		btnSaveFile.addActionListener((evt) -> {
-			int n = 0;
-			JFileChooser saveFile = new JFileChooser();
-			saveFile.setDialogTitle("Choose where to save the file, the file will be saved into an xml format");
-			int userSelection = saveFile.showSaveDialog(frame);
-			if (userSelection == JFileChooser.APPROVE_OPTION) {
-				File file = saveFile.getSelectedFile();
-				// Save file into xml format
-				file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName()) + ".csv");
-				ArrayList<String> csv = new ArrayList<>();
-				if (_accelerationChart.getPlot() instanceof XYPlot) {
-					XYDataset xyDataset = _accelerationChart.getXYPlot().getDataset();
-					int seriesCount = xyDataset.getSeriesCount();
-					for (int i = 0; i < seriesCount; i++) {
-						int itemCount = xyDataset.getItemCount(i);
-						for (int j = 0; j < itemCount; j++) {
-							Comparable<?> key = xyDataset.getSeriesKey(i);
-							Number x = xyDataset.getX(i, j);
-							Number y = xyDataset.getY(i, j);
-							csv.add(String.format("%s, %s, %s", key, x, y));
-						}
-					}
-				}
-				try (BufferedWriter writer = new BufferedWriter(new FileWriter(file));) {
-					for (String line : csv) {
-						writer.append(line);
-						writer.newLine();
-						// System.out.print(line + "\n");
-					}
-
-				} catch (IOException e) {
-					throw new IllegalStateException("Cannot write dataset", e);
-				}
-
-			}
-		});
 		btnStart_1.addActionListener((ae) -> {
-			JButton button = btnRunTest_1;
-			button.setEnabled(false);
-			System.out.printf("Timer running");
 
-			int minutes = Integer.parseInt(textField_3.getText());
-			int seconds = Integer.parseInt(textField_2.getText());
-			minutes = minutes * 60000;
-			seconds = seconds * 1000;
-			delay = minutes + seconds;
-			System.out.println(delay);
-
-			Timer timer = new Timer(delay, (evt) -> btnRunTest_1.setEnabled(true));
-
-			timer.setRepeats(false);
-			timer.start();
+				_timerIsStarted = !_timerIsStarted;
+				if(_timerIsStarted) btnStart_1.setText("Stop");
+				if(!_timerIsStarted) btnStart_1.setText("Start");		
+				//disable the button
+				
+				button.setEnabled(false);
+				//remove all non integers from input field
+				String minString = textField_mins.getText();
+				minString = minString.replaceAll("[^\\d.]", "");
+				String secString = textField_secs.getText();
+				secString = secString.replaceAll("[^\\d.]", "");
+				//parse input data
+				float minutes = Float.parseFloat(minString);
+				float seconds = Float.parseFloat(secString);
+				//create duration (in milliseconds)
+				minutes = minutes * 60000;
+				seconds = seconds * 1000;
+				long duration = (int)minutes + (int)seconds;
+				long startTime = System.currentTimeMillis();
+				final Long startTimeInner = new Long(startTime);
+				timer = new Timer(0, new ActionListener() {
+		            @Override
+		            public void actionPerformed(ActionEvent e) {
+		                    long now = System.currentTimeMillis();
+		                    long clockTime = now - startTimeInner;
+		                    //if time is up, stop
+		                    if (clockTime >= duration) {
+		                        clockTime = duration;
+		                        ((Timer)e.getSource()).stop();
+		                        button.setEnabled(true);
+		                        btnStart_1.setText("Start");
+		                    }
+		                    //if stop button is pressed, stop
+		                    if(!_timerIsStarted) {
+		                    	((Timer)e.getSource()).stop();
+		                    	button.setEnabled(true);
+		                    }
+		                    //format timer output
+		                    long mins = (duration - clockTime)/60000;
+		                    float secs = (duration - clockTime)%60000;
+		                    secs = secs / 1000;
+		                    String secStr = String.format("%.2f", secs);
+		                    textField_secs.setText(secStr);
+		                    textField_mins.setText(String.valueOf(mins));
+		            }
+		        });;
+				timer.start();	
+				
 
 		});
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -706,11 +721,12 @@ public class MainGUI implements IGUI {
 		XYSeries series2 = new XYSeries("Test 2");
 		XYSeries series3 = new XYSeries("Test 3");
 
-		for (int i = 0; i < 1000; i++) {
-			series.add(new XYDataItem(i, 0));
-			series2.add(new XYDataItem(i, 0));
-			series3.add(new XYDataItem(i, 0));
-		}
+
+		//for(int i = 0; i < 1000; i++) {
+		//	series.add(new XYDataItem(i, 0));
+		//	series2.add(new XYDataItem(i, 0));
+		//	series3.add(new XYDataItem(i, 0));
+		//}
 
 		_accelerationData.addSeries(series);
 		_accelerationData.addSeries(series2);
@@ -743,6 +759,48 @@ public class MainGUI implements IGUI {
 		gbc_tabbedPane.gridy = 0;
 		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
 
+		btnSaveFile.addActionListener((evt) -> {
+			int n = 0;
+		    JFileChooser saveFile = new JFileChooser();
+		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into a csv format");
+		    int userSelection = saveFile.showSaveDialog(frame);
+		    if (userSelection == JFileChooser.APPROVE_OPTION) {
+		        File file = saveFile.getSelectedFile();
+		        //Save file into csv format
+		        file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".csv");
+		        ArrayList<String> csv = new ArrayList<>();
+		        csv.add(String.format("%s, %s,  %s, %s", "TIME", "ACCELERATION", "VELOCITY", "DISPLACEMENT"));
+		        if(_accelerationData != null) {
+		        	int itemCount = _accelerationData.getItemCount(0);
+		        	//ASSUMING THE ITEM COUNT IS THE SAME FOR EACH SERIES (IT IS)
+		        	if(_velocityData != null) {
+		        		if(_displacementData != null) {
+		        			for(int i = 0; i < itemCount; i++) {
+		        				Number timeNr = _accelerationData.getX(0, i);
+		        				Number accNr = _accelerationData.getY(0, i);
+		        				Number velNr = _velocityData.getY(0, i);
+		        				Number disNr = _displacementData.getY(0, i);
+		        				csv.add(String.format("%s, %s, %s, %s", timeNr, accNr, velNr, disNr));
+		        			}
+		        		}
+		        	}
+		        }
+		        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file));)
+		        {
+		            for (String line : csv) {
+		                writer.append(line);
+		                writer.newLine();
+		            }
+		            
+		            
+		        } catch (IOException e) {
+		            throw new IllegalStateException("Cannot write dataset",e);
+		        }
+		        
+		    }		
+		});
+
+
 		JPanel panel_acceleration = new JPanel();
 		tabbedPane.addTab("Acceleration Vs. Time", null, panel_acceleration, null);
 		ChartPanel chartPanelAcceleration = new ChartPanel(_accelerationChart);
@@ -764,7 +822,9 @@ public class MainGUI implements IGUI {
 		chartPanelVelocity.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(_velocityChart).setVisible(true);
+				if(e.getClickCount() == 2) {
+				    new ChartViewerDialog(_velocityChart).setVisible(true);
+				}
 			}
 		});
 		chartPanelVelocity.setDomainZoomable(true);
@@ -779,7 +839,9 @@ public class MainGUI implements IGUI {
 		chartPanelDisplacement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(_displacementChart).setVisible(true);
+				if(e.getClickCount() == 2) {
+				    new ChartViewerDialog(_displacementChart).setVisible(true);
+				}
 			}
 		});
 		chartPanelDisplacement.setDomainZoomable(true);
@@ -791,9 +853,7 @@ public class MainGUI implements IGUI {
 		JPanel averageResultsPanel = new JPanel();
 		frame.getContentPane().add(averageResultsPanel, "cell 0 0 4 1,grow");
 		averageResultsPanel.setLayout(new MigLayout("", "[77px]", "[14px]"));
-		// panel_13.setLayout(new BorderLayout());
-		// panel_13.add(chartPanelGraph3, BorderLayout.CENTER);
-		// tabbedPane.addTab("Graph 3", null, panel_13, null);
+
 
 		_initSucc = true;
 
@@ -830,171 +890,186 @@ public class MainGUI implements IGUI {
 		// update chart datasets for:
 		// ACCELERATION
 		List<Object> accData = Arrays.asList(_accelerationData.getSeries().toArray());
-		accData.set(testIdx, accelerationSeries);
-		_accelerationData.removeAllSeries();
-		for (Object series : accData) {
-			_accelerationData.addSeries((XYSeries) series);
-		}
-		// VELOCITY
-		List<Object> velData = Arrays.asList(_velocityData.getSeries().toArray());
-		velData.set(testIdx, velocitySeries);
-		_velocityData.removeAllSeries();
-		for (Object series : velData) {
-			_velocityData.addSeries((XYSeries) series);
-		}
-		// DISPACEMENT
-		List<Object> dispData = Arrays.asList(_displacementData.getSeries().toArray());
-		dispData.set(testIdx, displacementSeries);
-		_displacementData.removeAllSeries();
-		for (Object series : dispData) {
-			_displacementData.addSeries((XYSeries) series);
-		}
+accData.set(testIdx,accelerationSeries);_accelerationData.removeAllSeries();for(
+
+	Object series:accData)
+	{
+		_accelerationData.addSeries((XYSeries) series);
+	}
+
+	// VELOCITY
+	List<Object> velData = Arrays.asList(_velocityData.getSeries()
+			.toArray());velData.set(testIdx,velocitySeries);_velocityData.removeAllSeries();for(
+	Object series:velData)
+	{
+		_velocityData.addSeries((XYSeries) series);
+	}
+	// DISPACEMENT
+	List<Object> dispData = Arrays.asList(_displacementData.getSeries()
+			.toArray());dispData.set(testIdx,displacementSeries);_displacementData.removeAllSeries();for(
+	Object series:dispData)
+	{
+		_displacementData.addSeries((XYSeries) series);
+	}
 
 	}
 
 	@Override
-	public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
-			double drop_dist, double spring, double material, int testNr) {
+    public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
+            double drop_dist, double spring, double material, int testNr) {
+    	
+    	//first work out test index (0-2 inclusive)
+    	int testIdx = testNr%3;
+    	BigDecimal db;
+    	if(testIdx == 0) {
+    	  db = new BigDecimal(peakG);
+    	  db = db.round(new MathContext(4));
+   	 	  cellTest1_PeakG.setText(db.toString());
+   	 	  db = new BigDecimal(fmax);
+  	      db = db.round(new MathContext(4));
+   	 	  cellTest1_Fmax.setText(db.toString());
+   	 	  db = new BigDecimal(v1);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_Velocity1.setText(db.toString());
+   	 	  db = new BigDecimal(v2);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_Velocity2.setText(db.toString());
+   	 	  db = new BigDecimal(drop_dist);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_DropHT.setText(db.toString());
+   	 	  db = new BigDecimal(spring);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_SpngDef.setText(db.toString());
+   	 	  db = new BigDecimal(fred);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_fred.setText(db.toString());
+   	 	  db = new BigDecimal(material);
+ 	 	  db = db.round(new MathContext(4));
+ 	 	  cellTest1_vdef.setText(db.toString());
+   	 	  db = new BigDecimal(energy);
+	      db = db.round(new MathContext(4));
+   	 	  cellTest1_ergRest.setText(db.toString());
+    	}
+    	if(testIdx == 1) {
+    		_test2Values.add(peakG);
+    		db = new BigDecimal(peakG);
+      	  	db = db.round(new MathContext(4));
+     	 	cellTest2_PeakG.setText(db.toString());
+     	 	_test2Values.add(fmax);
+     	 	db = new BigDecimal(fmax);
+    	    db = db.round(new MathContext(4));
+     	 	cellTest2_Fmax.setText(db.toString());
+     	 	_test2Values.add(v1);
+     	 	db = new BigDecimal(v1);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest2_Velocity1.setText(db.toString());
+     	 	_test2Values.add(v2);
+     	 	db = new BigDecimal(v2);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest2_Velocity2.setText(db.toString());
+     	 	_test2Values.add(drop_dist);
+     	 	db = new BigDecimal(drop_dist);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest2_DropHT.setText(db.toString());
+     	 	_test2Values.add(spring);
+     	 	db = new BigDecimal(spring);
+  	        db = db.round(new MathContext(4));
+  	        cellTest2_SpngDef.setText(db.toString());
+  	      _test2Values.add(fred);
+     	    db = new BigDecimal(fred);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest2_fred.setText(db.toString());
+     	 	_test2Values.add(material);
+     	 	db = new BigDecimal(material);
+     	 	db = db.round(new MathContext(4));
+     	 	cellTest2_vdef.setText(db.toString());
+     	 	_test2Values.add(energy);
+     	 	db = new BigDecimal(energy);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest2_ergRest.setText(db.toString());
+    	}
+    	if(testIdx == 2) {
+    		//System.out.println(_test2Values.toString());
+    		_test3Values.add(peakG);
+    		db = new BigDecimal(peakG);
+      	  	db = db.round(new MathContext(4));
+     	 	cellTest3_PeakG.setText(db.toString());
+     	 	_test3Values.add(fmax);
+     	 	db = new BigDecimal(fmax);
+    	    db = db.round(new MathContext(4));
+     	 	cellTest3_Fmax.setText(db.toString());
+     	 	_test3Values.add(v1);
+     	 	db = new BigDecimal(v1);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest3_Velocity1.setText(db.toString());
+     	 	_test3Values.add(v2);
+     	 	db = new BigDecimal(v2);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest3_Velocity2.setText(db.toString());
+     	 	_test3Values.add(drop_dist);
+     	 	db = new BigDecimal(drop_dist);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest3_DropHT.setText(db.toString());
+     	 	_test3Values.add(spring);
+     	 	db = new BigDecimal(spring);
+  	        db = db.round(new MathContext(4));
+     	    cellTest3_SpngDef.setText(db.toString());
+     	   _test3Values.add(fred);
+     	    db = new BigDecimal(fred);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest3_fred.setText(db.toString());
+     	 	_test3Values.add(material);
+     	 	db = new BigDecimal(material);
+     	 	db = db.round(new MathContext(4));
+     	 	cellTest3_vdef.setText(db.toString());
+     	 	_test3Values.add(energy);
+     	 	db = new BigDecimal(energy);
+  	        db = db.round(new MathContext(4));
+     	 	cellTest3_ergRest.setText(db.toString());
+        	// Get averages into _avgValues array
+        	for(int i = 0; i < _test3Values.size(); i++){
+        		_avgValues.add(((_test3Values.get(i)+_test2Values.get(i))/2));
+        	}
+        	// Put them in the text fields and round
+      	  	db = new BigDecimal(_avgValues.get(0));
+      	  	db = db.round(new MathContext(4));
+     	 	cellAvg_PeakG.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(1));
+    	    db = db.round(new MathContext(4));
+     	 	cellAvg_Fmax.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(2));
+    	    db = db.round(new MathContext(4));
+     	 	cellAvg_Velocity1.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(3));
+    	    db = db.round(new MathContext(4));
+     	 	cellAvg_Velocity2.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(4));
+    	    db = db.round(new MathContext(4));
+     	 	cellTestAvg_DropHT.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(5));
+    	    db = db.round(new MathContext(4));
+     	 	cellTestAvg_SpngDef.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(6));
+    	    db = db.round(new MathContext(4));
+     	 	cellTestAvg_fred.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(7));
+    	    db = db.round(new MathContext(4));
+     	 	cellTestAvg_vdef.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(8));
+    	    db = db.round(new MathContext(4));
+     	 	cellTestAvg_ergRest.setText(db.toString());
+    	}
 
-		// first work out test index (0-2 inclusive)
-		int testIdx = testNr % 3;
-		BigDecimal db;
-		if (testIdx == 0) {
-			db = new BigDecimal(peakG);
-			db = db.round(new MathContext(4));
-			cellTest1_PeakG.setText(db.toString());
-			db = new BigDecimal(fmax);
-			db = db.round(new MathContext(4));
-			cellTest1_Fmax.setText(db.toString());
-			db = new BigDecimal(v1);
-			db = db.round(new MathContext(4));
-			cellTest1_Velocity1.setText(db.toString());
-			db = new BigDecimal(v2);
-			db = db.round(new MathContext(4));
-			cellTest1_Velocity2.setText(db.toString());
-			db = new BigDecimal(drop_dist);
-			db = db.round(new MathContext(4));
-			cellTest1_DropHT.setText(db.toString());
-			db = new BigDecimal(spring);
-			db = db.round(new MathContext(4));
-			cellTest1_SpngDef.setText(db.toString());
-			db = new BigDecimal(fred);
-			db = db.round(new MathContext(4));
-			cellTest1_fred.setText(db.toString());
-			db = new BigDecimal(energy);
-			db = db.round(new MathContext(4));
-			cellTest1_ergRest.setText(db.toString());
-		}
-		if (testIdx == 1) {
-			_test2Values.add(peakG);
-			db = new BigDecimal(peakG);
-			db = db.round(new MathContext(4));
-			cellTest2_PeakG.setText(db.toString());
-			_test2Values.add(fmax);
-			db = new BigDecimal(fmax);
-			db = db.round(new MathContext(4));
-			cellTest2_Fmax.setText(db.toString());
-			_test2Values.add(v1);
-			db = new BigDecimal(v1);
-			db = db.round(new MathContext(4));
-			cellTest2_Velocity1.setText(db.toString());
-			_test2Values.add(v2);
-			db = new BigDecimal(v2);
-			db = db.round(new MathContext(4));
-			cellTest2_Velocity2.setText(db.toString());
-			_test2Values.add(drop_dist);
-			db = new BigDecimal(drop_dist);
-			db = db.round(new MathContext(4));
-			cellTest2_DropHT.setText(db.toString());
-			_test2Values.add(spring);
-			db = new BigDecimal(spring);
-			db = db.round(new MathContext(4));
-			cellTest2_SpngDef.setText(db.toString());
-			_test2Values.add(fred);
-			db = new BigDecimal(fred);
-			db = db.round(new MathContext(4));
-			cellTest2_fred.setText(db.toString());
-			_test2Values.add(energy);
-			db = new BigDecimal(energy);
-			db = db.round(new MathContext(4));
-			cellTest2_ergRest.setText(db.toString());
-		}
-		if (testIdx == 2) {
-			// System.out.println(_test2Values.toString());
-			_test3Values.add(peakG);
-			db = new BigDecimal(peakG);
-			db = db.round(new MathContext(4));
-			cellTest3_PeakG.setText(db.toString());
-			_test3Values.add(fmax);
-			db = new BigDecimal(fmax);
-			db = db.round(new MathContext(4));
-			cellTest3_Fmax.setText(db.toString());
-			_test3Values.add(v1);
-			db = new BigDecimal(v1);
-			db = db.round(new MathContext(4));
-			cellTest3_Velocity1.setText(db.toString());
-			_test3Values.add(v2);
-			db = new BigDecimal(v2);
-			db = db.round(new MathContext(4));
-			cellTest3_Velocity2.setText(db.toString());
-			_test3Values.add(drop_dist);
-			db = new BigDecimal(drop_dist);
-			db = db.round(new MathContext(4));
-			cellTest3_DropHT.setText(db.toString());
-			_test3Values.add(spring);
-			db = new BigDecimal(spring);
-			db = db.round(new MathContext(4));
-			cellTest3_SpngDef.setText(db.toString());
-			_test3Values.add(fred);
-			db = new BigDecimal(fred);
-			db = db.round(new MathContext(4));
-			cellTest3_fred.setText(db.toString());
-			_test3Values.add(energy);
-			db = new BigDecimal(energy);
-			db = db.round(new MathContext(4));
-			cellTest3_ergRest.setText(db.toString());
-			// Get averages into _avgValues array
-			for (int i = 0; i < _test3Values.size(); i++) {
-				_avgValues.add(((_test3Values.get(i) + _test2Values.get(i)) / 2));
-			}
-			// Put them in the text fields and round
-			db = new BigDecimal(_avgValues.get(0));
-			db = db.round(new MathContext(4));
-			cellAvg_PeakG.setText(db.toString());
-			db = new BigDecimal(_avgValues.get(1));
-			db = db.round(new MathContext(4));
-			cellAvg_Fmax.setText(db.toString());
-			db = new BigDecimal(_avgValues.get(2));
-			db = db.round(new MathContext(4));
-			cellAvg_Velocity1.setText(db.toString());
-			db = new BigDecimal(_avgValues.get(3));
-			db = db.round(new MathContext(4));
-			cellAvg_Velocity2.setText(db.toString());
-			db = new BigDecimal(_avgValues.get(4));
-			db = db.round(new MathContext(4));
-			cellTestAvg_DropHT.setText(db.toString());
-			db = new BigDecimal(_avgValues.get(5));
-			db = db.round(new MathContext(4));
-			cellTestAvg_SpngDef.setText(db.toString());
-			db = new BigDecimal(_avgValues.get(6));
-			db = db.round(new MathContext(4));
-			cellTestAvg_fred.setText(db.toString());
-			db = new BigDecimal(_avgValues.get(7));
-			db = db.round(new MathContext(4));
-			cellTestAvg_ergRest.setText(db.toString());
-		}
 
-	}
+    		
+    }
 
 	@Override
-	public void displayErrorMessage(String msg) {
-		// TODO Auto-generated method stub
+    public void displayErrorMessage(String msg) {
+        // TODO Auto-generated method stub
+        
+    }
 
-	}
-
-	public boolean getInitSucc() {
-		return _initSucc;
-	}
 
 	public boolean is_magnetStatus() {
 		return _magnetStatus;
