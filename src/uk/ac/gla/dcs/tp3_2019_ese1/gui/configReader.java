@@ -8,8 +8,8 @@ import java.util.Map;
 
 public class configReader {
 
-	public static Map<String, Double[]> parseCSV() throws IOException {
-		Map<String, Double[]> rigs = new HashMap<String, Double[]>();
+	public static Map<String, double[]> parseCSV() throws IOException {
+		Map<String, double[]> rigs = new HashMap<String, double[]>();
 		String line;
 
 		try {
@@ -23,7 +23,7 @@ public class configReader {
 				/*
 				 * Parse numbers
 				 */
-				Double[] values = new Double[7];
+				double[] values = new double[7];
 				for (int i = 1; i <= 7; i++) {
 					values[i - 1] = Double.valueOf(data[i]);
 				}

@@ -15,21 +15,23 @@ public class AAARunner {
     public static final int MAGNET_OUT = 0;
 
     private static final double SCALING_5V = (5.0 / 65536.0);
-    private static final int SAMPLE_COUNT = 32768;
-    private static final int SAMPLE_RATE = 50000; /* Hz */
-    private static final int PRE_DROP_CNT = 256;
-    private static final int SAFETY_MARGIN = 300;
-
-    private static final double MASS = 20.05;
     private static final double GVALUE = 9.8;
     private static final double CONCRETE = 6760.0;
-    private static final double SPRINGCAL = 2043.36; /* XXX not this */
-
+    
     private final USB_1608FS _board;
     private final IGUI _gui;
     private int _testNr = 0; //added 19/01/2020 by RG
     
-    
+    /*
+     * the following 7 values are updated from the CSV file
+     */
+    public double MASS = 20;
+    public double SPRINGCAL = 2043.36; /* XXX not this */
+    public double GAIN_CALI = 0.208; //modified 20/01/2020 - (calibration * gain) / 2
+    public int SAMPLE_RATE = 50000; /* Hz */
+    public int SAMPLE_COUNT = 32768;
+    public int PRE_DROP_CNT = 256;
+    public int SAFETY_MARGIN = 300;
     
     public AAARunner(USB_1608FS board, IGUI gui) {
         _board = board;
@@ -44,6 +46,7 @@ public class AAARunner {
      */
     public void runTest(ActionEvent evt) {
     	try {
+    		System.out.println("MASS: " + MASS);
             _board.enableEvent(EventType.ON_END_OF_INPUT_SCAN, (b, t, d) -> {
                 double volts_per_g = GAIN_CALI / 10 * 5; /* V/G ? */
 
@@ -71,7 +74,7 @@ public class AAARunner {
     	
     
     
-    private static double GAIN_CALI = 0.208; //modified 20/01/2020 - (calibration * gain) / 2
+
     
     /**
      *  Hack -- in-place digital filter functionally identical to the legacy code but

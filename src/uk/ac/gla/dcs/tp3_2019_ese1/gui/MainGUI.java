@@ -185,7 +185,7 @@ public class MainGUI implements IGUI {
 	 * @throws IOException
 	 */
 	private void initialize() throws IOException {
-		Map<String, Double[]> RigMap = configReader.parseCSV();
+		Map<String, double[]> RigMap = configReader.parseCSV();
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -570,9 +570,6 @@ public class MainGUI implements IGUI {
 		 * Listen for new selection
 		 */
 
-//		  String selectedRig = (String) selectRig.getSelectedItem();
-//	    Double[] calibrationValues = RigMap.get(selectedRig);
-
 		JLabel lbldisplayMass = new JLabel("Mass");
 		timerPanel.add(lbldisplayMass, "cell 0 2,");
 
@@ -635,14 +632,15 @@ public class MainGUI implements IGUI {
 
 				String selectedRig = (String) selectRig.getSelectedItem();
 
-				Double[] calibrationValues = RigMap.get(selectedRig);
-				Double mass = calibrationValues[0];
-				Double spring = calibrationValues[1];
-				Double gain = calibrationValues[2];
-				Double freq = calibrationValues[3];
-				Double cnt = calibrationValues[4];
-				Double pre = calibrationValues[5];
-				Double safe = calibrationValues[6];
+				double[] calibrationValues = RigMap.get(selectedRig);
+
+				_runner.MASS = calibrationValues[0];
+				_runner.SPRINGCAL = calibrationValues[1];
+				_runner.GAIN_CALI = calibrationValues[2];
+				_runner.SAMPLE_RATE = (int) calibrationValues[3];
+				_runner.SAMPLE_COUNT = (int) calibrationValues[4];
+				_runner.PRE_DROP_CNT = (int) calibrationValues[5];
+				_runner.SAFETY_MARGIN = (int) calibrationValues[6];
 
 				txtMassField.setText(Double.toString(calibrationValues[0]));
 				txtSpringField.setText(Double.toString(calibrationValues[1]));
