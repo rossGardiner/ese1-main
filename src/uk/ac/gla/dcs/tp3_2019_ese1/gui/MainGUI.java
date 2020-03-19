@@ -1,11 +1,3 @@
-/**
- * @author Agnes Ola
- * 
- * All code below auto generated so far - with WindowBuilder in Eclipse
- * TO DO: refactoring
- * TO DO: replace auto generated variable names
- */
-
 package uk.ac.gla.dcs.tp3_2019_ese1.gui;
 
 import java.awt.BasicStroke;
@@ -32,7 +24,9 @@ import java.math.MathContext;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.*;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -73,11 +67,12 @@ import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
 import com.jtattoo.plaf.acryl.*;
+import javax.swing.JComboBox;
  
 
 public class MainGUI implements IGUI {
 
-
+/* Set colour scheme */
 	{ 
 	try {
 		AcrylLookAndFeel.setTheme("Green-Giant-Font","" ,"");
@@ -179,7 +174,11 @@ public class MainGUI implements IGUI {
 
 	private boolean _initSucc = false;
 	private JTextField cellTestAvg_DropHT;
-
+	
+	/** 
+	 * This section deals with populating the dropdown list for selecting calibration offsets
+	 */
+	
 	/**
 	 * Launch the application.
 	 */
@@ -198,17 +197,20 @@ public class MainGUI implements IGUI {
 
 	/**
 	 * Create the application.
+	 * @throws IOException 
 	 */
-	public MainGUI() {
+	public MainGUI() throws IOException {
+		
 		initialize();
-	}
-	
-	
+	}	
 
 	/**
 	 * Initialize the contents of the frame.
+	 * @throws IOException 
 	 */
-	private void initialize() {
+	private void initialize() throws IOException 
+	{
+		Map<String, Double[]> RigMap = configReader.parseCSV();
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
@@ -643,10 +645,10 @@ public class MainGUI implements IGUI {
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
-		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][][]"));
+		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
 		
 		JButton btnSaveFile = new JButton("Save file");
-		timerPanel.add(btnSaveFile, "cell 0 3");
+		timerPanel.add(btnSaveFile, "cell 0 0");
 		
 		/*
 		 * btnRunTest_1 = new JButton("Run Test");
@@ -713,6 +715,18 @@ public class MainGUI implements IGUI {
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
 		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
+		
+		JComboBox selectRig = new JComboBox();
+		timerPanel.add(selectRig, "cell 0 1,growx");
+		
+		//Even though the box should already be empty at this point, it does not populate correctly without this option.
+		selectRig.removeAllItems();
+		
+		//Add rig titles as dropdown options
+		  for (String key : RigMap.keySet()) {
+		        selectRig.addItem(key);
+		    }
+		
 	
 		/*
 		 *  Pausing the Button For given seconds to avoid 
