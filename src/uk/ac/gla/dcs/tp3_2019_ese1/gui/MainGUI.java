@@ -90,20 +90,6 @@ public class MainGUI implements IGUI {
 	private JTextField textField_3;
 	private JTextField cellTest1_PeakG;
 	private JTextField cellTest2_PeakG;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_35;
-	private JTextField textField_36;
-	private JTextField textField_37;
-	private JTextField textField_38;
-	private JTextField textField_39;
-	private JTextField textField_40;
-	private JTextField textField_41;
-	private JTextField textField_42;
-	private JTextField textField_43;
-	private JTextField textField_44;
 	private LibcbwBoard.USB_1608FS board;
 	private AAARunner _runner;
 	private boolean _magnetStatus;
@@ -134,10 +120,6 @@ public class MainGUI implements IGUI {
 	private JTextField txtPeak;
 	private JTextField textField_46;
 	private JPanel panel_displacement;
-	private JTextField textField_47;
-	private JTextField textField_48;
-	private JTextField textField_49;
-	private JTextField textField_50;
 	private static int delay;
 
 	private JPanel panel_graph3;
@@ -174,10 +156,8 @@ public class MainGUI implements IGUI {
 
 	private boolean _initSucc = false;
 	private JTextField cellTestAvg_DropHT;
+	private JTextField textField;
 	
-	/** 
-	 * This section deals with populating the dropdown list for selecting calibration offsets
-	 */
 	
 	/**
 	 * Launch the application.
@@ -233,9 +213,6 @@ public class MainGUI implements IGUI {
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
 		settingsPane.setToolTipText("SESTTING\r\n");
 		frame.getContentPane().add(settingsPane, "cell 3 2,alignx right,growy");
-		
-		JPanel calibrateTab = new JPanel();
-		settingsPane.addTab("Results", null, calibrateTab, null);
 		
 		JPanel resultsPane = new JPanel();
 		settingsPane.addTab("Results", null, resultsPane, null);
@@ -433,170 +410,7 @@ public class MainGUI implements IGUI {
 										
 										cellTestAvg_ergRest = new JTextField();
 										resultsPane.add(cellTestAvg_ergRest, "cell 4 9,growx");
-										cellTestAvg_ergRest.setColumns(10);
-		
-		JPanel setupTab = new JPanel();
-		settingsPane.addTab("Setup", null, setupTab, null);
-		setupTab.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][][][][][][][]"));
-		
-		JPanel panel = new JPanel();;
-		panel.setBorder(new TitledBorder(null, "Set gain", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		setupTab.add(panel, "cell 0 2 2 2,grow");
-		panel.setLayout(new MigLayout("", "[grow][grow]", "[][][][][][][][][]"));
-		
-		JLabel lblChanNo = new JLabel("Chan no");
-		panel.add(lblChanNo, "cell 0 0");
-		
-		JLabel lblGain = new JLabel("Gain");
-		panel.add(lblGain, "cell 1 0");
-		
-		JLabel label_2 = new JLabel("1");
-		panel.add(label_2, "cell 0 1,alignx trailing");
-		
-		textField_37 = new JTextField();
-		panel.add(textField_37, "cell 1 1,growx");
-		textField_37.setColumns(10);
-		
-		JLabel label_3 = new JLabel("2");
-		panel.add(label_3, "cell 0 2,alignx trailing");
-		
-		textField_38 = new JTextField();
-		panel.add(textField_38, "cell 1 2,growx");
-		textField_38.setColumns(10);
-		
-		JLabel label_4 = new JLabel("3");
-		panel.add(label_4, "cell 0 3,alignx trailing");
-		
-		textField_39 = new JTextField();
-		panel.add(textField_39, "cell 1 3,growx");
-		textField_39.setColumns(10);
-		
-		JLabel label_5 = new JLabel("4");
-		panel.add(label_5, "cell 0 4,alignx trailing");
-		
-		textField_40 = new JTextField();
-		panel.add(textField_40, "cell 1 4,growx");
-		textField_40.setColumns(10);
-		
-		JLabel label_6 = new JLabel("5");
-		panel.add(label_6, "cell 0 5,alignx trailing");
-		
-		textField_41 = new JTextField();
-		panel.add(textField_41, "cell 1 5,growx");
-		textField_41.setColumns(10);
-		
-		JLabel label_7 = new JLabel("6");
-		panel.add(label_7, "cell 0 6,alignx trailing");
-		
-		textField_42 = new JTextField();
-		panel.add(textField_42, "cell 1 6,growx");
-		textField_42.setColumns(10);
-		
-		JLabel label_8 = new JLabel("7");
-		panel.add(label_8, "cell 0 7,alignx trailing");
-		
-		textField_43 = new JTextField();
-		panel.add(textField_43, "cell 1 7,growx");
-		textField_43.setColumns(10);
-		
-		JLabel label_9 = new JLabel("8");
-		panel.add(label_9, "cell 0 8,alignx trailing");
-		
-		textField_44 = new JTextField();
-		panel.add(textField_44, "cell 1 8,growx");
-		textField_44.setColumns(10);
-		
-		JLabel lblSamples = new JLabel("Samples");
-		setupTab.add(lblSamples, "cell 2 2");
-		
-		JLabel lblRange = new JLabel("Range");
-		setupTab.add(lblRange, "cell 3 2");
-		
-		textField_36 = new JTextField();
-		setupTab.add(textField_36, "cell 2 3,growx");
-		textField_36.setColumns(10);
-		
-		textField_35 = new JTextField();
-		setupTab.add(textField_35, "cell 3 3,growx");
-		textField_35.setColumns(10);
-		
-		JLabel lblFilter = new JLabel("Filter");
-		setupTab.add(lblFilter, "cell 0 4");
-		
-		JToggleButton tglbtnYesno = new JToggleButton("Yes/No");
-		setupTab.add(tglbtnYesno, "cell 1 4");
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(null, "Trigger", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		setupTab.add(panel_3, "cell 2 5 2 1,grow");
-		panel_3.setLayout(new MigLayout("", "[grow][grow]", "[][][][]"));
-		
-		JLabel lblType = new JLabel("Type");
-		panel_3.add(lblType, "cell 0 0");
-		
-		JLabel lblValue = new JLabel("Value");
-		panel_3.add(lblValue, "cell 1 0");
-		
-		textField_47 = new JTextField();
-		panel_3.add(textField_47, "cell 0 1,growx");
-		textField_47.setColumns(10);
-		
-		textField_48 = new JTextField();
-		panel_3.add(textField_48, "cell 1 1,growx");
-		textField_48.setColumns(10);
-		
-		JLabel lblPretrig = new JLabel("Pretrig");
-		panel_3.add(lblPretrig, "cell 0 2");
-		
-		JLabel lblDelay = new JLabel("Delay");
-		panel_3.add(lblDelay, "cell 1 2");
-		
-		textField_49 = new JTextField();
-		panel_3.add(textField_49, "cell 0 3,growx");
-		textField_49.setColumns(10);
-		
-		textField_50 = new JTextField();
-		panel_3.add(textField_50, "cell 1 3,growx");
-		textField_50.setColumns(10);
-		
-		JButton btnSaveSetup = new JButton("Save Setup");
-		setupTab.add(btnSaveSetup, "cell 1 6");
-		settingsPane.addTab("Calibrate", null, calibrateTab, null);
-		calibrateTab.setLayout(new MigLayout("", "[][grow]", "[][][][][][]"));
-		
-		JLabel lblCalibration = new JLabel("Calibration");
-		calibrateTab.add(lblCalibration, "cell 0 0,alignx trailing");
-		
-		textField_4 = new JTextField();
-		calibrateTab.add(textField_4, "cell 1 0,growx");
-		textField_4.setColumns(10);
-		
-		JLabel lblAmpGain = new JLabel("Amp gain");
-		calibrateTab.add(lblAmpGain, "cell 0 1,alignx trailing");
-		
-		textField_5 = new JTextField();
-		calibrateTab.add(textField_5, "cell 1 1,growx");
-		textField_5.setColumns(10);
-		
-		JLabel lblConcrete = new JLabel("Concrete");
-		calibrateTab.add(lblConcrete, "cell 0 2,alignx trailing");
-		
-		textField_12 = new JTextField();
-		calibrateTab.add(textField_12, "cell 1 2,growx");
-		textField_12.setColumns(10);
-		
-		JLabel lblVoltage = new JLabel("Voltage");
-		calibrateTab.add(lblVoltage, "cell 0 3,alignx trailing");
-		
-		textField_13 = new JTextField();
-		calibrateTab.add(textField_13, "cell 1 3,growx");
-		textField_13.setColumns(10);
-		
-		JButton btnSaveSettings = new JButton("Save settings");
-		calibrateTab.add(btnSaveSettings, "cell 0 5");
-		
-		JLabel lblSaved = new JLabel("Saved!");
-		calibrateTab.add(lblSaved, "cell 1 5");
+										cellTestAvg_ergRest.setColumns(10);;
 		
 		JPanel launchControlPanel = new JPanel();
 		launchControlPanel.setBorder(null);
@@ -645,10 +459,7 @@ public class MainGUI implements IGUI {
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
-		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
-		
-		JButton btnSaveFile = new JButton("Save file");
-		timerPanel.add(btnSaveFile, "cell 0 0");
+		timerPanel.setLayout(new MigLayout("", "[grow][grow]", "[][][][][][][][]"));
 		
 		/*
 		 * btnRunTest_1 = new JButton("Run Test");
@@ -694,6 +505,49 @@ public class MainGUI implements IGUI {
 		
 		JButton btnReset_1 = new JButton("Reset");
 		panel_8.add(btnReset_1, "cell 1 3");
+		
+		JButton btnSaveFile = new JButton("Save file");
+		testLaunchPanel.add(btnSaveFile, "cell 0 1");
+		
+		
+		btnSaveFile.addActionListener((evt) -> {
+			int n = 0;
+		    JFileChooser saveFile = new JFileChooser();
+		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into an xml format");
+		    int userSelection = saveFile.showSaveDialog(frame);
+		    if (userSelection == JFileChooser.APPROVE_OPTION) {
+		        File file = saveFile.getSelectedFile();
+		        //Save file into xml format
+		        file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".csv");
+		        ArrayList<String> csv = new ArrayList<>();
+		        if (_accelerationChart.getPlot() instanceof XYPlot) {
+		            XYDataset xyDataset = _accelerationChart.getXYPlot().getDataset();
+		            int seriesCount = xyDataset.getSeriesCount();
+		            for (int i = 0; i < seriesCount; i++) {
+		                int itemCount = xyDataset.getItemCount(i);
+		                for (int j = 0; j < itemCount; j++) {
+		                    Comparable<?> key = xyDataset.getSeriesKey(i);
+		                    Number x = xyDataset.getX(i, j);
+		                    Number y = xyDataset.getY(i, j);
+		                    csv.add(String.format("%s, %s, %s", key, x, y));
+		                }
+		            }
+		        }
+		        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file));)
+		        {
+		            for (String line : csv) {
+		                writer.append(line);
+		                writer.newLine();
+		            	//System.out.print(line + "\n");
+		            }
+		            
+		            
+		        } catch (IOException e) {
+		            throw new IllegalStateException("Cannot write dataset",e);
+		        }
+		        
+		    }		
+		});
 		btnStart_1.addActionListener((ae) -> {
 				JButton button = btnRunTest_1;
 				button.setEnabled(false);
@@ -716,10 +570,62 @@ public class MainGUI implements IGUI {
 		launchControlPanel.add(timerPanel);
 		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
 		
-		JComboBox selectRig = new JComboBox();
-		timerPanel.add(selectRig, "cell 0 1,growx");
 		
-		//Even though the box should already be empty at this point, it does not populate correctly without this option.
+		/*
+		 * Begin calibration dropdown and display section
+		 */
+		JComboBox selectRig = new JComboBox();
+		timerPanel.add(selectRig, "cell 0 0");
+		
+		JLabel lbldisplayMass = new JLabel("Mass");
+		timerPanel.add(lbldisplayMass, "cell 0 2,");
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		timerPanel.add(textField, "cell 1 2,growx");
+		
+		JLabel lbldisplaySpring = new JLabel("Spring deformation");
+		timerPanel.add(lbldisplaySpring, "cell 0 3");
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		timerPanel.add(textField, "cell 1 3,growx");
+		
+		JLabel lblDisplayGain = new JLabel("Gain");
+		timerPanel.add(lblDisplayGain, "cell 0 4");
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		timerPanel.add(textField, "cell 1 4,growx");
+		
+		JLabel lblDisplayFreq = new JLabel("Frequency");
+		timerPanel.add(lblDisplayFreq, "cell 0 5");
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		timerPanel.add(textField, "cell 1 5,growx");
+		
+		JLabel lblDisplayCnt = new JLabel("Cnt");
+		timerPanel.add(lblDisplayCnt, "cell 0 6");
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		timerPanel.add(textField, "cell 1 6,growx");
+		
+		JLabel lblDisplayPre = new JLabel("Pre");
+		timerPanel.add(lblDisplayPre, "cell 0 7");
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		timerPanel.add(textField, "cell 1 7,growx");
+		
+		JLabel lblDisplaySafe = new JLabel("Safe");
+		timerPanel.add(lblDisplaySafe, "cell 0 8");
+		
+		textField = new JTextField();
+		textField.setEditable(false);
+		timerPanel.add(textField, "cell 1 8,growx");
+		
 		selectRig.removeAllItems();
 		
 		//Add rig titles as dropdown options
@@ -813,46 +719,6 @@ public class MainGUI implements IGUI {
 		gbc_tabbedPane.gridx = 0;
 		gbc_tabbedPane.gridy = 0;
 		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
-		
-		
-		btnSaveFile.addActionListener((evt) -> {
-			int n = 0;
-		    JFileChooser saveFile = new JFileChooser();
-		    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into an xml format");
-		    int userSelection = saveFile.showSaveDialog(frame);
-		    if (userSelection == JFileChooser.APPROVE_OPTION) {
-		        File file = saveFile.getSelectedFile();
-		        //Save file into xml format
-		        file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".csv");
-		        ArrayList<String> csv = new ArrayList<>();
-		        if (_accelerationChart.getPlot() instanceof XYPlot) {
-		            XYDataset xyDataset = _accelerationChart.getXYPlot().getDataset();
-		            int seriesCount = xyDataset.getSeriesCount();
-		            for (int i = 0; i < seriesCount; i++) {
-		                int itemCount = xyDataset.getItemCount(i);
-		                for (int j = 0; j < itemCount; j++) {
-		                    Comparable<?> key = xyDataset.getSeriesKey(i);
-		                    Number x = xyDataset.getX(i, j);
-		                    Number y = xyDataset.getY(i, j);
-		                    csv.add(String.format("%s, %s, %s", key, x, y));
-		                }
-		            }
-		        }
-		        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file));)
-		        {
-		            for (String line : csv) {
-		                writer.append(line);
-		                writer.newLine();
-		            	//System.out.print(line + "\n");
-		            }
-		            
-		            
-		        } catch (IOException e) {
-		            throw new IllegalStateException("Cannot write dataset",e);
-		        }
-		        
-		    }		
-		});
 
 		JPanel panel_acceleration = new JPanel();
 		tabbedPane.addTab("Acceleration Vs. Time", null, panel_acceleration, null);
