@@ -1,11 +1,3 @@
-/**
- * @author Agnes Ola
- * 
- * All code below auto generated so far - with WindowBuilder in Eclipse
- * TO DO: refactoring
- * TO DO: replace auto generated variable names
- */
-
 package uk.ac.gla.dcs.tp3_2019_ese1.gui;
 
 import java.awt.BasicStroke;
@@ -35,7 +27,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.*;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -50,7 +44,7 @@ import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
-import javax.swing.UIManager; 
+import javax.swing.UIManager;
 
 import org.apache.commons.io.FilenameUtils;
 import org.jfree.chart.ChartFactory;
@@ -63,56 +57,36 @@ import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
-
-//import com.sun.corba.se.impl.encoding.CodeSetConversion.BTCConverter;
-//import com.sun.org.omg.CORBA._IDLTypeStub;
-
-
 import net.miginfocom.swing.MigLayout;
 import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 
-//import sun.security.provider.CtrDrbg;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
 import com.jtattoo.plaf.acryl.*;
+import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
- 
 
 public class MainGUI implements IGUI {
 
+	/* Set colour scheme */
+	{
+		try {
+			AcrylLookAndFeel.setTheme("Green-Giant-Font", "", "");
+			UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 
-	{ 
-	try {
-		AcrylLookAndFeel.setTheme("Green-Giant-Font","" ,"");
-		UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
-		
-	} catch (Exception e) {
-		e.printStackTrace();
-	}}
-	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private JFrame frame;
-	
 
 	private final JPanel timerPanel = new JPanel();
 	private JTextField textField_secs;
 	private JTextField textField_mins;
 	private JTextField cellTest1_PeakG;
 	private JTextField cellTest2_PeakG;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_12;
-	private JTextField textField_13;
-	private JTextField textField_35;
-	private JTextField textField_36;
-	private JTextField textField_37;
-	private JTextField textField_38;
-	private JTextField textField_39;
-	private JTextField textField_40;
-	private JTextField textField_41;
-	private JTextField textField_42;
-	private JTextField textField_43;
-	private JTextField textField_44;
 	private LibcbwBoard.USB_1608FS board;
 	private AAARunner _runner;
 	private boolean _magnetStatus;
@@ -135,7 +109,7 @@ public class MainGUI implements IGUI {
 	private boolean _timerIsStarted = false;
 	private String _minString = "0";
 	private String _secString = "30";
-	
+
 	private JTextField cellTest3_vdef;
 	private JTextField cellTestAvg_vdef;
 	private JTextField textField_32;
@@ -145,10 +119,6 @@ public class MainGUI implements IGUI {
 	private JTextField txtPeak;
 	private JTextField textField_46;
 	private JPanel panel_displacement;
-	private JTextField textField_47;
-	private JTextField textField_48;
-	private JTextField textField_49;
-	private JTextField textField_50;
 	private static int delay;
 
 	private JPanel panel_graph3;
@@ -168,15 +138,15 @@ public class MainGUI implements IGUI {
 	private JTextField cellTest2_Velocity2;
 	private JTextField cellTest3_Velocity2;
 	private JTextField cellAvg_Velocity2;
-	
+
 	private JFreeChart _accelerationChart;
 	private JFreeChart _velocityChart;
 	private JFreeChart _displacementChart;
-	
+
 	private XYSeriesCollection _accelerationData = new XYSeriesCollection();
 	private XYSeriesCollection _velocityData = new XYSeriesCollection();
 	private XYSeriesCollection _displacementData = new XYSeriesCollection();
-	
+
 	private ArrayList<Double> _test2Values = new ArrayList<Double>();
 	private ArrayList<Double> _test3Values = new ArrayList<Double>();
 	private ArrayList<Double> _avgValues = new ArrayList<Double>();
@@ -185,6 +155,7 @@ public class MainGUI implements IGUI {
 
 	private boolean _initSucc = false;
 	private JTextField cellTestAvg_DropHT;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -204,485 +175,314 @@ public class MainGUI implements IGUI {
 
 	/**
 	 * Create the application.
+	 * 
+	 * @throws IOException
 	 */
-	public MainGUI() {
+	public MainGUI() throws IOException {
+
 		initialize();
 	}
-	
-	
 
 	/**
 	 * Initialize the contents of the frame.
+	 * 
+	 * @throws IOException
 	 */
-	private void initialize() {
+	private void initialize() throws IOException {
+		Map<String, double[]> RigMap = configReader.parseCSV();
 		frame = new JFrame();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
 		board = null;
 		try {
 			DaqDeviceDescriptor[] daqArray = DaqDeviceDescriptor.getDaqDeviceInventory(DaqDeviceDescriptor.USB_IFC, 5);
-			//routine to test devices for board
-			for(int i = 0; i< daqArray.length; i++) {
-				if(daqArray[i].ProductID == 125 || daqArray[i].ProductID == 234)  board = daqArray[i].createDaqDevice(LibcbwBoard.USB_1608FS::new);
+			// routine to test devices for board
+			for (int i = 0; i < daqArray.length; i++) {
+				if (daqArray[i].ProductID == 125 || daqArray[i].ProductID == 234)
+					board = daqArray[i].createDaqDevice(LibcbwBoard.USB_1608FS::new);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		
-        _runner = new AAARunner(board, this);
-        
+
+		_runner = new AAARunner(board, this);
+
 		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][][]", "[23px][][825px]"));
 		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
 		settingsPane.setToolTipText("SESTTING\r\n");
 		frame.getContentPane().add(settingsPane, "cell 3 2,alignx right,growy");
-		
-		JPanel calibrateTab = new JPanel();
-		settingsPane.addTab("Results", null, calibrateTab, null);
-		
+
 		JPanel resultsPane = new JPanel();
 		settingsPane.addTab("Results", null, resultsPane, null);
 		resultsPane.setBorder(new TitledBorder(null, "Results", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		resultsPane.setLayout(new MigLayout("", "[77px][grow][grow][grow][grow]", "[][][14px][][][][][][][]"));
-		
+
 		JLabel lblTest = new JLabel("Test 1");
 		resultsPane.add(lblTest, "cell 1 0");
-		
+
 		JLabel lblTest_1 = new JLabel("Test 2");
 		resultsPane.add(lblTest_1, "cell 2 0");
-		
+
 		JLabel lblTest_2 = new JLabel("Test 3");
 		resultsPane.add(lblTest_2, "cell 3 0");
-		
+
 		JLabel lblAvgTests = new JLabel("Avg Tests 2&3");
 		resultsPane.add(lblAvgTests, "cell 4 0");
-		
+
 		JLabel lblPeakG = new JLabel("Peak G");
 		resultsPane.add(lblPeakG, "cell 0 1,alignx trailing");
-		
+
 		cellTest1_PeakG = new JTextField();
 		resultsPane.add(cellTest1_PeakG, "cell 1 1,growx");
 		cellTest1_PeakG.setColumns(10);
-		
+
 		cellTest2_PeakG = new JTextField();
 		resultsPane.add(cellTest2_PeakG, "cell 2 1,growx");
 		cellTest2_PeakG.setColumns(10);
-		
+
 		cellTest3_PeakG = new JTextField();
 		resultsPane.add(cellTest3_PeakG, "cell 3 1,growx");
 		cellTest3_PeakG.setColumns(10);
-		
+
 		cellAvg_PeakG = new JTextField();
 		resultsPane.add(cellAvg_PeakG, "cell 4 1,growx");
 		cellAvg_PeakG.setColumns(10);
-		
+
 		JLabel lblFmax_3 = new JLabel("Fmax");
 		resultsPane.add(lblFmax_3, "cell 0 2,alignx trailing");
-		
+
 		cellTest1_Fmax = new JTextField();
 		resultsPane.add(cellTest1_Fmax, "cell 1 2,growx");
 		cellTest1_Fmax.setColumns(10);
-		
+
 		cellTest2_Fmax = new JTextField();
 		resultsPane.add(cellTest2_Fmax, "cell 2 2,growx");
 		cellTest2_Fmax.setColumns(10);
-		
+
 		cellTest3_Fmax = new JTextField();
 		resultsPane.add(cellTest3_Fmax, "cell 3 2,growx");
 		cellTest3_Fmax.setColumns(10);
-		
+
 		cellAvg_Fmax = new JTextField();
 		resultsPane.add(cellAvg_Fmax, "cell 4 2,growx");
 		cellAvg_Fmax.setColumns(10);
-		
+
 		JLabel lblVelocitymmsec = new JLabel("Velocity 1 (mm/sec)");
 		resultsPane.add(lblVelocitymmsec, "cell 0 3,alignx trailing");
-		
+
 		cellTest1_Velocity1 = new JTextField();
 		resultsPane.add(cellTest1_Velocity1, "cell 1 3,growx");
 		cellTest1_Velocity1.setColumns(10);
-		
+
 		cellTest2_Velocity1 = new JTextField();
 		resultsPane.add(cellTest2_Velocity1, "cell 2 3,growx");
 		cellTest2_Velocity1.setColumns(10);
-		
+
 		cellTest3_Velocity1 = new JTextField();
 		resultsPane.add(cellTest3_Velocity1, "cell 3 3,growx");
 		cellTest3_Velocity1.setColumns(10);
-		
+
 		cellAvg_Velocity1 = new JTextField("");
 		resultsPane.add(cellAvg_Velocity1, "cell 4 3,growx");
 		cellAvg_Velocity1.setColumns(10);
-		
+
 		JLabel lblVelocitymmsec_1 = new JLabel("Velocity 2 (mm/sec)");
 		resultsPane.add(lblVelocitymmsec_1, "cell 0 4,alignx trailing");
-		
+
 		cellTest1_Velocity2 = new JTextField("");
 		resultsPane.add(cellTest1_Velocity2, "cell 1 4,growx");
 		cellTest1_Velocity2.setColumns(10);
-		
+
 		cellTest2_Velocity2 = new JTextField("");
 		resultsPane.add(cellTest2_Velocity2, "cell 2 4,growx");
 		cellTest2_Velocity2.setColumns(10);
-		
+
 		cellTest3_Velocity2 = new JTextField("");
 		resultsPane.add(cellTest3_Velocity2, "cell 3 4,growx");
 		cellTest3_Velocity2.setColumns(10);
-		
+
 		cellAvg_Velocity2 = new JTextField("");
 		resultsPane.add(cellAvg_Velocity2, "cell 4 4,growx");
 		cellAvg_Velocity2.setColumns(10);
-		
+
 		JLabel lblDropHt = new JLabel("Drop HT");
 		resultsPane.add(lblDropHt, "cell 0 5,alignx trailing");
-		
+
 		cellTest1_DropHT = new JTextField();
 		resultsPane.add(cellTest1_DropHT, "cell 1 5,growx");
 		cellTest1_DropHT.setColumns(10);
-		
+
 		cellTest2_DropHT = new JTextField();
 		resultsPane.add(cellTest2_DropHT, "cell 2 5,growx");
 		cellTest2_DropHT.setColumns(10);
-		
+
 		cellTest3_DropHT = new JTextField();
 		resultsPane.add(cellTest3_DropHT, "cell 3 5,growx");
 		cellTest3_DropHT.setColumns(10);
-		
+
 		cellTestAvg_DropHT = new JTextField();
 		cellTestAvg_DropHT.setColumns(10);
 		resultsPane.add(cellTestAvg_DropHT, "cell 4 5,growx");
-		
-		//textField_19 = new JTextField();
-		//resultsPane.add(textField_19, "cell 4 5,growx");
-		//textField_19.setColumns(10);
-		
+
+		// textField_19 = new JTextField();
+		// resultsPane.add(textField_19, "cell 4 5,growx");
+		// textField_19.setColumns(10);
+
 		JLabel lblSpringDeformation = new JLabel("Spring deformation");
 		resultsPane.add(lblSpringDeformation, "cell 0 6,alignx trailing");
-		
+
 		cellTest1_SpngDef = new JTextField();
 		resultsPane.add(cellTest1_SpngDef, "cell 1 6,growx");
 		cellTest1_SpngDef.setColumns(10);
-		
+
 		cellTest2_SpngDef = new JTextField();
 		resultsPane.add(cellTest2_SpngDef, "cell 2 6,growx");
 		cellTest2_SpngDef.setColumns(10);
-		
+
 		cellTest3_SpngDef = new JTextField();
 		resultsPane.add(cellTest3_SpngDef, "cell 3 6,growx");
 		cellTest3_SpngDef.setColumns(10);
-		
+
 		cellTestAvg_SpngDef = new JTextField();
 		resultsPane.add(cellTestAvg_SpngDef, "cell 4 6,growx");
 		cellTestAvg_SpngDef.setColumns(10);
-		
-				JLabel lblForceReduction_3 = new JLabel("Force reduction");
-				resultsPane.add(lblForceReduction_3, "cell 0 7,alignx trailing");
-				lblForceReduction_3.setFont(new Font("SansSerif", Font.BOLD, 12));
-				
-						
-						cellTest1_fred = new JTextField();
-						resultsPane.add(cellTest1_fred, "cell 1 7,growx");
-						cellTest1_fred.setColumns(10);
-						
-						cellTest2_fred = new JTextField();
-						resultsPane.add(cellTest2_fred, "cell 2 7,growx");
-						cellTest2_fred.setColumns(10);
-						
-						cellTest3_fred = new JTextField();
-						resultsPane.add(cellTest3_fred, "cell 3 7,growx");
-						cellTest3_fred.setColumns(10);
-						
-						cellTestAvg_fred = new JTextField();
-						resultsPane.add(cellTestAvg_fred, "cell 4 7,growx");
-						cellTestAvg_fred.setColumns(10);
-						
-						JLabel lblVerticalDeformation = new JLabel("Vertical deformation");
-						resultsPane.add(lblVerticalDeformation, "cell 0 8,alignx trailing");
-						lblVerticalDeformation.setFont(new Font("SansSerif", Font.BOLD, 12));
-						
-						
-						cellTest1_vdef = new JTextField();
-						resultsPane.add(cellTest1_vdef, "cell 1 8,growx");
-						cellTest1_vdef.setColumns(10);
-						
-								
-								cellTest2_vdef = new JTextField();
-								resultsPane.add(cellTest2_vdef, "cell 2 8,growx");
-								cellTest2_vdef.setColumns(10);
-								
-								cellTest3_vdef = new JTextField();
-								resultsPane.add(cellTest3_vdef, "cell 3 8,growx");
-								cellTest3_vdef.setColumns(10);
-								
-										cellTestAvg_vdef = new JTextField();
-										resultsPane.add(cellTestAvg_vdef, "cell 4 8,growx");
-										cellTestAvg_vdef.setColumns(10);
-										
-										JLabel lblEnergyRestitution = new JLabel("Energy restitution");
-										resultsPane.add(lblEnergyRestitution, "cell 0 9,alignx trailing");
-										lblEnergyRestitution.setFont(new Font("SansSerif", Font.BOLD, 12));
-										
-										cellTest1_ergRest = new JTextField();
-										resultsPane.add(cellTest1_ergRest, "cell 1 9,growx");
-										cellTest1_ergRest.setColumns(10);
-										
-										cellTest2_ergRest = new JTextField();
-										resultsPane.add(cellTest2_ergRest, "cell 2 9,growx");
-										cellTest2_ergRest.setColumns(10);
-										
-										cellTest3_ergRest = new JTextField();
-										resultsPane.add(cellTest3_ergRest, "cell 3 9,growx");
-										cellTest3_ergRest.setColumns(10);
-										
-										cellTestAvg_ergRest = new JTextField();
-										resultsPane.add(cellTestAvg_ergRest, "cell 4 9,growx");
-										cellTestAvg_ergRest.setColumns(10);
-		
-		JPanel setupTab = new JPanel();
-		settingsPane.addTab("Setup", null, setupTab, null);
-		setupTab.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[][][][][][][][]"));
-		
-		JPanel panel = new JPanel();;
-		panel.setBorder(new TitledBorder(null, "Set gain", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		setupTab.add(panel, "cell 0 2 2 2,grow");
-		panel.setLayout(new MigLayout("", "[grow][grow]", "[][][][][][][][][]"));
-		
-		JLabel lblChanNo = new JLabel("Chan no");
-		panel.add(lblChanNo, "cell 0 0");
-		
-		JLabel lblGain = new JLabel("Gain");
-		panel.add(lblGain, "cell 1 0");
-		
-		JLabel label_2 = new JLabel("1");
-		panel.add(label_2, "cell 0 1,alignx trailing");
-		
-		textField_37 = new JTextField();
-		panel.add(textField_37, "cell 1 1,growx");
-		textField_37.setColumns(10);
-		
-		JLabel label_3 = new JLabel("2");
-		panel.add(label_3, "cell 0 2,alignx trailing");
-		
-		textField_38 = new JTextField();
-		panel.add(textField_38, "cell 1 2,growx");
-		textField_38.setColumns(10);
-		
-		JLabel label_4 = new JLabel("3");
-		panel.add(label_4, "cell 0 3,alignx trailing");
-		
-		textField_39 = new JTextField();
-		panel.add(textField_39, "cell 1 3,growx");
-		textField_39.setColumns(10);
-		
-		JLabel label_5 = new JLabel("4");
-		panel.add(label_5, "cell 0 4,alignx trailing");
-		
-		textField_40 = new JTextField();
-		panel.add(textField_40, "cell 1 4,growx");
-		textField_40.setColumns(10);
-		
-		JLabel label_6 = new JLabel("5");
-		panel.add(label_6, "cell 0 5,alignx trailing");
-		
-		textField_41 = new JTextField();
-		panel.add(textField_41, "cell 1 5,growx");
-		textField_41.setColumns(10);
-		
-		JLabel label_7 = new JLabel("6");
-		panel.add(label_7, "cell 0 6,alignx trailing");
-		
-		textField_42 = new JTextField();
-		panel.add(textField_42, "cell 1 6,growx");
-		textField_42.setColumns(10);
-		
-		JLabel label_8 = new JLabel("7");
-		panel.add(label_8, "cell 0 7,alignx trailing");
-		
-		textField_43 = new JTextField();
-		panel.add(textField_43, "cell 1 7,growx");
-		textField_43.setColumns(10);
-		
-		JLabel label_9 = new JLabel("8");
-		panel.add(label_9, "cell 0 8,alignx trailing");
-		
-		textField_44 = new JTextField();
-		panel.add(textField_44, "cell 1 8,growx");
-		textField_44.setColumns(10);
-		
-		JLabel lblSamples = new JLabel("Samples");
-		setupTab.add(lblSamples, "cell 2 2");
-		
-		JLabel lblRange = new JLabel("Range");
-		setupTab.add(lblRange, "cell 3 2");
-		
-		textField_36 = new JTextField();
-		setupTab.add(textField_36, "cell 2 3,growx");
-		textField_36.setColumns(10);
-		
-		textField_35 = new JTextField();
-		setupTab.add(textField_35, "cell 3 3,growx");
-		textField_35.setColumns(10);
-		
-		JLabel lblFilter = new JLabel("Filter");
-		setupTab.add(lblFilter, "cell 0 4");
-		
-		JToggleButton tglbtnYesno = new JToggleButton("Yes/No");
-		setupTab.add(tglbtnYesno, "cell 1 4");
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setBorder(new TitledBorder(null, "Trigger", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		setupTab.add(panel_3, "cell 2 5 2 1,grow");
-		panel_3.setLayout(new MigLayout("", "[grow][grow]", "[][][][]"));
-		
-		JLabel lblType = new JLabel("Type");
-		panel_3.add(lblType, "cell 0 0");
-		
-		JLabel lblValue = new JLabel("Value");
-		panel_3.add(lblValue, "cell 1 0");
-		
-		textField_47 = new JTextField();
-		panel_3.add(textField_47, "cell 0 1,growx");
-		textField_47.setColumns(10);
-		
-		textField_48 = new JTextField();
-		panel_3.add(textField_48, "cell 1 1,growx");
-		textField_48.setColumns(10);
-		
-		JLabel lblPretrig = new JLabel("Pretrig");
-		panel_3.add(lblPretrig, "cell 0 2");
-		
-		JLabel lblDelay = new JLabel("Delay");
-		panel_3.add(lblDelay, "cell 1 2");
-		
-		textField_49 = new JTextField();
-		panel_3.add(textField_49, "cell 0 3,growx");
-		textField_49.setColumns(10);
-		
-		textField_50 = new JTextField();
-		panel_3.add(textField_50, "cell 1 3,growx");
-		textField_50.setColumns(10);
-		
-		JButton btnSaveSetup = new JButton("Save Setup");
-		setupTab.add(btnSaveSetup, "cell 1 6");
-		settingsPane.addTab("Calibrate", null, calibrateTab, null);
-		calibrateTab.setLayout(new MigLayout("", "[][grow]", "[][][][][][]"));
-		
-		JLabel lblCalibration = new JLabel("Calibration");
-		calibrateTab.add(lblCalibration, "cell 0 0,alignx trailing");
-		
-		textField_4 = new JTextField();
-		calibrateTab.add(textField_4, "cell 1 0,growx");
-		textField_4.setColumns(10);
-		
-		JLabel lblAmpGain = new JLabel("Amp gain");
-		calibrateTab.add(lblAmpGain, "cell 0 1,alignx trailing");
-		
-		textField_5 = new JTextField();
-		calibrateTab.add(textField_5, "cell 1 1,growx");
-		textField_5.setColumns(10);
-		
-		JLabel lblConcrete = new JLabel("Concrete");
-		calibrateTab.add(lblConcrete, "cell 0 2,alignx trailing");
-		
-		textField_12 = new JTextField();
-		calibrateTab.add(textField_12, "cell 1 2,growx");
-		textField_12.setColumns(10);
-		
-		JLabel lblVoltage = new JLabel("Voltage");
-		calibrateTab.add(lblVoltage, "cell 0 3,alignx trailing");
-		
-		textField_13 = new JTextField();
-		calibrateTab.add(textField_13, "cell 1 3,growx");
-		textField_13.setColumns(10);
-		
-		JButton btnSaveSettings = new JButton("Save settings");
-		calibrateTab.add(btnSaveSettings, "cell 0 5");
-		
-		JLabel lblSaved = new JLabel("Saved!");
-		calibrateTab.add(lblSaved, "cell 1 5");
-		
+
+		JLabel lblForceReduction_3 = new JLabel("Force reduction");
+		resultsPane.add(lblForceReduction_3, "cell 0 7,alignx trailing");
+		lblForceReduction_3.setFont(new Font("SansSerif", Font.BOLD, 12));
+
+		cellTest1_fred = new JTextField();
+		resultsPane.add(cellTest1_fred, "cell 1 7,growx");
+		cellTest1_fred.setColumns(10);
+
+		cellTest2_fred = new JTextField();
+		resultsPane.add(cellTest2_fred, "cell 2 7,growx");
+		cellTest2_fred.setColumns(10);
+
+		cellTest3_fred = new JTextField();
+		resultsPane.add(cellTest3_fred, "cell 3 7,growx");
+		cellTest3_fred.setColumns(10);
+
+		cellTestAvg_fred = new JTextField();
+		resultsPane.add(cellTestAvg_fred, "cell 4 7,growx");
+		cellTestAvg_fred.setColumns(10);
+
+		JLabel lblVerticalDeformation = new JLabel("Vertical deformation");
+		resultsPane.add(lblVerticalDeformation, "cell 0 8,alignx trailing");
+		lblVerticalDeformation.setFont(new Font("SansSerif", Font.BOLD, 12));
+
+		cellTest1_vdef = new JTextField();
+		resultsPane.add(cellTest1_vdef, "cell 1 8,growx");
+		cellTest1_vdef.setColumns(10);
+
+		cellTest2_vdef = new JTextField();
+		resultsPane.add(cellTest2_vdef, "cell 2 8,growx");
+		cellTest2_vdef.setColumns(10);
+
+		cellTest3_vdef = new JTextField();
+		resultsPane.add(cellTest3_vdef, "cell 3 8,growx");
+		cellTest3_vdef.setColumns(10);
+
+		cellTestAvg_vdef = new JTextField();
+		resultsPane.add(cellTestAvg_vdef, "cell 4 8,growx");
+		cellTestAvg_vdef.setColumns(10);
+
+		JLabel lblEnergyRestitution = new JLabel("Energy restitution");
+		resultsPane.add(lblEnergyRestitution, "cell 0 9,alignx trailing");
+		lblEnergyRestitution.setFont(new Font("SansSerif", Font.BOLD, 12));
+
+		cellTest1_ergRest = new JTextField();
+		resultsPane.add(cellTest1_ergRest, "cell 1 9,growx");
+		cellTest1_ergRest.setColumns(10);
+
+		cellTest2_ergRest = new JTextField();
+		resultsPane.add(cellTest2_ergRest, "cell 2 9,growx");
+		cellTest2_ergRest.setColumns(10);
+
+		cellTest3_ergRest = new JTextField();
+		resultsPane.add(cellTest3_ergRest, "cell 3 9,growx");
+		cellTest3_ergRest.setColumns(10);
+
+		cellTestAvg_ergRest = new JTextField();
+		resultsPane.add(cellTestAvg_ergRest, "cell 4 9,growx");
+		cellTestAvg_ergRest.setColumns(10);
+		;
+
 		JPanel launchControlPanel = new JPanel();
 		launchControlPanel.setBorder(null);
 		frame.getContentPane().add(launchControlPanel, "cell 0 2,alignx left,growy");
 		launchControlPanel.setLayout(new GridLayout(4, 0, 0, 0));
-		
+
 		JPanel testLaunchPanel = new JPanel();
 		launchControlPanel.add(testLaunchPanel);
-	//	testLaunchPanel.setPreferredSize(new Dimension(480, 64));
-		testLaunchPanel.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		// testLaunchPanel.setPreferredSize(new Dimension(480, 64));
+		testLaunchPanel
+				.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		testLaunchPanel.setLayout(new MigLayout("", "[]", "[][][][]"));
-		
+
 		JButton btnMagnetStatus_1 = new JButton("Magnet toggle");
 		_magnetStatus = false;
-		
+
 		btnMagnetStatus_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
+
 				try {
 					if (_magnetStatus == false) {
 						_magnetStatus = !_magnetStatus;
-						board.digitalOut(0, true);						
+						board.digitalOut(0, true);
 						btnMagnetStatus_1.setLabel("Magnet is ON");
-						btnMagnetStatus_1.setBackground(new Color(0,71,137)); //SportsLabs Colors
+						btnMagnetStatus_1.setBackground(new Color(0, 71, 137)); // SportsLabs Colors
 
-					}
-					else {
+					} else {
 						_magnetStatus = !_magnetStatus;
-						board.digitalOut(0, false);						
+						board.digitalOut(0, false);
 						btnMagnetStatus_1.setLabel("Magnet is OFF");
-						btnMagnetStatus_1.setBackground(new Color(255,255,255)); //SportsLabs Colors
+						btnMagnetStatus_1.setBackground(new Color(255, 255, 255)); // SportsLabs Colors
 					}
 
-				}
-				catch (LibcbwException ex) {
+				} catch (LibcbwException ex) {
 					ex.printStackTrace();
 				}
 			}
 		});
 		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,growx,aligny top");
-		
+
 		JButton btnRunTest_1 = new JButton("Run Test");
-        btnRunTest_1.addActionListener(_runner::runTest);
-        
+		btnRunTest_1.addActionListener(_runner::runTest);
+
+		JButton btnSaveFile = new JButton("Save file");
+		timerPanel.add(btnSaveFile, "cell 0 3");
+
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
-		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][][]"));
-		
-		JButton btnSaveFile = new JButton("Save file");
-		timerPanel.add(btnSaveFile, "cell 0 3");
-		
+		timerPanel.setLayout(new MigLayout("", "[grow][grow]", "[][][][][][][][]"));
+
 		/*
-		 * btnRunTest_1 = new JButton("Run Test");
-		btnRunTest_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Random r = new Random();
-				double[] array = new double[1000];
-				for(int i = 0; i < 1000; i++) {
-					array[i] = (double)i * r.nextFloat();
-				}
-				makeGraphs(array, array, array, 0, _n);
-				_n++;
-			}
-			
-		});
+		 * btnRunTest_1 = new JButton("Run Test"); btnRunTest_1.addActionListener(new
+		 * ActionListener() { public void actionPerformed(ActionEvent e) { Random r =
+		 * new Random(); double[] array = new double[1000]; for(int i = 0; i < 1000;
+		 * i++) { array[i] = (double)i * r.nextFloat(); } makeGraphs(array, array,
+		 * array, 0, _n); _n++; }
+		 * 
+		 * });
 		 */
 
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1");
-		
+
 		JPanel panel_8 = new JPanel();
 		testLaunchPanel.add(panel_8, "cell 0 3");
 		panel_8.setBorder(new TitledBorder(null, "Timer", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_8.setLayout(new MigLayout("", "[left][]", "[][][][]"));
-		
+
 		JLabel lblMin = new JLabel("Min");
 		panel_8.add(lblMin, "cell 0 0,alignx left");
-		
+
 		JLabel lblSec = new JLabel("Sec");
 		panel_8.add(lblSec, "cell 1 0");
-		
+
 		textField_mins = new JTextField();
 		textField_mins.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_8.add(textField_mins, "cell 0 1");
@@ -695,9 +495,10 @@ public class MainGUI implements IGUI {
 		textField_secs.setText("30");
 		textField_secs.setColumns(10);
 		JButton button = btnRunTest_1;
+
 		JButton btnStart_1 = new JButton("Start");
 		panel_8.add(btnStart_1, "cell 0 3");
-		
+
 		JButton btnReset_1 = new JButton("Reset");
 		btnReset_1.addActionListener((ae) -> {
 			timer.stop();
@@ -708,8 +509,11 @@ public class MainGUI implements IGUI {
 			_timerIsStarted = false;
 		});
 		panel_8.add(btnReset_1, "cell 1 3");
+
 		_timerIsStarted = false;
+
 		btnStart_1.addActionListener((ae) -> {
+
 				_timerIsStarted = !_timerIsStarted;
 				if(_timerIsStarted) btnStart_1.setText("Stop");
 				if(!_timerIsStarted) btnStart_1.setText("Start");		
@@ -758,32 +562,136 @@ public class MainGUI implements IGUI {
 		        });;
 				timer.start();	
 				
+
 		});
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
 		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
-	
+
 		/*
-		 *  Pausing the Button For given seconds to avoid 
-		 *  repeating too many tests
+		 * Begin calibration dropdown and display section
 		 */
-		
+		JComboBox selectRig = new JComboBox();
+		timerPanel.add(selectRig, "cell 0 0");
+
+		selectRig.removeAllItems();
+
+		// Add rig titles as dropdown options
+		for (String key : RigMap.keySet()) {
+			selectRig.addItem(key);
+		}
+
+		/*
+		 * Listen for new selection
+		 */
+
+		JLabel lbldisplayMass = new JLabel("Mass");
+		timerPanel.add(lbldisplayMass, "cell 0 2,");
+
+		JTextField txtMassField = new JTextField();
+		txtMassField.setText(" ");
+		txtMassField.setEditable(false);
+		timerPanel.add(txtMassField, "cell 1 2,growx");
+
+		JLabel lbldisplaySpring = new JLabel("Spring deformation");
+		timerPanel.add(lbldisplaySpring, "cell 0 3");
+
+		JTextField txtSpringField = new JTextField();
+		txtSpringField.setText(" ");
+		txtSpringField.setEditable(false);
+		timerPanel.add(txtSpringField, "cell 1 3,growx");
+
+		JLabel lblDisplayGain = new JLabel("Gain");
+		timerPanel.add(lblDisplayGain, "cell 0 4");
+
+		JTextField txtGainField = new JTextField();
+		txtGainField.setText(" ");
+		txtGainField.setEditable(false);
+		timerPanel.add(txtGainField, "cell 1 4,growx");
+
+		JLabel lblDisplayFreq = new JLabel("Frequency");
+		timerPanel.add(lblDisplayFreq, "cell 0 5");
+
+		JTextField txtFreqField = new JTextField();
+		txtFreqField.setText(" ");
+		txtFreqField.setEditable(false);
+		timerPanel.add(txtFreqField, "cell 1 5,growx");
+
+		JLabel lblDisplayCnt = new JLabel("Cnt");
+		timerPanel.add(lblDisplayCnt, "cell 0 6");
+
+		JTextField txtCntField = new JTextField();
+		txtCntField.setText(" ");
+		txtCntField.setEditable(false);
+		timerPanel.add(txtCntField, "cell 1 6,growx");
+
+		JLabel lblDisplayPre = new JLabel("Pre");
+		timerPanel.add(lblDisplayPre, "cell 0 7");
+
+		JTextField txtPreField = new JTextField();
+		txtPreField.setText(" ");
+		txtPreField.setEditable(false);
+		timerPanel.add(txtPreField, "cell 1 7,growx");
+
+		JLabel lblDisplaySafe = new JLabel("Safe");
+		timerPanel.add(lblDisplaySafe, "cell 0 8");
+
+		JTextField txtSafeField = new JTextField();
+		txtSafeField.setText(" ");
+		txtSafeField.setEditable(false);
+		timerPanel.add(txtSafeField, "cell 1 8,growx");
+
+		ActionListener cbActionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String selectedRig = (String) selectRig.getSelectedItem();
+
+				double[] calibrationValues = RigMap.get(selectedRig);
+
+				_runner.MASS = calibrationValues[0];
+				_runner.SPRINGCAL = calibrationValues[1];
+				_runner.GAIN_CALI = calibrationValues[2];
+				_runner.SAMPLE_RATE = (int) calibrationValues[3];
+				_runner.SAMPLE_COUNT = (int) calibrationValues[4];
+				_runner.PRE_DROP_CNT = (int) calibrationValues[5];
+				_runner.SAFETY_MARGIN = (int) calibrationValues[6];
+
+				txtMassField.setText(Double.toString(calibrationValues[0]));
+				txtSpringField.setText(Double.toString(calibrationValues[1]));
+				txtGainField.setText(Double.toString(calibrationValues[2]));
+				txtFreqField.setText(Double.toString(calibrationValues[3]));
+				txtCntField.setText(Double.toString(calibrationValues[4]));
+				txtPreField.setText(Double.toString(calibrationValues[5]));
+				txtSafeField.setText(Double.toString(calibrationValues[6]));
+			}
+		};
+
+		/*
+		 * This listener updated calibration values after dropdown is selected.
+		 */
+		selectRig.addActionListener(cbActionListener);
+
+		/*
+		 * Pausing the Button For given seconds to avoid repeating too many tests
+		 */
+
 		JMenuBar menuBar = new JMenuBar();
 		frame.getContentPane().add(menuBar, "cell 0 0 4 1,alignx center,growy");
-		
+
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
-		
+
 		JMenuItem mntmSaveData = new JMenuItem("Save data");
 		mnFile.add(mntmSaveData);
-		
+
 		JMenuItem mntmLoadData = new JMenuItem("Load data");
 		mntmLoadData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 			}
 		});
 		mnFile.add(mntmLoadData);
-		
+
 		JMenuItem mntmExit = new JMenuItem("Exit");
 		mnFile.add(mntmExit);
 		mntmExit.addActionListener(new ActionListener() {
@@ -794,27 +702,25 @@ public class MainGUI implements IGUI {
 			}
 
 		});
-		
-		JMenu mnInfo = new JMenu("Info");
-		menuBar.add(mnInfo);
-		
+
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
-		
+
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
-		
+
 		JPanel dataViewPanel = new JPanel();
 		frame.getContentPane().add(dataViewPanel, "cell 1 2 2 1,grow");
 		GridBagLayout gbl_dataViewPanel = new GridBagLayout();
-		gbl_dataViewPanel.columnWidths = new int[]{159, 157, 149, 75, 0};
-		gbl_dataViewPanel.rowHeights = new int[]{225, 0, 224, 0, 230, 0, 0};
-		gbl_dataViewPanel.columnWeights = new double[]{1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE};
-		gbl_dataViewPanel.rowWeights = new double[]{1.0, 0.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE};
+		gbl_dataViewPanel.columnWidths = new int[] { 159, 157, 149, 75, 0 };
+		gbl_dataViewPanel.rowHeights = new int[] { 225, 0, 224, 0, 230, 0, 0 };
+		gbl_dataViewPanel.columnWeights = new double[] { 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
+		gbl_dataViewPanel.rowWeights = new double[] { 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE };
 		dataViewPanel.setLayout(gbl_dataViewPanel);
 		XYSeries series = new XYSeries("Test 1");
-		XYSeries series2  = new XYSeries("Test 2");
+		XYSeries series2 = new XYSeries("Test 2");
 		XYSeries series3 = new XYSeries("Test 3");
+
 
 		//for(int i = 0; i < 1000; i++) {
 		//	series.add(new XYDataItem(i, 0));
@@ -825,7 +731,8 @@ public class MainGUI implements IGUI {
 		_accelerationData.addSeries(series);
 		_accelerationData.addSeries(series2);
 		_accelerationData.addSeries(series3);
-		_accelerationChart = ChartFactory.createXYLineChart("Acceleration Vs Time","Time","Acceleration", _accelerationData);
+		_accelerationChart = ChartFactory.createXYLineChart("Acceleration Vs Time", "Time", "Acceleration",
+				_accelerationData);
 		XYItemRenderer theRenderer = _accelerationChart.getXYPlot().getRenderer();
 		theRenderer.setSeriesStroke(0, new BasicStroke(2.5f));
 		theRenderer.setSeriesStroke(1, new BasicStroke(2.5f));
@@ -834,12 +741,13 @@ public class MainGUI implements IGUI {
 		_velocityData.addSeries(series);
 		_velocityData.addSeries(series2);
 		_velocityData.addSeries(series3);
-		_velocityChart = ChartFactory.createXYLineChart("Velocity Vs Time","Time","Velocity", _velocityData);
+		_velocityChart = ChartFactory.createXYLineChart("Velocity Vs Time", "Time", "Velocity", _velocityData);
 		_velocityChart.getXYPlot().setRenderer(theRenderer);
 		_displacementData.addSeries(series);
 		_displacementData.addSeries(series2);
 		_displacementData.addSeries(series3);
-		_displacementChart = ChartFactory.createXYLineChart("Displacement Vs Time","Time","Displacement", _displacementData);
+		_displacementChart = ChartFactory.createXYLineChart("Displacement Vs Time", "Time", "Displacement",
+				_displacementData);
 		_displacementChart.getXYPlot().setRenderer(theRenderer);
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
@@ -850,8 +758,7 @@ public class MainGUI implements IGUI {
 		gbc_tabbedPane.gridx = 0;
 		gbc_tabbedPane.gridy = 0;
 		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
-		
-		
+
 		btnSaveFile.addActionListener((evt) -> {
 			int n = 0;
 		    JFileChooser saveFile = new JFileChooser();
@@ -893,14 +800,15 @@ public class MainGUI implements IGUI {
 		    }		
 		});
 
+
 		JPanel panel_acceleration = new JPanel();
 		tabbedPane.addTab("Acceleration Vs. Time", null, panel_acceleration, null);
 		ChartPanel chartPanelAcceleration = new ChartPanel(_accelerationChart);
 		chartPanelAcceleration.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount() == 2) {
-					//new ChartViewer(chart).setVisible(true);
+				if (e.getClickCount() == 2) {
+					// new ChartViewer(chart).setVisible(true);
 					new ChartViewerDialog(_accelerationChart).setVisible(true);
 				}
 			}
@@ -908,7 +816,7 @@ public class MainGUI implements IGUI {
 		chartPanelAcceleration.setDomainZoomable(true);
 		panel_acceleration.setLayout(new BorderLayout());
 		panel_acceleration.add(chartPanelAcceleration, BorderLayout.CENTER);
-		
+
 		JPanel panel_velocity = new JPanel();
 		ChartPanel chartPanelVelocity = new ChartPanel(_velocityChart);
 		chartPanelVelocity.addMouseListener(new MouseAdapter() {
@@ -923,9 +831,9 @@ public class MainGUI implements IGUI {
 		panel_velocity.setLayout(new BorderLayout());
 		panel_velocity.add(chartPanelVelocity, BorderLayout.CENTER);
 		tabbedPane.addTab("Velocity Vs. Time", null, panel_velocity, null);
-		
+
 		panel_displacement = new JPanel();
-		
+
 		ChartPanel chartPanelDisplacement = new ChartPanel(_displacementChart);
 
 		chartPanelDisplacement.addMouseListener(new MouseAdapter() {
@@ -941,70 +849,72 @@ public class MainGUI implements IGUI {
 		panel_displacement.setLayout(new BorderLayout());
 		panel_displacement.add(chartPanelDisplacement, BorderLayout.CENTER);
 		tabbedPane.addTab("Displacement Vs. Time", null, panel_displacement, null);
-		
+
 		JPanel averageResultsPanel = new JPanel();
-        frame.getContentPane().add(averageResultsPanel, "cell 0 0 4 1,grow");
+		frame.getContentPane().add(averageResultsPanel, "cell 0 0 4 1,grow");
 		averageResultsPanel.setLayout(new MigLayout("", "[77px]", "[14px]"));
+
 
 		_initSucc = true;
 
 	}
 
-    @Override
-    public void makeGraphs(double[] acceleration, double[] velocity, double[] disp, int drop_touch2, int testNr) {
-    	//first, work out the test index (0-2 inclusive)
-    	int testIdx = testNr%3;
-    	
-    	//make graphical datasets for:
-    	//ACCELERATION
-    	XYSeries accelerationSeries = new XYSeries("Test " + (testNr + 1));
-    	int x = 0;
-    	for (double accVal : acceleration) {
+	@Override
+	public void makeGraphs(double[] acceleration, double[] velocity, double[] disp, int drop_touch2, int testNr) {
+		// first, work out the test index (0-2 inclusive)
+		int testIdx = testNr % 3;
+
+		// make graphical datasets for:
+		// ACCELERATION
+		XYSeries accelerationSeries = new XYSeries("Test " + (testNr + 1));
+		int x = 0;
+		for (double accVal : acceleration) {
 			accelerationSeries.add(new XYDataItem(x, accVal));
 			x++;
 		}
-    	//VELOCITY
-    	XYSeries velocitySeries = new XYSeries("Test " + (testNr + 1));
-    	x = 0;
-    	for (double velVal : velocity) {
+		// VELOCITY
+		XYSeries velocitySeries = new XYSeries("Test " + (testNr + 1));
+		x = 0;
+		for (double velVal : velocity) {
 			velocitySeries.add(new XYDataItem(x, velVal));
 			x++;
 		}
-    	//DISPLACEMENT
-    	XYSeries displacementSeries = new XYSeries("Test " + (testNr + 1));
-    	x = 0;
-    	for (double dispVal : disp) {
+		// DISPLACEMENT
+		XYSeries displacementSeries = new XYSeries("Test " + (testNr + 1));
+		x = 0;
+		for (double dispVal : disp) {
 			displacementSeries.add(new XYDataItem(x, dispVal));
 			x++;
 		}
-    	
-    	//update chart datasets for:
-    	//ACCELERATION
-		List<Object> accData = Arrays.asList(_accelerationData.getSeries().toArray());
-    	accData.set(testIdx, accelerationSeries);
-    	_accelerationData.removeAllSeries();
-    	for(Object series : accData) {
-    		_accelerationData.addSeries((XYSeries)series);
-    	}
-    	
-    	//VELOCITY
-    	List<Object> velData = Arrays.asList(_velocityData.getSeries().toArray());
-    	velData.set(testIdx, velocitySeries);
-    	_velocityData.removeAllSeries();
-    	for(Object series : velData) {
-    		_velocityData.addSeries((XYSeries)series);
-    	}
-    	//DISPACEMENT
-    	List<Object> dispData = Arrays.asList(_displacementData.getSeries().toArray());
-    	dispData.set(testIdx, displacementSeries);
-    	_displacementData.removeAllSeries();
-    	for(Object series : dispData) {
-    		_displacementData.addSeries((XYSeries)series);
-    	}
-    		
-    }
 
-    @Override
+		// update chart datasets for:
+		// ACCELERATION
+		List<Object> accData = Arrays.asList(_accelerationData.getSeries().toArray());
+accData.set(testIdx,accelerationSeries);_accelerationData.removeAllSeries();for(
+
+	Object series:accData)
+	{
+		_accelerationData.addSeries((XYSeries) series);
+	}
+
+	// VELOCITY
+	List<Object> velData = Arrays.asList(_velocityData.getSeries()
+			.toArray());velData.set(testIdx,velocitySeries);_velocityData.removeAllSeries();for(
+	Object series:velData)
+	{
+		_velocityData.addSeries((XYSeries) series);
+	}
+	// DISPACEMENT
+	List<Object> dispData = Arrays.asList(_displacementData.getSeries()
+			.toArray());dispData.set(testIdx,displacementSeries);_displacementData.removeAllSeries();for(
+	Object series:dispData)
+	{
+		_displacementData.addSeries((XYSeries) series);
+	}
+
+	}
+
+	@Override
     public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
             double drop_dist, double spring, double material, int testNr) {
     	
@@ -1154,7 +1064,7 @@ public class MainGUI implements IGUI {
     		
     }
 
-    @Override
+	@Override
     public void displayErrorMessage(String msg) {
         // TODO Auto-generated method stub
         
@@ -1165,28 +1075,20 @@ public class MainGUI implements IGUI {
 		return _magnetStatus;
 	}
 
-
 	public JFreeChart get_accelerationChart() {
 		return _accelerationChart;
 	}
-
-	
 
 	public XYSeriesCollection get_accelerationData() {
 		return _accelerationData;
 	}
 
-
 	public XYSeriesCollection get_displacementData() {
 		return _displacementData;
 	}
-
 
 	public ArrayList<Double> get_avgValues() {
 		return _avgValues;
 	}
 
-    
-
 }
-
