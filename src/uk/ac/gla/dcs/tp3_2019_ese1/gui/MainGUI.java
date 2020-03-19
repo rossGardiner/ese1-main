@@ -76,6 +76,7 @@ import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
 import com.jtattoo.plaf.acryl.*;
+import javax.swing.SwingConstants;
  
 
 public class MainGUI implements IGUI {
@@ -681,13 +682,15 @@ public class MainGUI implements IGUI {
 		panel_8.add(lblSec, "cell 1 0");
 		
 		textField_mins = new JTextField();
+		textField_mins.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_8.add(textField_mins, "cell 0 1");
 		textField_mins.setText("00");
 		textField_mins.setColumns(10);
 		
 		textField_secs = new JTextField();
+		textField_secs.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_8.add(textField_secs, "cell 1 1,growx");
-		textField_secs.setText("1");
+		textField_secs.setText("30");
 		textField_secs.setColumns(10);
 		
 		JButton btnStart_1 = new JButton("Start");
@@ -698,14 +701,21 @@ public class MainGUI implements IGUI {
 		_timerIsStarted = false;
 		btnStart_1.addActionListener((ae) -> {
 				_timerIsStarted = !_timerIsStarted;
-				
+				if(_timerIsStarted) btnStart_1.setText("Stop");
+				if(!_timerIsStarted) btnStart_1.setText("Start");		
+				//disable the button
 				JButton button = btnRunTest_1;
 				button.setEnabled(false);
-				int minutes = Integer.parseInt(textField_mins.getText());
-				int seconds = Integer.parseInt(textField_secs.getText());
+				//remove all non integers from input field
+				String minString = textField_mins.getText();
+				minString = minString.replaceAll("[^\\d.]", "");
+				String secString = textField_secs.getText();
+				secString = secString.replaceAll("[^\\d.]", "");
+				float minutes = Float.parseFloat(minString);
+				float seconds = Float.parseFloat(secString);
 				minutes = minutes * 60000;
 				seconds = seconds * 1000;
-				long duration = minutes + seconds;
+				long duration = (int)minutes + (int)seconds;
 				long startTime = System.currentTimeMillis();
 				final Long startTimeInner = new Long(startTime);
 				timer = new Timer(0, new ActionListener() {
@@ -726,18 +736,12 @@ public class MainGUI implements IGUI {
 		                    long mins = (duration - clockTime)/60000;
 		                    long secs = (duration - clockTime) % 60000;
 		                    secs = secs / 1000;
-		                    //SimpleDateFormat df = new SimpleDateFormat("mm:ss:SSS");
 		                    textField_secs.setText(String.valueOf(secs));
 		                    textField_mins.setText(String.valueOf(mins));
 		            }
 		        });;
 				timer.start();	
-				if(_timerIsStarted) btnStart_1.setText("Stop");
-				if(!_timerIsStarted) {
-					btnStart_1.setText("Start");
-					timer.stop();
-					
-				}
+				
 		});
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
