@@ -914,7 +914,9 @@ public class MainGUI implements IGUI {
 		chartPanelVelocity.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(_velocityChart).setVisible(true);
+				if(e.getClickCount() == 2) {
+				    new ChartViewerDialog(_velocityChart).setVisible(true);
+				}
 			}
 		});
 		chartPanelVelocity.setDomainZoomable(true);
@@ -929,7 +931,9 @@ public class MainGUI implements IGUI {
 		chartPanelDisplacement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				new ChartViewerDialog(_displacementChart).setVisible(true);
+				if(e.getClickCount() == 2) {
+				    new ChartViewerDialog(_displacementChart).setVisible(true);
+				}
 			}
 		});
 		chartPanelDisplacement.setDomainZoomable(true);
@@ -982,6 +986,7 @@ public class MainGUI implements IGUI {
     	for(Object series : accData) {
     		_accelerationData.addSeries((XYSeries)series);
     	}
+    	
     	//VELOCITY
     	List<Object> velData = Arrays.asList(_velocityData.getSeries().toArray());
     	velData.set(testIdx, velocitySeries);
@@ -1028,6 +1033,9 @@ public class MainGUI implements IGUI {
    	 	  db = new BigDecimal(fred);
 	      db = db.round(new MathContext(4));
    	 	  cellTest1_fred.setText(db.toString());
+   	 	  db = new BigDecimal(material);
+ 	 	  db = db.round(new MathContext(4));
+ 	 	  cellTest1_vdef.setText(db.toString());
    	 	  db = new BigDecimal(energy);
 	      db = db.round(new MathContext(4));
    	 	  cellTest1_ergRest.setText(db.toString());
@@ -1061,6 +1069,10 @@ public class MainGUI implements IGUI {
      	    db = new BigDecimal(fred);
   	        db = db.round(new MathContext(4));
      	 	cellTest2_fred.setText(db.toString());
+     	 	_test2Values.add(material);
+     	 	db = new BigDecimal(material);
+     	 	db = db.round(new MathContext(4));
+     	 	cellTest2_vdef.setText(db.toString());
      	 	_test2Values.add(energy);
      	 	db = new BigDecimal(energy);
   	        db = db.round(new MathContext(4));
@@ -1096,6 +1108,10 @@ public class MainGUI implements IGUI {
      	    db = new BigDecimal(fred);
   	        db = db.round(new MathContext(4));
      	 	cellTest3_fred.setText(db.toString());
+     	 	_test3Values.add(material);
+     	 	db = new BigDecimal(material);
+     	 	db = db.round(new MathContext(4));
+     	 	cellTest3_vdef.setText(db.toString());
      	 	_test3Values.add(energy);
      	 	db = new BigDecimal(energy);
   	        db = db.round(new MathContext(4));
@@ -1127,6 +1143,9 @@ public class MainGUI implements IGUI {
     	    db = db.round(new MathContext(4));
      	 	cellTestAvg_fred.setText(db.toString());
      	 	db = new BigDecimal(_avgValues.get(7));
+    	    db = db.round(new MathContext(4));
+     	 	cellTestAvg_vdef.setText(db.toString());
+     	 	db = new BigDecimal(_avgValues.get(8));
     	    db = db.round(new MathContext(4));
      	 	cellTestAvg_ergRest.setText(db.toString());
     	}
