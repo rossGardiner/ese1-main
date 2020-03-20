@@ -289,10 +289,6 @@ public class MainGUI implements IGUI {
 		cellTestAvg_DropHT.setColumns(10);
 		resultsPane.add(cellTestAvg_DropHT, "cell 4 5,growx");
 
-		// textField_19 = new JTextField();
-		// resultsPane.add(textField_19, "cell 4 5,growx");
-		// textField_19.setColumns(10);
-
 		JLabel lblSpringDeformation = new JLabel("Spring deformation");
 		resultsPane.add(lblSpringDeformation, "cell 0 6,alignx trailing");
 
@@ -376,7 +372,7 @@ public class MainGUI implements IGUI {
 										resultsPane.add(btnSaveFile, "cell 0 11,growx");
 				
 						btnSaveFile.addActionListener((evt) -> {
-							int n = 0;
+			int n = 0;
 						    JFileChooser saveFile = new JFileChooser();
 						    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into a csv format");
 						    int userSelection = saveFile.showSaveDialog(frame);
@@ -424,7 +420,6 @@ public class MainGUI implements IGUI {
 
 		JPanel testLaunchPanel = new JPanel();
 		launchControlPanel.add(testLaunchPanel);
-		// testLaunchPanel.setPreferredSize(new Dimension(480, 64));
 		testLaunchPanel
 				.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		testLaunchPanel.setLayout(new MigLayout("", "[]", "[][][][]"));
@@ -464,16 +459,6 @@ public class MainGUI implements IGUI {
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
 		timerPanel.setLayout(new MigLayout("", "[grow][grow]", "[][][][][][][][]"));
-
-		/*
-		 * btnRunTest_1 = new JButton("Run Test"); btnRunTest_1.addActionListener(new
-		 * ActionListener() { public void actionPerformed(ActionEvent e) { Random r =
-		 * new Random(); double[] array = new double[1000]; for(int i = 0; i < 1000;
-		 * i++) { array[i] = (double)i * r.nextFloat(); } makeGraphs(array, array,
-		 * array, 0, _n); _n++; }
-		 * 
-		 * });
-		 */
 
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1");
 
@@ -726,13 +711,6 @@ public class MainGUI implements IGUI {
 		XYSeries series2 = new XYSeries("Test 2");
 		XYSeries series3 = new XYSeries("Test 3");
 
-
-		//for(int i = 0; i < 1000; i++) {
-		//	series.add(new XYDataItem(i, 0));
-		//	series2.add(new XYDataItem(i, 0));
-		//	series3.add(new XYDataItem(i, 0));
-		//}
-
 		_accelerationData.addSeries(series);
 		_accelerationData.addSeries(series2);
 		_accelerationData.addSeries(series3);
@@ -772,7 +750,6 @@ public class MainGUI implements IGUI {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					// new ChartViewer(chart).setVisible(true);
 					new ChartViewerDialog(_accelerationChart).setVisible(true);
 				}
 			}
@@ -953,7 +930,6 @@ accData.set(testIdx,accelerationSeries);_accelerationData.removeAllSeries();for(
      	 	cellTest2_ergRest.setText(db.toString());
     	}
     	if(testIdx == 2) {
-    		//System.out.println(_test2Values.toString());
     		_test3Values.add(peakG);
     		db = new BigDecimal(peakG);
       	  	db = db.round(new MathContext(4));
