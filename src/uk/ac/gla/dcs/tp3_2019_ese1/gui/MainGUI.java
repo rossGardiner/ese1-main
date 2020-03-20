@@ -324,8 +324,15 @@ public class MainGUI implements IGUI {
 			}
 		};
 
+		// Add rig titles as dropdown options
+		for (String key : RigMap.keySet()) {
+			selectRig.addItem(key);
+		}
+		//Select a default calibration
+		selectRig.setSelectedIndex(0);
 		selectRig.addActionListener(cbActionListener);
 
+		
 		JPanel resultsPane = new JPanel();
 		resultsPane.setBackground(new Color(248, 248, 255));
 		launchControlPanel.add(resultsPane);
@@ -603,6 +610,9 @@ public class MainGUI implements IGUI {
 
 		_timerIsStarted = false;
 
+		/*
+		 * Listen for new selection
+		 */
 		btnStart_1.addActionListener((ae) -> {
 
 			_timerIsStarted = !_timerIsStarted;
@@ -658,14 +668,7 @@ public class MainGUI implements IGUI {
 
 		});
 
-		// Add rig titles as dropdown options
-		for (String key : RigMap.keySet()) {
-			selectRig.addItem(key);
-		}
 
-		/*
-		 * Listen for new selection
-		 */
 
 		/*
 		 * This listener updated calibration values after dropdown is selected.
@@ -773,6 +776,9 @@ public class MainGUI implements IGUI {
 
 	}
 
+	/*
+	 * Chart section
+	 */
 	@Override
 	public void makeGraphs(double[] acceleration, double[] velocity, double[] disp, int drop_touch2, int testNr) {
 		// first, work out the test index (0-2 inclusive)
@@ -829,6 +835,9 @@ public class MainGUI implements IGUI {
 
 	}
 
+	/*
+	 * Results section display
+	 */
 	@Override
 	public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
 			double drop_dist, double spring, double material, int testNr) {
