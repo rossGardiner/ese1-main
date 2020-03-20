@@ -455,7 +455,7 @@ public class MainGUI implements IGUI {
 
 		JPanel launchControlPanel = new JPanel();
 		launchControlPanel.setBorder(null);
-		frame.getContentPane().add(launchControlPanel, "cell 0 2,alignx left,growy");
+		frame.getContentPane().add(launchControlPanel, "cell 0 2,grow");
 		launchControlPanel.setLayout(new GridLayout(4, 0, 0, 0));
 
 		JPanel testLaunchPanel = new JPanel();
@@ -514,7 +514,7 @@ public class MainGUI implements IGUI {
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1");
 
 		JPanel panel_8 = new JPanel();
-		testLaunchPanel.add(panel_8, "cell 0 3");
+		testLaunchPanel.add(panel_8, "cell 0 3,alignx center");
 		panel_8.setBorder(new TitledBorder(null, "Timer", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_8.setLayout(new MigLayout("", "[left][]", "[][][][]"));
 
@@ -751,7 +751,7 @@ public class MainGUI implements IGUI {
 		mnHelp.add(mntmAbout);
 
 		JPanel dataViewPanel = new JPanel();
-		frame.getContentPane().add(dataViewPanel, "cell 1 2 2 1,grow");
+		frame.getContentPane().add(dataViewPanel, "cell 1 2 2 1,alignx left,growy");
 		GridBagLayout gbl_dataViewPanel = new GridBagLayout();
 		gbl_dataViewPanel.columnWidths = new int[] { 159, 157, 149, 75, 0 };
 		gbl_dataViewPanel.rowHeights = new int[] { 225, 0, 224, 0, 230, 0, 0 };
