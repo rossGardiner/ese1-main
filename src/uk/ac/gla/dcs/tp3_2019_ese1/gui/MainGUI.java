@@ -159,7 +159,6 @@ public class MainGUI implements IGUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-
 		board = null;
 		try {
 			DaqDeviceDescriptor[] daqArray = DaqDeviceDescriptor.getDaqDeviceInventory(DaqDeviceDescriptor.USB_IFC, 5);
@@ -174,7 +173,6 @@ public class MainGUI implements IGUI {
 		_runner = new AAARunner(board, this);
 
 		frame.getContentPane().setLayout(new MigLayout("", "[][grow,fill]", "[grow]"));
-		;
 
 		JPanel launchControlPanel = new JPanel();
 		launchControlPanel.setBackground(new Color(248, 248, 255));
@@ -185,8 +183,7 @@ public class MainGUI implements IGUI {
 		JPanel testLaunchPanel = new JPanel();
 		testLaunchPanel.setBackground(new Color(248, 248, 255));
 		launchControlPanel.add(testLaunchPanel);
-		testLaunchPanel
-				.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		testLaunchPanel.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		testLaunchPanel.setLayout(new MigLayout("", "[100px:n,grow]", "[][grow][]"));
 
 		JButton btnMagnetStatus_1 = new JButton("Magnet Toggle");
@@ -297,7 +294,10 @@ public class MainGUI implements IGUI {
 		txtSafeField.setText(" ");
 		txtSafeField.setEditable(false);
 		timerPanel.add(txtSafeField, "cell 1 8,growx");
-		
+
+		/*
+		 * Begin calibration dropdown and display section
+		 */
 		ActionListener cbActionListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -610,8 +610,8 @@ public class MainGUI implements IGUI {
 				btnStart_1.setText("Stop");
 			if (!_timerIsStarted)
 				btnStart_1.setText("Start");
+			
 			// disable the button
-
 			button.setEnabled(false);
 			// remove all non integers from input field
 			String minString = textField_mins.getText();
@@ -658,10 +658,6 @@ public class MainGUI implements IGUI {
 
 		});
 
-		/*
-		 * Begin calibration dropdown and display section
-		 */
-
 		// Add rig titles as dropdown options
 		for (String key : RigMap.keySet()) {
 			selectRig.addItem(key);
@@ -671,7 +667,6 @@ public class MainGUI implements IGUI {
 		 * Listen for new selection
 		 */
 
-		
 		/*
 		 * This listener updated calibration values after dropdown is selected.
 		 */
@@ -681,7 +676,7 @@ public class MainGUI implements IGUI {
 		frame.getContentPane().add(dataViewPanel, "cell 1 0,grow");
 		GridBagLayout gbl_dataViewPanel = new GridBagLayout();
 		gbl_dataViewPanel.columnWidths = new int[] { 159, 157, 149, 75, 0 };
-		gbl_dataViewPanel.rowHeights = new int[] {0, 0, 0, 0, 0, 0};
+		gbl_dataViewPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
 		gbl_dataViewPanel.columnWeights = new double[] { 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
 		gbl_dataViewPanel.rowWeights = new double[] { 1.0, 0.0, 1.0, 0.0, 1.0, 1.0 };
 		dataViewPanel.setLayout(gbl_dataViewPanel);
