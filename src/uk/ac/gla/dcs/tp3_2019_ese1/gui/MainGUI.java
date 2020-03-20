@@ -70,15 +70,15 @@ import javax.swing.SwingConstants;
 public class MainGUI implements IGUI {
 
 	/* Set colour scheme */
-	{
-		try {
-			AcrylLookAndFeel.setTheme("Green-Giant-Font", "", "");
-			UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
+//	{
+//		try {
+	//		AcrylLookAndFeel.setTheme("Green-Giant-Font", "", "");
+	//		UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	//	} catch (Exception e) {
+//			e.printStackTrace();
+//	}
+//	}
 
 	private JFrame frame;
 
@@ -496,7 +496,7 @@ public class MainGUI implements IGUI {
 		JButton btnRunTest_1 = new JButton("Run Test");
 		btnRunTest_1.addActionListener(_runner::runTest);
 
-		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
+		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growx,aligny bottom");
 		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		launchControlPanel.add(timerPanel);
 		timerPanel.setLayout(new MigLayout("", "[grow][grow]", "[][][][][][][][]"));
