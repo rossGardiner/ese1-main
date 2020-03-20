@@ -7,7 +7,7 @@ calculates meaningful information for technicians.
 
 ## Installation
 
-Download the App by running the installer on the USB stick provided.
+Consult the User Guide in the Release Notes for help with Installation.
 
 ## Usage
 
