@@ -409,7 +409,7 @@ public class MainGUI implements IGUI {
 		cellTestAvg_ergRest.setColumns(10);
 								
 										JButton btnSaveFile = new JButton("Save file");
-										resultsPane.add(btnSaveFile, "cell 0 11,growx");
+										resultsPane.add(btnSaveFile, "cell 0 11 5 1,alignx right");
 				
 						btnSaveFile.addActionListener((evt) -> {
 							int n = 0;
@@ -514,7 +514,7 @@ public class MainGUI implements IGUI {
 		testLaunchPanel.add(btnRunTest_1, "cell 0 1");
 
 		JPanel panel_8 = new JPanel();
-		testLaunchPanel.add(panel_8, "cell 0 3,alignx center");
+		testLaunchPanel.add(panel_8, "cell 0 3");
 		panel_8.setBorder(new TitledBorder(null, "Timer", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_8.setLayout(new MigLayout("", "[left][]", "[][][][]"));
 
