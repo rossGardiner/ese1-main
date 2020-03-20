@@ -3,14 +3,12 @@ package uk.ac.gla.dcs.tp3_2019_ese1.gui;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -21,13 +19,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.*;
 
@@ -35,25 +28,18 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
 
 import org.apache.commons.io.FilenameUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYDataItem;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -63,22 +49,11 @@ import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
-import com.jtattoo.plaf.acryl.*;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
+import java.awt.FlowLayout;
 
 public class MainGUI implements IGUI {
-
-	/* Set colour scheme */
-	{
-		try {
-			AcrylLookAndFeel.setTheme("Green-Giant-Font", "", "");
-			UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	private JFrame frame;
 
@@ -107,21 +82,11 @@ public class MainGUI implements IGUI {
 	private JTextField cellTest2_vdef;
 	private static Timer timer;
 	private boolean _timerIsStarted = false;
-	private String _minString = "0";
-	private String _secString = "30";
 
 	private JTextField cellTest3_vdef;
 	private JTextField cellTestAvg_vdef;
-	private JTextField textField_32;
-	private JTextField textField_33;
-	private JTextField textField_34;
-	private JTextField textField_45;
-	private JTextField txtPeak;
-	private JTextField textField_46;
 	private JPanel panel_displacement;
-	private static int delay;
 
-	private JPanel panel_graph3;
 	private JTextField cellTest1_ergRest;
 	private JTextField cellTest2_ergRest;
 	private JTextField cellTest3_ergRest;
@@ -151,11 +116,8 @@ public class MainGUI implements IGUI {
 	private ArrayList<Double> _test3Values = new ArrayList<Double>();
 	private ArrayList<Double> _avgValues = new ArrayList<Double>();
 
-	private int _n = 0;
-
 	private boolean _initSucc = false;
 	private JTextField cellTestAvg_DropHT;
-	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -191,6 +153,9 @@ public class MainGUI implements IGUI {
 	private void initialize() throws IOException {
 		Map<String, double[]> RigMap = configReader.parseCSV();
 		frame = new JFrame();
+		frame.setBackground(new Color(248, 248, 255));
+		frame.getContentPane().setBackground(new Color(248, 248, 255));
+		frame.setForeground(Color.WHITE);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -203,20 +168,175 @@ public class MainGUI implements IGUI {
 					board = daqArray[i].createDaqDevice(LibcbwBoard.USB_1608FS::new);
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
 
 		_runner = new AAARunner(board, this);
 
-		frame.getContentPane().setLayout(new MigLayout("", "[652px][444px][][]", "[23px][][825px]"));
-		JTabbedPane settingsPane = new JTabbedPane(JTabbedPane.TOP);
-		settingsPane.setToolTipText("SESTTING\r\n");
-		frame.getContentPane().add(settingsPane, "cell 3 2,alignx right,growy");
+		frame.getContentPane().setLayout(new MigLayout("", "[][grow,fill]", "[grow]"));
 
+		JPanel launchControlPanel = new JPanel();
+		launchControlPanel.setBackground(new Color(248, 248, 255));
+		launchControlPanel.setBorder(null);
+		frame.getContentPane().add(launchControlPanel, "cell 0 0,alignx left,aligny top");
+		launchControlPanel.setLayout(new GridLayout(3, 0, 0, 0));
+
+		JPanel testLaunchPanel = new JPanel();
+		testLaunchPanel.setBackground(new Color(248, 248, 255));
+		launchControlPanel.add(testLaunchPanel);
+		testLaunchPanel.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		testLaunchPanel.setLayout(new MigLayout("", "[100px:n,grow]", "[][grow][]"));
+
+		JButton btnMagnetStatus_1 = new JButton("Magnet Toggle");
+		_magnetStatus = false;
+
+		btnMagnetStatus_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
+				try {
+					if (_magnetStatus == false) {
+						_magnetStatus = !_magnetStatus;
+						board.digitalOut(0, true);
+						btnMagnetStatus_1.setLabel("Magnet is ON");
+						btnMagnetStatus_1.setForeground(new Color(255, 255, 255));
+						btnMagnetStatus_1.setBackground(new Color(0, 71, 137)); // SportsLabs Colors
+
+					} else {
+						_magnetStatus = !_magnetStatus;
+						board.digitalOut(0, false);
+						btnMagnetStatus_1.setLabel("Magnet is OFF");
+						btnMagnetStatus_1.setForeground(new Color(0, 71, 137));
+						btnMagnetStatus_1.setBackground(new Color(255, 255, 255)); // SportsLabs Colors
+					}
+
+				} catch (LibcbwException ex) {
+
+				} catch (Exception NullPointerException) {
+					// If hardware isn't connected, the button goes red
+					btnMagnetStatus_1.setForeground(Color.white);
+					btnMagnetStatus_1.setBackground(Color.red); // SportsLabs Colors
+					btnMagnetStatus_1.setLabel("Hardware unreachable");
+					System.out.println("Hardware unreachable");
+
+				}
+			}
+		});
+		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,growx");
+
+		JButton btnRunTest_1 = new JButton("Run Test");
+		btnRunTest_1.setBackground(new Color(50, 205, 50));
+
+		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growx,aligny bottom");
+		timerPanel.setBackground(new Color(248, 248, 255));
+		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		launchControlPanel.add(timerPanel);
+		timerPanel.setLayout(new MigLayout("", "[50px:n][grow,fill]", "[][][][][][][][][]"));
+		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		launchControlPanel.add(timerPanel);
+		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
+		JComboBox selectRig = new JComboBox();
+		timerPanel.add(selectRig, "growx,aligny top");
+
+		selectRig.removeAllItems();
+
+		JLabel lbldisplayMass = new JLabel("Mass");
+		timerPanel.add(lbldisplayMass, "cell 0 2,");
+
+		JTextField txtMassField = new JTextField();
+		txtMassField.setText(" ");
+		txtMassField.setEditable(false);
+		timerPanel.add(txtMassField, "cell 1 2,growx");
+
+		JLabel lbldisplaySpring = new JLabel("Spring deformation");
+		timerPanel.add(lbldisplaySpring, "cell 0 3");
+
+		JTextField txtSpringField = new JTextField();
+		txtSpringField.setText(" ");
+		txtSpringField.setEditable(false);
+		timerPanel.add(txtSpringField, "cell 1 3,growx");
+
+		JLabel lblDisplayGain = new JLabel("Gain");
+		timerPanel.add(lblDisplayGain, "cell 0 4");
+
+		JTextField txtGainField = new JTextField();
+		txtGainField.setText(" ");
+		txtGainField.setEditable(false);
+		timerPanel.add(txtGainField, "cell 1 4,growx");
+
+		JLabel lblDisplayFreq = new JLabel("Frequency");
+		timerPanel.add(lblDisplayFreq, "cell 0 5");
+
+		JTextField txtFreqField = new JTextField();
+		txtFreqField.setText(" ");
+		txtFreqField.setEditable(false);
+		timerPanel.add(txtFreqField, "cell 1 5,growx");
+
+		JLabel lblDisplayCnt = new JLabel("Cnt");
+		timerPanel.add(lblDisplayCnt, "cell 0 6");
+
+		JTextField txtCntField = new JTextField();
+		txtCntField.setText(" ");
+		txtCntField.setEditable(false);
+		timerPanel.add(txtCntField, "cell 1 6,growx");
+
+		JLabel lblDisplayPre = new JLabel("Pre");
+		timerPanel.add(lblDisplayPre, "cell 0 7");
+
+		JTextField txtPreField = new JTextField();
+		txtPreField.setText(" ");
+		txtPreField.setEditable(false);
+		timerPanel.add(txtPreField, "cell 1 7,growx");
+
+		JLabel lblDisplaySafe = new JLabel("Safe");
+		timerPanel.add(lblDisplaySafe, "cell 0 8");
+
+		JTextField txtSafeField = new JTextField();
+		txtSafeField.setText(" ");
+		txtSafeField.setEditable(false);
+		timerPanel.add(txtSafeField, "cell 1 8,growx");
+
+		/*
+		 * Begin calibration dropdown and display section
+		 */
+		ActionListener cbActionListener = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				String selectedRig = (String) selectRig.getSelectedItem();
+
+				double[] calibrationValues = RigMap.get(selectedRig);
+
+				_runner.MASS = calibrationValues[0];
+				_runner.SPRINGCAL = calibrationValues[1];
+				_runner.GAIN_CALI = calibrationValues[2];
+				_runner.SAMPLE_RATE = (int) calibrationValues[3];
+				_runner.SAMPLE_COUNT = (int) calibrationValues[4];
+				_runner.PRE_DROP_CNT = (int) calibrationValues[5];
+				_runner.SAFETY_MARGIN = (int) calibrationValues[6];
+
+				txtMassField.setText(Double.toString(calibrationValues[0]));
+				txtSpringField.setText(Double.toString(calibrationValues[1]));
+				txtGainField.setText(Double.toString(calibrationValues[2]));
+				txtFreqField.setText(Double.toString(calibrationValues[3]));
+				txtCntField.setText(Double.toString(calibrationValues[4]));
+				txtPreField.setText(Double.toString(calibrationValues[5]));
+				txtSafeField.setText(Double.toString(calibrationValues[6]));
+			}
+		};
+
+		// Add rig titles as dropdown options
+		for (String key : RigMap.keySet()) {
+			selectRig.addItem(key);
+		}
+		//Select a default calibration
+		selectRig.setSelectedIndex(0);
+		selectRig.addActionListener(cbActionListener);
+
+		
 		JPanel resultsPane = new JPanel();
-		settingsPane.addTab("Results", null, resultsPane, null);
-		resultsPane.setBorder(new TitledBorder(null, "Results", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		resultsPane.setLayout(new MigLayout("", "[77px][grow][grow][grow][grow]", "[][][14px][][][][][][][][][]"));
+		resultsPane.setBackground(new Color(248, 248, 255));
+		launchControlPanel.add(resultsPane);
+		resultsPane.setLayout(new MigLayout("", "[60px][50px][50px][50px][50px]", "[][][14px][][][][][][][][][]"));
 
 		JLabel lblTest = new JLabel("Test 1");
 		resultsPane.add(lblTest, "cell 1 0");
@@ -325,10 +445,6 @@ public class MainGUI implements IGUI {
 		cellTestAvg_DropHT.setColumns(10);
 		resultsPane.add(cellTestAvg_DropHT, "cell 4 5,growx");
 
-		// textField_19 = new JTextField();
-		// resultsPane.add(textField_19, "cell 4 5,growx");
-		// textField_19.setColumns(10);
-
 		JLabel lblSpringDeformation = new JLabel("Spring deformation");
 		resultsPane.add(lblSpringDeformation, "cell 0 6,alignx trailing");
 
@@ -407,114 +523,55 @@ public class MainGUI implements IGUI {
 		cellTestAvg_ergRest = new JTextField();
 		resultsPane.add(cellTestAvg_ergRest, "cell 4 9,growx");
 		cellTestAvg_ergRest.setColumns(10);
-								
-										JButton btnSaveFile = new JButton("Save file");
-										resultsPane.add(btnSaveFile, "cell 0 11,growx");
-				
-						btnSaveFile.addActionListener((evt) -> {
-							int n = 0;
-						    JFileChooser saveFile = new JFileChooser();
-						    saveFile.setDialogTitle("Choose where to save the file, the file will be saved into a csv format");
-						    int userSelection = saveFile.showSaveDialog(frame);
-						    if (userSelection == JFileChooser.APPROVE_OPTION) {
-						        File file = saveFile.getSelectedFile();
-						        //Save file into csv format
-						        file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName())+".csv");
-						        ArrayList<String> csv = new ArrayList<>();
-						        csv.add(String.format("%s, %s,  %s, %s", "TIME", "ACCELERATION", "VELOCITY", "DISPLACEMENT"));
-						        if(_accelerationData != null) {
-						        	int itemCount = _accelerationData.getItemCount(0);
-						        	//ASSUMING THE ITEM COUNT IS THE SAME FOR EACH SERIES (IT IS)
-						        	if(_velocityData != null) {
-						        		if(_displacementData != null) {
-						        			for(int i = 0; i < itemCount; i++) {
-						        				Number timeNr = _accelerationData.getX(0, i);
-						        				Number accNr = _accelerationData.getY(0, i);
-						        				Number velNr = _velocityData.getY(0, i);
-						        				Number disNr = _displacementData.getY(0, i);
-						        				csv.add(String.format("%s, %s, %s, %s", timeNr, accNr, velNr, disNr));
-						        			}
-						        		}
-						        	}
-						        }
-						        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file));)
-						        {
-						            for (String line : csv) {
-						                writer.append(line);
-						                writer.newLine();
-						            }
-						            
-						            
-						        } catch (IOException e) {
-						            throw new IllegalStateException("Cannot write dataset",e);
-						        }
-						        
-						    }		
-						});
-		;
 
-		JPanel launchControlPanel = new JPanel();
-		launchControlPanel.setBorder(null);
-		frame.getContentPane().add(launchControlPanel, "cell 0 2,alignx left,growy");
-		launchControlPanel.setLayout(new GridLayout(4, 0, 0, 0));
+		JButton btnSaveFile = new JButton("Save file");
+		resultsPane.add(btnSaveFile, "cell 0 11,growx");
 
-		JPanel testLaunchPanel = new JPanel();
-		launchControlPanel.add(testLaunchPanel);
-		// testLaunchPanel.setPreferredSize(new Dimension(480, 64));
-		testLaunchPanel
-				.setBorder(new TitledBorder(null, "Test control", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		testLaunchPanel.setLayout(new MigLayout("", "[]", "[][][][]"));
-
-		JButton btnMagnetStatus_1 = new JButton("Magnet toggle");
-		_magnetStatus = false;
-
-		btnMagnetStatus_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-
-				try {
-					if (_magnetStatus == false) {
-						_magnetStatus = !_magnetStatus;
-						board.digitalOut(0, true);
-						btnMagnetStatus_1.setLabel("Magnet is ON");
-						btnMagnetStatus_1.setBackground(new Color(0, 71, 137)); // SportsLabs Colors
-
-					} else {
-						_magnetStatus = !_magnetStatus;
-						board.digitalOut(0, false);
-						btnMagnetStatus_1.setLabel("Magnet is OFF");
-						btnMagnetStatus_1.setBackground(new Color(255, 255, 255)); // SportsLabs Colors
+		btnSaveFile.addActionListener((evt) -> {
+			int n = 0;
+			JFileChooser saveFile = new JFileChooser();
+			saveFile.setDialogTitle("Choose where to save the file, the file will be saved into a csv format");
+			int userSelection = saveFile.showSaveDialog(frame);
+			if (userSelection == JFileChooser.APPROVE_OPTION) {
+				File file = saveFile.getSelectedFile();
+				// Save file into csv format
+				file = new File(file.getParentFile(), FilenameUtils.getBaseName(file.getName()) + ".csv");
+				ArrayList<String> csv = new ArrayList<>();
+				csv.add(String.format("%s, %s,  %s, %s", "TIME", "ACCELERATION", "VELOCITY", "DISPLACEMENT"));
+				if (_accelerationData != null) {
+					int itemCount = _accelerationData.getItemCount(0);
+					// ASSUMING THE ITEM COUNT IS THE SAME FOR EACH SERIES (IT IS)
+					if (_velocityData != null) {
+						if (_displacementData != null) {
+							for (int i = 0; i < itemCount; i++) {
+								Number timeNr = _accelerationData.getX(0, i);
+								Number accNr = _accelerationData.getY(0, i);
+								Number velNr = _velocityData.getY(0, i);
+								Number disNr = _displacementData.getY(0, i);
+								csv.add(String.format("%s, %s, %s, %s", timeNr, accNr, velNr, disNr));
+							}
+						}
+					}
+				}
+				try (BufferedWriter writer = new BufferedWriter(new FileWriter(file));) {
+					for (String line : csv) {
+						writer.append(line);
+						writer.newLine();
 					}
 
-				} catch (LibcbwException ex) {
-					ex.printStackTrace();
+				} catch (IOException e) {
+					throw new IllegalStateException("Cannot write dataset", e);
 				}
+
 			}
 		});
-		testLaunchPanel.add(btnMagnetStatus_1, "cell 0 0,growx,aligny top");
 
-		JButton btnRunTest_1 = new JButton("Run Test");
 		btnRunTest_1.addActionListener(_runner::runTest);
-
-		testLaunchPanel.add(btnRunTest_1, "cell 0 1,growy");
-		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		launchControlPanel.add(timerPanel);
-		timerPanel.setLayout(new MigLayout("", "[grow][grow]", "[][][][][][][][]"));
-
-		/*
-		 * btnRunTest_1 = new JButton("Run Test"); btnRunTest_1.addActionListener(new
-		 * ActionListener() { public void actionPerformed(ActionEvent e) { Random r =
-		 * new Random(); double[] array = new double[1000]; for(int i = 0; i < 1000;
-		 * i++) { array[i] = (double)i * r.nextFloat(); } makeGraphs(array, array,
-		 * array, 0, _n); _n++; }
-		 * 
-		 * });
-		 */
-
-		testLaunchPanel.add(btnRunTest_1, "cell 0 1");
+		testLaunchPanel.add(btnRunTest_1, "cell 0 1, growx, growy");
 
 		JPanel panel_8 = new JPanel();
-		testLaunchPanel.add(panel_8, "cell 0 3");
+		panel_8.setBackground(new Color(248, 248, 255));
+		testLaunchPanel.add(panel_8, "cell 0 2,grow");
 		panel_8.setBorder(new TitledBorder(null, "Timer", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_8.setLayout(new MigLayout("", "[left][]", "[][][][]"));
 
@@ -529,7 +586,7 @@ public class MainGUI implements IGUI {
 		panel_8.add(textField_mins, "cell 0 1");
 		textField_mins.setText("00");
 		textField_mins.setColumns(10);
-		
+
 		textField_secs = new JTextField();
 		textField_secs.setHorizontalAlignment(SwingConstants.CENTER);
 		panel_8.add(textField_secs, "cell 1 1,growx");
@@ -538,7 +595,7 @@ public class MainGUI implements IGUI {
 		JButton button = btnRunTest_1;
 
 		JButton btnStart_1 = new JButton("Start");
-		panel_8.add(btnStart_1, "cell 0 3");
+		panel_8.add(btnStart_1, "cell 0 3,growx");
 
 		JButton btnReset_1 = new JButton("Reset");
 		btnReset_1.addActionListener((ae) -> {
@@ -549,225 +606,86 @@ public class MainGUI implements IGUI {
 			btnStart_1.setText("Start");
 			_timerIsStarted = false;
 		});
-		panel_8.add(btnReset_1, "cell 1 3");
+		panel_8.add(btnReset_1, "cell 1 3,growx");
 
 		_timerIsStarted = false;
-
-		btnStart_1.addActionListener((ae) -> {
-
-				_timerIsStarted = !_timerIsStarted;
-				if(_timerIsStarted) btnStart_1.setText("Stop");
-				if(!_timerIsStarted) btnStart_1.setText("Start");		
-				//disable the button
-				
-				button.setEnabled(false);
-				//remove all non integers from input field
-				String minString = textField_mins.getText();
-				minString = minString.replaceAll("[^\\d.]", "");
-				String secString = textField_secs.getText();
-				secString = secString.replaceAll("[^\\d.]", "");
-				//parse input data
-				float minutes = Float.parseFloat(minString);
-				float seconds = Float.parseFloat(secString);
-				//create duration (in milliseconds)
-				minutes = minutes * 60000;
-				seconds = seconds * 1000;
-				long duration = (int)minutes + (int)seconds;
-				long startTime = System.currentTimeMillis();
-				final Long startTimeInner = new Long(startTime);
-				timer = new Timer(0, new ActionListener() {
-		            @Override
-		            public void actionPerformed(ActionEvent e) {
-		                    long now = System.currentTimeMillis();
-		                    long clockTime = now - startTimeInner;
-		                    //if time is up, stop
-		                    if (clockTime >= duration) {
-		                        clockTime = duration;
-		                        ((Timer)e.getSource()).stop();
-		                        button.setEnabled(true);
-		                        btnStart_1.setText("Start");
-		                    }
-		                    //if stop button is pressed, stop
-		                    if(!_timerIsStarted) {
-		                    	((Timer)e.getSource()).stop();
-		                    	button.setEnabled(true);
-		                    }
-		                    //format timer output
-		                    long mins = (duration - clockTime)/60000;
-		                    float secs = (duration - clockTime)%60000;
-		                    secs = secs / 1000;
-		                    String secStr = String.format("%.2f", secs);
-		                    textField_secs.setText(secStr);
-		                    textField_mins.setText(String.valueOf(mins));
-		            }
-		        });;
-				timer.start();	
-				
-
-		});
-		timerPanel.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		launchControlPanel.add(timerPanel);
-		timerPanel.setLayout(new MigLayout("", "[grow]", "[][][]"));
-
-		/*
-		 * Begin calibration dropdown and display section
-		 */
-		JComboBox selectRig = new JComboBox();
-		timerPanel.add(selectRig, "cell 0 0");
-
-		selectRig.removeAllItems();
-
-		// Add rig titles as dropdown options
-		for (String key : RigMap.keySet()) {
-			selectRig.addItem(key);
-		}
 
 		/*
 		 * Listen for new selection
 		 */
+		btnStart_1.addActionListener((ae) -> {
 
-		JLabel lbldisplayMass = new JLabel("Mass");
-		timerPanel.add(lbldisplayMass, "cell 0 2,");
+			_timerIsStarted = !_timerIsStarted;
+			if (_timerIsStarted)
+				btnStart_1.setText("Stop");
+			if (!_timerIsStarted)
+				btnStart_1.setText("Start");
+			
+			// disable the button
+			button.setEnabled(false);
+			// remove all non integers from input field
+			String minString = textField_mins.getText();
+			minString = minString.replaceAll("[^\\d.]", "");
+			String secString = textField_secs.getText();
+			secString = secString.replaceAll("[^\\d.]", "");
+			// parse input data
+			float minutes = Float.parseFloat(minString);
+			float seconds = Float.parseFloat(secString);
+			// create duration (in milliseconds)
+			minutes = minutes * 60000;
+			seconds = seconds * 1000;
+			long duration = (int) minutes + (int) seconds;
+			long startTime = System.currentTimeMillis();
+			final Long startTimeInner = new Long(startTime);
+			timer = new Timer(0, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					long now = System.currentTimeMillis();
+					long clockTime = now - startTimeInner;
+					// if time is up, stop
+					if (clockTime >= duration) {
+						clockTime = duration;
+						((Timer) e.getSource()).stop();
+						button.setEnabled(true);
+						btnStart_1.setText("Start");
+					}
+					// if stop button is pressed, stop
+					if (!_timerIsStarted) {
+						((Timer) e.getSource()).stop();
+						button.setEnabled(true);
+					}
+					// format timer output
+					long mins = (duration - clockTime) / 60000;
+					float secs = (duration - clockTime) % 60000;
+					secs = secs / 1000;
+					String secStr = String.format("%.2f", secs);
+					textField_secs.setText(secStr);
+					textField_mins.setText(String.valueOf(mins));
+				}
+			});
+			;
+			timer.start();
 
-		JTextField txtMassField = new JTextField();
-		txtMassField.setText(" ");
-		txtMassField.setEditable(false);
-		timerPanel.add(txtMassField, "cell 1 2,growx");
+		});
 
-		JLabel lbldisplaySpring = new JLabel("Spring deformation");
-		timerPanel.add(lbldisplaySpring, "cell 0 3");
 
-		JTextField txtSpringField = new JTextField();
-		txtSpringField.setText(" ");
-		txtSpringField.setEditable(false);
-		timerPanel.add(txtSpringField, "cell 1 3,growx");
-
-		JLabel lblDisplayGain = new JLabel("Gain");
-		timerPanel.add(lblDisplayGain, "cell 0 4");
-
-		JTextField txtGainField = new JTextField();
-		txtGainField.setText(" ");
-		txtGainField.setEditable(false);
-		timerPanel.add(txtGainField, "cell 1 4,growx");
-
-		JLabel lblDisplayFreq = new JLabel("Frequency");
-		timerPanel.add(lblDisplayFreq, "cell 0 5");
-
-		JTextField txtFreqField = new JTextField();
-		txtFreqField.setText(" ");
-		txtFreqField.setEditable(false);
-		timerPanel.add(txtFreqField, "cell 1 5,growx");
-
-		JLabel lblDisplayCnt = new JLabel("Cnt");
-		timerPanel.add(lblDisplayCnt, "cell 0 6");
-
-		JTextField txtCntField = new JTextField();
-		txtCntField.setText(" ");
-		txtCntField.setEditable(false);
-		timerPanel.add(txtCntField, "cell 1 6,growx");
-
-		JLabel lblDisplayPre = new JLabel("Pre");
-		timerPanel.add(lblDisplayPre, "cell 0 7");
-
-		JTextField txtPreField = new JTextField();
-		txtPreField.setText(" ");
-		txtPreField.setEditable(false);
-		timerPanel.add(txtPreField, "cell 1 7,growx");
-
-		JLabel lblDisplaySafe = new JLabel("Safe");
-		timerPanel.add(lblDisplaySafe, "cell 0 8");
-
-		JTextField txtSafeField = new JTextField();
-		txtSafeField.setText(" ");
-		txtSafeField.setEditable(false);
-		timerPanel.add(txtSafeField, "cell 1 8,growx");
-
-		ActionListener cbActionListener = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				String selectedRig = (String) selectRig.getSelectedItem();
-
-				double[] calibrationValues = RigMap.get(selectedRig);
-
-				_runner.MASS = calibrationValues[0];
-				_runner.SPRINGCAL = calibrationValues[1];
-				_runner.GAIN_CALI = calibrationValues[2];
-				_runner.SAMPLE_RATE = (int) calibrationValues[3];
-				_runner.SAMPLE_COUNT = (int) calibrationValues[4];
-				_runner.PRE_DROP_CNT = (int) calibrationValues[5];
-				_runner.SAFETY_MARGIN = (int) calibrationValues[6];
-
-				txtMassField.setText(Double.toString(calibrationValues[0]));
-				txtSpringField.setText(Double.toString(calibrationValues[1]));
-				txtGainField.setText(Double.toString(calibrationValues[2]));
-				txtFreqField.setText(Double.toString(calibrationValues[3]));
-				txtCntField.setText(Double.toString(calibrationValues[4]));
-				txtPreField.setText(Double.toString(calibrationValues[5]));
-				txtSafeField.setText(Double.toString(calibrationValues[6]));
-			}
-		};
 
 		/*
 		 * This listener updated calibration values after dropdown is selected.
 		 */
-		selectRig.addActionListener(cbActionListener);
-
-		/*
-		 * Pausing the Button For given seconds to avoid repeating too many tests
-		 */
-
-		JMenuBar menuBar = new JMenuBar();
-		frame.getContentPane().add(menuBar, "cell 0 0 4 1,alignx center,growy");
-
-		JMenu mnFile = new JMenu("File");
-		menuBar.add(mnFile);
-
-		JMenuItem mntmSaveData = new JMenuItem("Save data");
-		mnFile.add(mntmSaveData);
-
-		JMenuItem mntmLoadData = new JMenuItem("Load data");
-		mntmLoadData.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		mnFile.add(mntmLoadData);
-
-		JMenuItem mntmExit = new JMenuItem("Exit");
-		mnFile.add(mntmExit);
-		mntmExit.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-
-		});
-
-		JMenu mnHelp = new JMenu("Help");
-		menuBar.add(mnHelp);
-
-		JMenuItem mntmAbout = new JMenuItem("About");
-		mnHelp.add(mntmAbout);
 
 		JPanel dataViewPanel = new JPanel();
-		frame.getContentPane().add(dataViewPanel, "cell 1 2 2 1,grow");
+		dataViewPanel.setBackground(new Color(248, 248, 255));
+		frame.getContentPane().add(dataViewPanel, "cell 1 0,grow");
 		GridBagLayout gbl_dataViewPanel = new GridBagLayout();
 		gbl_dataViewPanel.columnWidths = new int[] { 159, 157, 149, 75, 0 };
-		gbl_dataViewPanel.rowHeights = new int[] { 225, 0, 224, 0, 230, 0, 0 };
+		gbl_dataViewPanel.rowHeights = new int[] { 0, 0, 0, 0, 0, 0 };
 		gbl_dataViewPanel.columnWeights = new double[] { 1.0, 1.0, 1.0, 0.0, Double.MIN_VALUE };
-		gbl_dataViewPanel.rowWeights = new double[] { 1.0, 0.0, 1.0, 0.0, 1.0, 1.0, Double.MIN_VALUE };
+		gbl_dataViewPanel.rowWeights = new double[] { 1.0, 0.0, 1.0, 0.0, 1.0, 1.0 };
 		dataViewPanel.setLayout(gbl_dataViewPanel);
 		XYSeries series = new XYSeries("Test 1");
 		XYSeries series2 = new XYSeries("Test 2");
 		XYSeries series3 = new XYSeries("Test 3");
-
-
-		//for(int i = 0; i < 1000; i++) {
-		//	series.add(new XYDataItem(i, 0));
-		//	series2.add(new XYDataItem(i, 0));
-		//	series3.add(new XYDataItem(i, 0));
-		//}
 
 		_accelerationData.addSeries(series);
 		_accelerationData.addSeries(series2);
@@ -791,8 +709,10 @@ public class MainGUI implements IGUI {
 				_displacementData);
 		_displacementChart.getXYPlot().setRenderer(theRenderer);
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBackground(new Color(248, 248, 255));
 		GridBagConstraints gbc_tabbedPane = new GridBagConstraints();
-		gbc_tabbedPane.gridheight = 5;
+		gbc_tabbedPane.anchor = GridBagConstraints.NORTH;
+		gbc_tabbedPane.gridheight = 6;
 		gbc_tabbedPane.gridwidth = 4;
 		gbc_tabbedPane.insets = new Insets(0, 0, 5, 5);
 		gbc_tabbedPane.fill = GridBagConstraints.BOTH;
@@ -800,15 +720,16 @@ public class MainGUI implements IGUI {
 		gbc_tabbedPane.gridy = 0;
 		dataViewPanel.add(tabbedPane, gbc_tabbedPane);
 
-
 		JPanel panel_acceleration = new JPanel();
 		tabbedPane.addTab("Acceleration Vs. Time", null, panel_acceleration, null);
 		ChartPanel chartPanelAcceleration = new ChartPanel(_accelerationChart);
+		FlowLayout flowLayout = (FlowLayout) chartPanelAcceleration.getLayout();
+		flowLayout.setVgap(0);
+		flowLayout.setHgap(0);
 		chartPanelAcceleration.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2) {
-					// new ChartViewer(chart).setVisible(true);
 					new ChartViewerDialog(_accelerationChart).setVisible(true);
 				}
 			}
@@ -822,8 +743,8 @@ public class MainGUI implements IGUI {
 		chartPanelVelocity.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount() == 2) {
-				    new ChartViewerDialog(_velocityChart).setVisible(true);
+				if (e.getClickCount() == 2) {
+					new ChartViewerDialog(_velocityChart).setVisible(true);
 				}
 			}
 		});
@@ -833,14 +754,15 @@ public class MainGUI implements IGUI {
 		tabbedPane.addTab("Velocity Vs. Time", null, panel_velocity, null);
 
 		panel_displacement = new JPanel();
+		panel_displacement.setBackground(new Color(248, 248, 255));
 
 		ChartPanel chartPanelDisplacement = new ChartPanel(_displacementChart);
 
 		chartPanelDisplacement.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if(e.getClickCount() == 2) {
-				    new ChartViewerDialog(_displacementChart).setVisible(true);
+				if (e.getClickCount() == 2) {
+					new ChartViewerDialog(_displacementChart).setVisible(true);
 				}
 			}
 		});
@@ -850,15 +772,13 @@ public class MainGUI implements IGUI {
 		panel_displacement.add(chartPanelDisplacement, BorderLayout.CENTER);
 		tabbedPane.addTab("Displacement Vs. Time", null, panel_displacement, null);
 
-		JPanel averageResultsPanel = new JPanel();
-		frame.getContentPane().add(averageResultsPanel, "cell 0 0 4 1,grow");
-		averageResultsPanel.setLayout(new MigLayout("", "[77px]", "[14px]"));
-
-
 		_initSucc = true;
 
 	}
 
+	/*
+	 * Chart section
+	 */
 	@Override
 	public void makeGraphs(double[] acceleration, double[] velocity, double[] disp, int drop_touch2, int testNr) {
 		// first, work out the test index (0-2 inclusive)
@@ -890,186 +810,184 @@ public class MainGUI implements IGUI {
 		// update chart datasets for:
 		// ACCELERATION
 		List<Object> accData = Arrays.asList(_accelerationData.getSeries().toArray());
-accData.set(testIdx,accelerationSeries);_accelerationData.removeAllSeries();for(
+		accData.set(testIdx, accelerationSeries);
+		_accelerationData.removeAllSeries();
+		for (
 
-	Object series:accData)
-	{
-		_accelerationData.addSeries((XYSeries) series);
+		Object series : accData) {
+			_accelerationData.addSeries((XYSeries) series);
+		}
+
+		// VELOCITY
+		List<Object> velData = Arrays.asList(_velocityData.getSeries().toArray());
+		velData.set(testIdx, velocitySeries);
+		_velocityData.removeAllSeries();
+		for (Object series : velData) {
+			_velocityData.addSeries((XYSeries) series);
+		}
+		// DISPACEMENT
+		List<Object> dispData = Arrays.asList(_displacementData.getSeries().toArray());
+		dispData.set(testIdx, displacementSeries);
+		_displacementData.removeAllSeries();
+		for (Object series : dispData) {
+			_displacementData.addSeries((XYSeries) series);
+		}
+
 	}
 
-	// VELOCITY
-	List<Object> velData = Arrays.asList(_velocityData.getSeries()
-			.toArray());velData.set(testIdx,velocitySeries);_velocityData.removeAllSeries();for(
-	Object series:velData)
-	{
-		_velocityData.addSeries((XYSeries) series);
-	}
-	// DISPACEMENT
-	List<Object> dispData = Arrays.asList(_displacementData.getSeries()
-			.toArray());dispData.set(testIdx,displacementSeries);_displacementData.removeAllSeries();for(
-	Object series:dispData)
-	{
-		_displacementData.addSeries((XYSeries) series);
-	}
+	/*
+	 * Results section display
+	 */
+	@Override
+	public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
+			double drop_dist, double spring, double material, int testNr) {
+
+		// first work out test index (0-2 inclusive)
+		int testIdx = testNr % 3;
+		BigDecimal db;
+		if (testIdx == 0) {
+			db = new BigDecimal(peakG);
+			db = db.round(new MathContext(4));
+			cellTest1_PeakG.setText(db.toString());
+			db = new BigDecimal(fmax);
+			db = db.round(new MathContext(4));
+			cellTest1_Fmax.setText(db.toString());
+			db = new BigDecimal(v1);
+			db = db.round(new MathContext(4));
+			cellTest1_Velocity1.setText(db.toString());
+			db = new BigDecimal(v2);
+			db = db.round(new MathContext(4));
+			cellTest1_Velocity2.setText(db.toString());
+			db = new BigDecimal(drop_dist);
+			db = db.round(new MathContext(4));
+			cellTest1_DropHT.setText(db.toString());
+			db = new BigDecimal(spring);
+			db = db.round(new MathContext(4));
+			cellTest1_SpngDef.setText(db.toString());
+			db = new BigDecimal(fred);
+			db = db.round(new MathContext(4));
+			cellTest1_fred.setText(db.toString());
+			db = new BigDecimal(material);
+			db = db.round(new MathContext(4));
+			cellTest1_vdef.setText(db.toString());
+			db = new BigDecimal(energy);
+			db = db.round(new MathContext(4));
+			cellTest1_ergRest.setText(db.toString());
+		}
+		if (testIdx == 1) {
+			_test2Values.add(peakG);
+			db = new BigDecimal(peakG);
+			db = db.round(new MathContext(4));
+			cellTest2_PeakG.setText(db.toString());
+			_test2Values.add(fmax);
+			db = new BigDecimal(fmax);
+			db = db.round(new MathContext(4));
+			cellTest2_Fmax.setText(db.toString());
+			_test2Values.add(v1);
+			db = new BigDecimal(v1);
+			db = db.round(new MathContext(4));
+			cellTest2_Velocity1.setText(db.toString());
+			_test2Values.add(v2);
+			db = new BigDecimal(v2);
+			db = db.round(new MathContext(4));
+			cellTest2_Velocity2.setText(db.toString());
+			_test2Values.add(drop_dist);
+			db = new BigDecimal(drop_dist);
+			db = db.round(new MathContext(4));
+			cellTest2_DropHT.setText(db.toString());
+			_test2Values.add(spring);
+			db = new BigDecimal(spring);
+			db = db.round(new MathContext(4));
+			cellTest2_SpngDef.setText(db.toString());
+			_test2Values.add(fred);
+			db = new BigDecimal(fred);
+			db = db.round(new MathContext(4));
+			cellTest2_fred.setText(db.toString());
+			_test2Values.add(material);
+			db = new BigDecimal(material);
+			db = db.round(new MathContext(4));
+			cellTest2_vdef.setText(db.toString());
+			_test2Values.add(energy);
+			db = new BigDecimal(energy);
+			db = db.round(new MathContext(4));
+			cellTest2_ergRest.setText(db.toString());
+		}
+		if (testIdx == 2) {
+			_test3Values.add(peakG);
+			db = new BigDecimal(peakG);
+			db = db.round(new MathContext(4));
+			cellTest3_PeakG.setText(db.toString());
+			_test3Values.add(fmax);
+			db = new BigDecimal(fmax);
+			db = db.round(new MathContext(4));
+			cellTest3_Fmax.setText(db.toString());
+			_test3Values.add(v1);
+			db = new BigDecimal(v1);
+			db = db.round(new MathContext(4));
+			cellTest3_Velocity1.setText(db.toString());
+			_test3Values.add(v2);
+			db = new BigDecimal(v2);
+			db = db.round(new MathContext(4));
+			cellTest3_Velocity2.setText(db.toString());
+			_test3Values.add(drop_dist);
+			db = new BigDecimal(drop_dist);
+			db = db.round(new MathContext(4));
+			cellTest3_DropHT.setText(db.toString());
+			_test3Values.add(spring);
+			db = new BigDecimal(spring);
+			db = db.round(new MathContext(4));
+			cellTest3_SpngDef.setText(db.toString());
+			_test3Values.add(fred);
+			db = new BigDecimal(fred);
+			db = db.round(new MathContext(4));
+			cellTest3_fred.setText(db.toString());
+			_test3Values.add(material);
+			db = new BigDecimal(material);
+			db = db.round(new MathContext(4));
+			cellTest3_vdef.setText(db.toString());
+			_test3Values.add(energy);
+			db = new BigDecimal(energy);
+			db = db.round(new MathContext(4));
+			cellTest3_ergRest.setText(db.toString());
+			// Get averages into _avgValues array
+			for (int i = 0; i < _test3Values.size(); i++) {
+				_avgValues.add(((_test3Values.get(i) + _test2Values.get(i)) / 2));
+			}
+			// Put them in the text fields and round
+			db = new BigDecimal(_avgValues.get(0));
+			db = db.round(new MathContext(4));
+			cellAvg_PeakG.setText(db.toString());
+			db = new BigDecimal(_avgValues.get(1));
+			db = db.round(new MathContext(4));
+			cellAvg_Fmax.setText(db.toString());
+			db = new BigDecimal(_avgValues.get(2));
+			db = db.round(new MathContext(4));
+			cellAvg_Velocity1.setText(db.toString());
+			db = new BigDecimal(_avgValues.get(3));
+			db = db.round(new MathContext(4));
+			cellAvg_Velocity2.setText(db.toString());
+			db = new BigDecimal(_avgValues.get(4));
+			db = db.round(new MathContext(4));
+			cellTestAvg_DropHT.setText(db.toString());
+			db = new BigDecimal(_avgValues.get(5));
+			db = db.round(new MathContext(4));
+			cellTestAvg_SpngDef.setText(db.toString());
+			db = new BigDecimal(_avgValues.get(6));
+			db = db.round(new MathContext(4));
+			cellTestAvg_fred.setText(db.toString());
+			db = new BigDecimal(_avgValues.get(7));
+			db = db.round(new MathContext(4));
+			cellTestAvg_vdef.setText(db.toString());
+			db = new BigDecimal(_avgValues.get(8));
+			db = db.round(new MathContext(4));
+			cellTestAvg_ergRest.setText(db.toString());
+		}
 
 	}
 
 	@Override
-    public void outputResults(double peakG, double fmax, double fred, double v1, double v2, double energy,
-            double drop_dist, double spring, double material, int testNr) {
-    	
-    	//first work out test index (0-2 inclusive)
-    	int testIdx = testNr%3;
-    	BigDecimal db;
-    	if(testIdx == 0) {
-    	  db = new BigDecimal(peakG);
-    	  db = db.round(new MathContext(4));
-   	 	  cellTest1_PeakG.setText(db.toString());
-   	 	  db = new BigDecimal(fmax);
-  	      db = db.round(new MathContext(4));
-   	 	  cellTest1_Fmax.setText(db.toString());
-   	 	  db = new BigDecimal(v1);
-	      db = db.round(new MathContext(4));
-   	 	  cellTest1_Velocity1.setText(db.toString());
-   	 	  db = new BigDecimal(v2);
-	      db = db.round(new MathContext(4));
-   	 	  cellTest1_Velocity2.setText(db.toString());
-   	 	  db = new BigDecimal(drop_dist);
-	      db = db.round(new MathContext(4));
-   	 	  cellTest1_DropHT.setText(db.toString());
-   	 	  db = new BigDecimal(spring);
-	      db = db.round(new MathContext(4));
-   	 	  cellTest1_SpngDef.setText(db.toString());
-   	 	  db = new BigDecimal(fred);
-	      db = db.round(new MathContext(4));
-   	 	  cellTest1_fred.setText(db.toString());
-   	 	  db = new BigDecimal(material);
- 	 	  db = db.round(new MathContext(4));
- 	 	  cellTest1_vdef.setText(db.toString());
-   	 	  db = new BigDecimal(energy);
-	      db = db.round(new MathContext(4));
-   	 	  cellTest1_ergRest.setText(db.toString());
-    	}
-    	if(testIdx == 1) {
-    		_test2Values.add(peakG);
-    		db = new BigDecimal(peakG);
-      	  	db = db.round(new MathContext(4));
-     	 	cellTest2_PeakG.setText(db.toString());
-     	 	_test2Values.add(fmax);
-     	 	db = new BigDecimal(fmax);
-    	    db = db.round(new MathContext(4));
-     	 	cellTest2_Fmax.setText(db.toString());
-     	 	_test2Values.add(v1);
-     	 	db = new BigDecimal(v1);
-  	        db = db.round(new MathContext(4));
-     	 	cellTest2_Velocity1.setText(db.toString());
-     	 	_test2Values.add(v2);
-     	 	db = new BigDecimal(v2);
-  	        db = db.round(new MathContext(4));
-     	 	cellTest2_Velocity2.setText(db.toString());
-     	 	_test2Values.add(drop_dist);
-     	 	db = new BigDecimal(drop_dist);
-  	        db = db.round(new MathContext(4));
-     	 	cellTest2_DropHT.setText(db.toString());
-     	 	_test2Values.add(spring);
-     	 	db = new BigDecimal(spring);
-  	        db = db.round(new MathContext(4));
-  	        cellTest2_SpngDef.setText(db.toString());
-  	      _test2Values.add(fred);
-     	    db = new BigDecimal(fred);
-  	        db = db.round(new MathContext(4));
-     	 	cellTest2_fred.setText(db.toString());
-     	 	_test2Values.add(material);
-     	 	db = new BigDecimal(material);
-     	 	db = db.round(new MathContext(4));
-     	 	cellTest2_vdef.setText(db.toString());
-     	 	_test2Values.add(energy);
-     	 	db = new BigDecimal(energy);
-  	        db = db.round(new MathContext(4));
-     	 	cellTest2_ergRest.setText(db.toString());
-    	}
-    	if(testIdx == 2) {
-    		//System.out.println(_test2Values.toString());
-    		_test3Values.add(peakG);
-    		db = new BigDecimal(peakG);
-      	  	db = db.round(new MathContext(4));
-     	 	cellTest3_PeakG.setText(db.toString());
-     	 	_test3Values.add(fmax);
-     	 	db = new BigDecimal(fmax);
-    	    db = db.round(new MathContext(4));
-     	 	cellTest3_Fmax.setText(db.toString());
-     	 	_test3Values.add(v1);
-     	 	db = new BigDecimal(v1);
-  	        db = db.round(new MathContext(4));
-     	 	cellTest3_Velocity1.setText(db.toString());
-     	 	_test3Values.add(v2);
-     	 	db = new BigDecimal(v2);
-  	        db = db.round(new MathContext(4));
-     	 	cellTest3_Velocity2.setText(db.toString());
-     	 	_test3Values.add(drop_dist);
-     	 	db = new BigDecimal(drop_dist);
-  	        db = db.round(new MathContext(4));
-     	 	cellTest3_DropHT.setText(db.toString());
-     	 	_test3Values.add(spring);
-     	 	db = new BigDecimal(spring);
-  	        db = db.round(new MathContext(4));
-     	    cellTest3_SpngDef.setText(db.toString());
-     	   _test3Values.add(fred);
-     	    db = new BigDecimal(fred);
-  	        db = db.round(new MathContext(4));
-     	 	cellTest3_fred.setText(db.toString());
-     	 	_test3Values.add(material);
-     	 	db = new BigDecimal(material);
-     	 	db = db.round(new MathContext(4));
-     	 	cellTest3_vdef.setText(db.toString());
-     	 	_test3Values.add(energy);
-     	 	db = new BigDecimal(energy);
-  	        db = db.round(new MathContext(4));
-     	 	cellTest3_ergRest.setText(db.toString());
-        	// Get averages into _avgValues array
-        	for(int i = 0; i < _test3Values.size(); i++){
-        		_avgValues.add(((_test3Values.get(i)+_test2Values.get(i))/2));
-        	}
-        	// Put them in the text fields and round
-      	  	db = new BigDecimal(_avgValues.get(0));
-      	  	db = db.round(new MathContext(4));
-     	 	cellAvg_PeakG.setText(db.toString());
-     	 	db = new BigDecimal(_avgValues.get(1));
-    	    db = db.round(new MathContext(4));
-     	 	cellAvg_Fmax.setText(db.toString());
-     	 	db = new BigDecimal(_avgValues.get(2));
-    	    db = db.round(new MathContext(4));
-     	 	cellAvg_Velocity1.setText(db.toString());
-     	 	db = new BigDecimal(_avgValues.get(3));
-    	    db = db.round(new MathContext(4));
-     	 	cellAvg_Velocity2.setText(db.toString());
-     	 	db = new BigDecimal(_avgValues.get(4));
-    	    db = db.round(new MathContext(4));
-     	 	cellTestAvg_DropHT.setText(db.toString());
-     	 	db = new BigDecimal(_avgValues.get(5));
-    	    db = db.round(new MathContext(4));
-     	 	cellTestAvg_SpngDef.setText(db.toString());
-     	 	db = new BigDecimal(_avgValues.get(6));
-    	    db = db.round(new MathContext(4));
-     	 	cellTestAvg_fred.setText(db.toString());
-     	 	db = new BigDecimal(_avgValues.get(7));
-    	    db = db.round(new MathContext(4));
-     	 	cellTestAvg_vdef.setText(db.toString());
-     	 	db = new BigDecimal(_avgValues.get(8));
-    	    db = db.round(new MathContext(4));
-     	 	cellTestAvg_ergRest.setText(db.toString());
-    	}
-
-
-    		
-    }
-
-	@Override
-    public void displayErrorMessage(String msg) {
-        // TODO Auto-generated method stub
-        
-    }
-
+	public void displayErrorMessage(String msg) {
+	}
 
 	public boolean is_magnetStatus() {
 		return _magnetStatus;
