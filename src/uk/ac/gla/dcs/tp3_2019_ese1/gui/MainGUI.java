@@ -3,14 +3,12 @@ package uk.ac.gla.dcs.tp3_2019_ese1.gui;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -21,13 +19,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.*;
 
@@ -41,19 +34,15 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.JToggleButton;
 import javax.swing.Timer;
 import javax.swing.border.TitledBorder;
-import javax.swing.UIManager;
 
 import org.apache.commons.io.FilenameUtils;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYDataItem;
-import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 
@@ -63,22 +52,10 @@ import uk.ac.gla.dcs.tp3_2019_ese1.aaadata.AAARunner;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.DaqDeviceDescriptor;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwBoard;
 import uk.ac.gla.dcs.tp3_2019_ese1.libcbw.LibcbwException;
-import com.jtattoo.plaf.acryl.*;
 import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 
 public class MainGUI implements IGUI {
-
-	/* Set colour scheme */
-//	{
-//		try {
-	//		AcrylLookAndFeel.setTheme("Green-Giant-Font", "", "");
-	//		UIManager.setLookAndFeel("com.jtattoo.plaf.acryl.AcrylLookAndFeel");
-
-	//	} catch (Exception e) {
-//			e.printStackTrace();
-//	}
-//	}
 
 	private JFrame frame;
 
@@ -107,21 +84,11 @@ public class MainGUI implements IGUI {
 	private JTextField cellTest2_vdef;
 	private static Timer timer;
 	private boolean _timerIsStarted = false;
-	private String _minString = "0";
-	private String _secString = "30";
 
 	private JTextField cellTest3_vdef;
 	private JTextField cellTestAvg_vdef;
-	private JTextField textField_32;
-	private JTextField textField_33;
-	private JTextField textField_34;
-	private JTextField textField_45;
-	private JTextField txtPeak;
-	private JTextField textField_46;
 	private JPanel panel_displacement;
-	private static int delay;
 
-	private JPanel panel_graph3;
 	private JTextField cellTest1_ergRest;
 	private JTextField cellTest2_ergRest;
 	private JTextField cellTest3_ergRest;
@@ -151,11 +118,8 @@ public class MainGUI implements IGUI {
 	private ArrayList<Double> _test3Values = new ArrayList<Double>();
 	private ArrayList<Double> _avgValues = new ArrayList<Double>();
 
-	private int _n = 0;
-
 	private boolean _initSucc = false;
 	private JTextField cellTestAvg_DropHT;
-	private JTextField textField;
 
 	/**
 	 * Launch the application.
