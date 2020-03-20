@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch4jConfig>
+  <headerType>gui</headerType>
+  <jar>next-STEPS.jar</jar>
+  <outfile>next-STEPS.exe</outfile>
+  <chdir>.</chdir>
+ <!--<icon>icon.ico</icon>-->
+  <singleInstance>
+    <mutexName>next-STEPS</mutexName>
+  </singleInstance>
+  <jre>
+    <minVersion>12.0.2</minVersion>
+    <opt>--enable-preview</opt>
+  </jre>
+  <!--
+  <versionInfo>
+    <fileVersion>1.0.0.0</fileVersion>
+    <txtFileVersion>v1.0.0</txtFileVersion>
+    <fileDescription></fileDescription>
+    <copyright>Copyright (C) 2019-2020 Ross Gardiner, Duncan Lowther, Agnes Ola, Lorenzo Roccato, and Nawaf Al-Lawati</copyright>
+    <productVersion>1.0.0.0</productVersion>
+    <txtProductVersion>v1.0.0</txtProductVersion>
+    <productName>Next STEPS</productName>
+    <companyName></companyName>
+    <internalName>next-STEPS</internalName>
+    <originalFilename>nextSTEPS.exe</originalFilename>
+    <language>ENGLISH_UK</language>
+  </versionInfo> -->
+</launch4jConfig>
+
